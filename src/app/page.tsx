@@ -1,12 +1,11 @@
 
-import { AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
-
-import {CardLists} from "front-end-component-kit";
-
-
-
-
+import {CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+// app/page.tsx (Main Page)
+import Link from 'next/link';
+
+
 
 
 const more_link : string = "www.google.com";
@@ -309,7 +308,15 @@ export default function Home() {
 
 
 
-<HeadingBar title={"Abhi's Microcosm"}/> 
+<HeadingBar title={"Abhi's Microcom in page"}/> 
+<div>
+      <h1>Welcome to the Home Page</h1>
+      <p>
+        Go to the <Link href="/about">About Page</Link>
+      </p>
+    </div>
+
+    <More more_link= "http://localhost:3000/about" /> 
 
 <AboutPic image_link={profile_pic} />
 
