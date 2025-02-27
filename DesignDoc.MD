@@ -154,5 +154,19 @@ with the info and paignataion
 for static pages it will be hard coded 
 
 
+Api calls -- 
 
+article/tech/name_article 
+article/project/name_article
+
+section/tech 
+section/project
+section/life
+
+
+for article page 
+
+pass all the article data 
+
+and the cards data will be fetch random from the particluar section pool no harcoding fetch random
 
