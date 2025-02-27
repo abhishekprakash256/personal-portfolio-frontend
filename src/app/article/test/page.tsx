@@ -1,16 +1,15 @@
-/*
-article page to render the article posts 
-*/
+
 
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {CardData, ArticleData, SectionData } from "./types"; // Import types
+import {CardData, ArticleData, SectionData } from "../types"; // Import types
 
-
+import { GetServerSideProps } from "next";
 
 //data mocking
-const artcle_data = [
-  {
+const mockArticleData : ArticleData  = 
+  
+{
       "article_name": "patching-unpatching",
       "section_name":"project", 
        "id_number" : 1,
@@ -37,28 +36,27 @@ const artcle_data = [
 
       "github_url" : "https://github.com/abhishekprakash256",
        "linkedin_url" : "https://www.linkedin.com/in/abhishek256/",
-        "twitter_url" : "https://twitter.com/yourprofile",
+        "twitter_url" : "",
        "leetcode_url" : "https://leetcode.com/abhishekprakash256/",
         "gitlab_url" : "https://gitlab.com/abhishekprakash256",
         "kaggle_url" : "https://www.kaggle.com/abhishek256",
-        "medium_url" : "https://medium.com/@yourprofile",
+        "medium_url" : "",
     
-
       "demo_link":"#",
-      
+
       "more_link": "/project"
   
+} 
 
-       } ,
-]
 
-const Paignation_data = [
+const mockPaginationData : CardData[] = [
   {
     card_title: "Card Title 1",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
     img_src: "./images/cards.jpg",  /* the image file is in the public folder */
     card_url: "https://example.com/card1", 
   },
+
   {
     card_title: "Card Title 2",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
@@ -129,45 +127,11 @@ const Paignation_data = [
 
 ];
  
-const more_link = "www.google.com"
 
 
-
-
-
-
-// make all as props to insert the data here dynamically in the function 
-
-async function getArticleData() {
-
-  const res = await fetch("http://localhost:5000/api/article", {
-    cache: "no-store", // Prevent caching in production
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch article data");
-  }
-
-  return res.json() as Promise<ArticleData>;
-}
-
-
-async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch("http://localhost:5000/api/pagination", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch pagination data");
-  }
-
-  return res.json();
-}
-
-export default async function Article() {
-
-  const articleData = await getArticleData();
-  const paginationData = await getPaginationData();
+export default function Article() {
+  const articleData = mockArticleData; // Simulate data fetching
+  const paginationData = mockPaginationData;
 
   const {
     article_data,
@@ -180,14 +144,16 @@ export default async function Article() {
     medium_url,
     demo_link,
     more_link,
+    
   } = articleData;
+
 
   return (
     <div>
       <NavBar />
 
       <CustomBody>
-        {article_data.map((section: SectionData, index: number) => (
+        {article_data.map((section, index) => (
           <div key={index}>
             {section.title && <HeadingBar title={section.title} />}
             {section.image_src && <ArticleImage image_link={section.image_src} />}
@@ -199,11 +165,11 @@ export default async function Article() {
         <SocialMediaLinks
           github_link={github_url}
           linkedin_link={linkedin_url}
-          twitter_link= {twitter_url}
+          twitter_link={twitter_url}
           leetcode_link={leetcode_url}
           gitlab_link={gitlab_url}
           kaggle_link={kaggle_url}
-          medium_link= {medium_url}
+          medium_link={medium_url}
         />
 
         <ButtonBar button_text="Demo" link={demo_link} />
@@ -219,5 +185,4 @@ export default async function Article() {
       <Footer />
     </div>
   );
-
 }

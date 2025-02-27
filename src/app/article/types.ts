@@ -2,7 +2,7 @@ export interface ArticleData {
     article_name: string;
     section_name: string;
     id_number: number;
-    aticle_data: SectionData[];
+    article_data: SectionData[];
     github_url: string;
     linkedin_url: string;
     twitter_url: string;
