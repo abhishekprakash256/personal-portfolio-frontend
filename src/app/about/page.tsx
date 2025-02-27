@@ -159,19 +159,19 @@ return (
 
 <CardsPaignation cardData={tech_data} />
 
-<More more_link= "tech/" /> 
+<More more_link= "tech" /> 
 
 <HeadingBar title={"Projects"}/> 
 
 <CardsPaignation cardData={project_data} />
 
-<More more_link= "project/" /> 
+<More more_link= "project" /> 
 
 <HeadingBar title={"Life"}/> 
 
 <CardsPaignation cardData={life_data} />
 
-<More more_link= "life/"/> 
+<More more_link= "life"/> 
 
 <Row className="justify-content-md-center mt-2">
 
