@@ -5,7 +5,10 @@ The About Page for Perdosnal data
 
 import {CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Button, Col, Row} from 'react-bootstrap';
+import '../styles/styles.css';
 
+import Link from "next/link";
 
 
 
@@ -170,8 +173,17 @@ return (
 
 <More more_link= "life/"/> 
 
-<HeadingBar title="Resume"/>
+<Row className="justify-content-md-center mt-2">
 
+<Col className="text-center">
+
+<a href="/resume.pdf" download>
+  <Button className="resume-button">Download Resume</Button>
+</a>
+
+</Col>
+
+</Row>
 
 <SpaceBlock></SpaceBlock>  { /*SpaceBlock component to create a space between the social media links and the footer */ }
 

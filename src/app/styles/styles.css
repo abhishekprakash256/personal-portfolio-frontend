@@ -1,0 +1,12 @@
+.resume-button {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 0px solid var(--text-color);
+
+}
+
+.resume-button:hover {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 0px solid var(--text-color);
+}
