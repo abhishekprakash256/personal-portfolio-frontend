@@ -164,9 +164,5 @@ section/project
 section/life
 
 
-for article page 
 
-pass all the article data 
-
-and the cards data will be fetch random from the particluar section pool no harcoding fetch random
 
