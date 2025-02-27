@@ -3,7 +3,7 @@
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CardData, ArticleData, SectionData } from "../types"; // Import types
-
+import { useRouter } from 'next/router'
 
 
 const socialLinks = [
@@ -16,7 +16,7 @@ const socialLinks = [
   "",
 ];
 
-const resume_link : string = "Resuem.pdf";
+const resume_link : string = "Resume.pdf";
 
 
 
@@ -35,6 +35,8 @@ async function getPaginationData(): Promise<CardData[]> {
 
 
 export default async function Section() {
+  const router = useRouter()
+  const { slug } = router.query 
 
   const paginationData = await getPaginationData();
 
