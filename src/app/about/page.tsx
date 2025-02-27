@@ -173,7 +173,7 @@ return (
 
 <More more_link= "life"/> 
 
-<Row className="justify-content-md-center mt-2">
+<Row className="justify-content-md-center mt-3">
 
 <Col className="text-center">
 
