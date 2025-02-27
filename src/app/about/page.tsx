@@ -3,11 +3,11 @@
 The About Page for Perdosnal data
 */
 
-import {CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
+import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Row} from 'react-bootstrap';
 import '../styles/styles.css';
-import ButtonBar from "@/app/resuable/ButtonBar";
+
 
 
 import Link from "next/link";
