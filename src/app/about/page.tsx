@@ -2,12 +2,12 @@
 
 The About Page for Perdosnal data
 */
-'use client';
+//'use client';
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Row} from 'react-bootstrap';
 import '../styles/styles.css';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 
 import Link from "next/link";
 
@@ -113,13 +113,13 @@ const life_data = [
 
 export default function about() {
 
-  const router = useRouter();
+ // const router = useRouter();
 
 return (
     
 <div>
 
-<NavBar router={router}></NavBar>
+<NavBar></NavBar>
 
 <CustomBody>
 

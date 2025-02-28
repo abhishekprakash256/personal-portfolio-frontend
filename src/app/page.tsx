@@ -1,10 +1,10 @@
 
-'use client';
+//'use client';
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/styles.css';
 import {Button, Col, Row} from 'react-bootstrap';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 
 
 
@@ -131,11 +131,11 @@ const Paignation_data = [
 
 
 export default function Home() {
-  const router = useRouter();
+ // const router = useRouter();
   return ( 
     <div>
 
-<NavBar router={router}></NavBar>
+<NavBar ></NavBar>
 
 <CustomBody>
 
