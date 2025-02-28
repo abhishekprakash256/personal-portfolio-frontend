@@ -51,7 +51,7 @@ const capitalizeFirstLetter = (str: string) => {
 
 
 export default async function SectionPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+  const { slug } = await params;
   const paginationData = await getPaginationData(slug);
 
   return (

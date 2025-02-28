@@ -53,8 +53,8 @@ async function getPaginationData(): Promise<CardData[]> {
 }
 
 export default async function Article({ params }: { params: { slug: string } }) {
-
-  const articleData = await getArticleData(params.slug);
+  const { slug } = await params ; 
+  const articleData = await getArticleData(slug);
   const paginationData = await getPaginationData();
 
   const {
