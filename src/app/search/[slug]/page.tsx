@@ -9,6 +9,9 @@ import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,Articl
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 
+
+
+
 //import { useRouter } from 'next/navigation';
 
 const socialLinks = [
