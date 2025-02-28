@@ -1,11 +1,11 @@
 /*
 article page to render the article posts 
 */
-
+//'use client' ; 
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
-
+//import { useRouter } from 'next/navigation';
 
 
 
@@ -56,6 +56,7 @@ export default async function Article({ params }: { params: { slug: string } }) 
   const { slug } = await params ; 
   const articleData = await getArticleData(slug);
   const paginationData = await getPaginationData();
+  //const router = useRouter();
 
   const {
     article_data,
@@ -72,7 +73,7 @@ export default async function Article({ params }: { params: { slug: string } }) 
 
   return (
     <div>
-      <NavBar />
+      <NavBar/>
 
       <CustomBody>
         {article_data.map((section: SectionData, index: number) => (

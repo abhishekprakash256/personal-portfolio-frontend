@@ -4,11 +4,11 @@ also display a page if any result is not avaialble as well
 
 */
 
-
+//'use client' ; 
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
-
+//import { useRouter } from 'next/navigation';
 
 const socialLinks = [
     "https://github.com/abhishekprakash256",
@@ -52,13 +52,14 @@ const capitalizeFirstLetter = (str: string) => {
 
 export default async function SearchPage( {params} : { params: { slug: string } }) {
 
+    //const rout = useRouter()
     const { slug } = await params ; 
 
     const searchPageData = await getSearchData(slug)
 
     return (
       <div>
-        <NavBar />
+        <NavBar/>
   
         <CustomBody>
   
