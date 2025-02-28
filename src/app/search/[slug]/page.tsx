@@ -68,6 +68,14 @@ export default async function SearchPage( {params} : { params: { slug: string } 
         <CustomBody>
   
           <HeadingBar title= "Results" />
+
+          if searchPageData.length == 0 
+          {
+            // render the not notfound page
+          }
+          else
+          {
+
   
           <CardsPaignation cardData={searchPageData} /> {/* paginationData is of type CardData[] */}
   
@@ -80,7 +88,8 @@ export default async function SearchPage( {params} : { params: { slug: string } 
             kaggle_link={socialLinks[5]}
             medium_link={socialLinks[6]}
           />
-  
+          }
+          
           <ButtonBar button_text="Download Resume" link={resume_link} />
   
           <SpaceBlock />
