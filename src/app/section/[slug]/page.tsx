@@ -16,9 +16,19 @@ const socialLinks = [
 
 const resume_link: string = "Resuem.pdf";
 
+
+
+
+
+
+
+
+
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(slug: string): Promise<CardData[]> {
-  const res = await fetch(`http://localhost:5000/section/${slug}`, {
+  const res = await fetch(`http://127.0.0.1:5000/section/${slug}`, {
+
+    
     cache: "no-store",
   });
 
@@ -28,6 +38,17 @@ async function getPaginationData(slug: string): Promise<CardData[]> {
 
   return res.json();
 }
+
+// Helper function to capitalize the first letter
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+
+
+
+
+
 
 export default async function SectionPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -39,7 +60,7 @@ export default async function SectionPage({ params }: { params: { slug: string }
 
       <CustomBody>
 
-        <HeadingBar title={`Section: ${slug}`} />
+        <HeadingBar title={`${capitalizeFirstLetter(slug)}`} />
 
         <CardsPaignation cardData={paginationData} /> {/* paginationData is of type CardData[] */}
 
