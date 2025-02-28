@@ -154,5 +154,15 @@ with the info and paignataion
 for static pages it will be hard coded 
 
 
+Api calls -- 
+
+article/tech/name_article 
+article/project/name_article
+
+section/tech 
+section/project
+section/life
+
+
 
 
