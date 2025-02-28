@@ -4,7 +4,7 @@ article page to render the article posts
 
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {CardData, ArticleData, SectionData } from "../types"; // Import types
+import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 
 
 
@@ -26,9 +26,9 @@ const resume_link : string = "Resume.pdf";
 
 // make all as props to insert the data here dynamically in the function 
 
-async function getArticleData() {
+async function getArticleData(slug: string) {
 
-  const res = await fetch("http://localhost:5000/api/article", {
+    const res = await fetch(`http://127.0.0.1:5000/article/${slug}`, {
     cache: "no-store", // Prevent caching in production
   });
 
@@ -41,7 +41,7 @@ async function getArticleData() {
 
 
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch("http://localhost:5000/api/pagination", {
+  const res = await fetch("http://127.0.0.1:5000/section/tech", {
     cache: "no-store",
   });
 
@@ -52,9 +52,9 @@ async function getPaginationData(): Promise<CardData[]> {
   return res.json();
 }
 
-export default async function Article() {
+export default async function Article({ params }: { params: { slug: string } }) {
 
-  const articleData = await getArticleData();
+  const articleData = await getArticleData(params.slug);
   const paginationData = await getPaginationData();
 
   const {
