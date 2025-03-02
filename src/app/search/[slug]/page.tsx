@@ -86,7 +86,7 @@ const capitalizeFirstLetter = (str: string) => {
   
 
   export default async function SearchPage({ params }: { params: { slug: string } }) {
-    const { slug } = params; 
+    const { slug } = await params; 
     let searchPageData: CardData[] = [];
     let paginationData : CardData[] = await getPaginationData(); 
 
