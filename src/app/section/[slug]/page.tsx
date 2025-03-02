@@ -1,8 +1,11 @@
 // app/section/[slug]/page.tsx
-
+//'use client';
 import { ButtonBar, CardLists, AboutPic, CardsPaignation, NavBar, Footer, ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar, CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CardData } from "../../types"; // Import types
+//import { useRouter } from 'next/navigation';
+
+
 
 const socialLinks = [
   "https://github.com/abhishekprakash256",
@@ -51,12 +54,13 @@ const capitalizeFirstLetter = (str: string) => {
 
 
 export default async function SectionPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+  const { slug } = await params;
   const paginationData = await getPaginationData(slug);
+  //const rout = useRouter() ;
 
   return (
     <div>
-      <NavBar />
+      <NavBar  />
 
       <CustomBody>
 

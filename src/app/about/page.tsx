@@ -2,13 +2,12 @@
 
 The About Page for Perdosnal data
 */
-
+//'use client';
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Row} from 'react-bootstrap';
 import '../styles/styles.css';
-
-
+//import { useRouter } from 'next/navigation';
 
 import Link from "next/link";
 
@@ -18,7 +17,7 @@ import Link from "next/link";
 // all the data is hard coded for static pages
 
 const more_link : string = "www.google.com";
-const profile_pic : string = "./images/profile-pic.jpg";
+const profile_pic : string = "images/profile-pic.jpg";
 const skills_data : string = "#### **Programming Languages**: Python, JavaScript, TypeScript, Shell Scripting  \n#### **Web Development**: React, Next.js, Node.js, Flask, Bootstrap, REST APIs, NGINX  \n#### **Cloud & DevOps:** AWS, Docker, GitHub Actions, GitLab CI/CD, Ansible  \n#### **Databases:** PostgreSQL, MongoDB, Redis, SQL, SQLite  \n#### **Machine Learning & AI:** PyTorch, TensorFlow, Pandas, Scikit-learn, Deep Learning, Reinforcement Learning";
 const experience_data1 : string = "#### **Software Developer | Pro Playgrounds**  \n - ##### **Led development of modular, responsive UI components with HTML, CSS, and JavaScript, increasing monthly traffic by 37%.**  \n - ##### **Engineered a dynamic product filtering system, improving catalog navigation speed by 40%**.  \n - ##### **Automated end-to-end testing and deployment pipelines using GitLab CI/CD, Selenium, Ansible, and Python, optimizing backend processes and checkout experience.**";
 const experience_data2: string = "#### **Full Stack Developer | Self Employed**  \n - ##### **Portfolio Migration: Upgrading to React, Next.js, and NestJS (TS) for scalability & modular architecture. Integrating PostgreSQL & MongoDB for structured & unstructured data.**  \n - ##### **Refactored monolithic architecture into a hybrid microservices model, improving scalability and maintainability.**  \n - ##### **Chat App: Built a real-time messaging app with React, Flask, MongoDB, Redis, and WebSockets.**  \n   - ##### Implemented JWT authentication, reducing unauthorized access by 30%.  \n   - ##### Designed a responsive and intuitive UI with Bootstrap, ensuring optimal performance and a seamless experience.  \n - ##### **Tiny URL Generator: Developed a URL-shortening service with React, Flask & Redis, reducing query time by 25%.**  \n   - ##### Incorporated collision avoidance and exposed a REST API for URL creation and redirection.  \n - ##### **Portfolio Website: Developed both front-end and back-end and deployed a personal portfolio site on AWS EC2, automated with CI/CD pipelines, NGINX, and Ansible, achieving 99.9% uptime.** " ;
@@ -113,6 +112,8 @@ const life_data = [
 
 
 export default function about() {
+
+ // const router = useRouter();
 
 return (
     
