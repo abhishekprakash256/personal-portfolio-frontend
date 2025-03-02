@@ -8,7 +8,7 @@ also display a page if any result is not avaialble as well
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
-
+import NotFound from "./NotFound";
 
 
 
@@ -27,24 +27,24 @@ const socialLinks = [
   const resume_link : string = "Resume.pdf";
 
 
-async function getSearchData(slug : string) : Promise<CardData[]>
-{
-    const res = await fetch(`http://127.0.0.1:5000/search/${slug}`, 
-    {
+  async function getSearchData(slug: string): Promise<CardData[]> {
+    const res = await fetch(`http://127.0.0.1:5000/search/${slug}`, {
         cache: "no-store",
     });
 
-
-    if (!res.ok) 
-    {   
-        // render the not found page
+    if (!res.ok) {   
         throw new Error("Failed to fetch search data");
-
     }
 
-    return res.json(); 
+    const data = await res.json();
 
+    if (!data || data.length === 0) {
+        return [];  // Ensure an empty array is returned for no results
+    }
+
+    return data;
 }
+
 
 
 // Helper function to capitalize the first letter
@@ -54,41 +54,56 @@ const capitalizeFirstLetter = (str: string) => {
 
   
 
-export default async function SearchPage( {params} : { params: { slug: string } }) {
+  export default async function SearchPage({ params }: { params: { slug: string } }) {
+    const { slug } = params; 
+    let searchPageData: CardData[];
 
-    //const rout = useRouter()
-    const { slug } = await params ; 
-
-    const searchPageData = await getSearchData(slug)
+    try {
+        searchPageData = await getSearchData(slug);
+    } catch (error) {
+        return (
+            <div>
+                <NavBar />
+                <CustomBody>
+                   
+                    <NotFound />
+                    
+                </CustomBody>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
-      <div>
-        <NavBar/>
-  
-        <CustomBody>
-  
-          <HeadingBar title= "Results" />
+        <div>
+            <NavBar />
+            <CustomBody>
+                <HeadingBar title="Results" />
 
-  
-          <CardsPaignation cardData={searchPageData} /> {/* paginationData is of type CardData[] */}
-  
-          <SocialMediaLinks 
-            github_link={socialLinks[0]}
-            linkedin_link={socialLinks[1]}
-            twitter_link={socialLinks[2]}
-            leetcode_link={socialLinks[3]}
-            gitlab_link={socialLinks[4]}
-            kaggle_link={socialLinks[5]}
-            medium_link={socialLinks[6]}
-          />
-  
-          <ButtonBar button_text="Download Resume" link={resume_link} />
-  
-          <SpaceBlock />
-        </CustomBody>
-  
-        <Footer />
-      </div>
+                {searchPageData.length === 0 ? (
+                    <div>
+                      <NotFound />
+                    </div>
+                ) : (
+                    
+                    <CardsPaignation cardData={searchPageData} />
+                )}
+
+                <SocialMediaLinks 
+                    github_link="https://github.com/abhishekprakash256"
+                    linkedin_link="https://www.linkedin.com/in/abhishek256/"
+                    twitter_link=""
+                    leetcode_link="https://leetcode.com/abhishekprakash256/"
+                    gitlab_link="https://gitlab.com/abhishekprakash256"
+                    kaggle_link="https://www.kaggle.com/abhishek256"
+                    medium_link=""
+                />
+
+                <ButtonBar button_text="Download Resume" link="Resume.pdf" />
+                <SpaceBlock />
+            </CustomBody>
+            <Footer />
+        </div>
     );
 }
 
