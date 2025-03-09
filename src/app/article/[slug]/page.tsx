@@ -28,7 +28,7 @@ const resume_link : string = "Resume.pdf";
 
 async function getArticleData(slug: string) {
 
-    const res = await fetch(`http://127.0.0.1:5000/article/${slug}`, {
+    const res = await fetch(`http://127.0.0.1:5000/mongo/section/tech/article/${slug}`, {
     cache: "no-store", // Prevent caching in production
   });
 
@@ -41,7 +41,7 @@ async function getArticleData(slug: string) {
 
 
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch("http://127.0.0.1:5000/section/tech", {
+  const res = await fetch("http://127.0.0.1:5000/mongo/section/explore", {
     cache: "no-store",
   });
 
