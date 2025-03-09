@@ -30,11 +30,12 @@ const socialLinks = [
 
 
 
-
   
-  async function getSearchData(slug: string): Promise<CardData[]> {
+  async function getSearchData(slug: string): Promise<CardData[]> {  
+
+    //serarch url modified
     try {
-        const res = await fetch(`http://127.0.0.1:5000/search/${slug}`, {
+        const res = await fetch(`http://127.0.0.1:5000/mongo/search/${slug}`, {
             cache: "no-store",
         });
 
