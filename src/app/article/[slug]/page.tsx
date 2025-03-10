@@ -28,7 +28,7 @@ const resume_link : string = "Resume.pdf";
 
 async function getArticleData( slug: string) {
 
-    const res = await fetch(`http://127.0.0.1:5001/section/life/article/${slug}`, {
+    const res = await fetch(`http://127.0.0.1:5001/section/tech/article/${slug}`, {
     cache: "no-store", // Prevent caching in production
   });
 
