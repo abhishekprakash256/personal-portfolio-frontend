@@ -26,9 +26,9 @@ const resume_link : string = "Resume.pdf";
 
 // make all as props to insert the data here dynamically in the function 
 
-async function getArticleData(category : string , slug: string) {
+async function getArticleData( slug: string) {
 
-    const res = await fetch(`http://127.0.0.1:5001/section/${category}/article/${slug}`, {
+    const res = await fetch(`http://127.0.0.1:5001/section/life/article/${slug}`, {
     cache: "no-store", // Prevent caching in production
   });
 
@@ -52,10 +52,9 @@ async function getPaginationData(): Promise<CardData[]> {
   return res.json();
 }
 
-export default async function Article({ params }: { params: { slug: string , category : string  }  }) {
+export default async function Article({ params }: { params: { slug: string}  }) {
   const { slug } = await params ; 
-  const { category } = await params ; 
-  const articleData = await getArticleData(category , slug);
+  const articleData = await getArticleData(slug);
   const paginationData = await getPaginationData();
   //const router = useRouter();
 
