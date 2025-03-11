@@ -41,7 +41,7 @@ const Paignation_data = [
   {
     card_title: "Card Title 2",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
+    img_src: "section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
     card_url: "https://example.com/card2",
   },
   {
@@ -72,7 +72,7 @@ const Paignation_data = [
   {
     card_title: "Card Title 1",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "./images/section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
+    img_src: "section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
     card_url: "https://example.com/card1", 
   },
   {
@@ -108,7 +108,7 @@ const Paignation_data = [
   {
     card_title: "Card Title 1",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "./images/section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
+    img_src: "section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
     card_url: "https://example.com/card1", 
   },
   {
