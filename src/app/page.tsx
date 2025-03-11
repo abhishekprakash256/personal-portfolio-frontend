@@ -126,7 +126,8 @@ const Paignation_data = [
 
 ];
 
-
+// test link  -- working
+//const test_img_link : string =  "section/project/chat-app/chat-app-icon.png"
 
 
 
@@ -154,6 +155,9 @@ kaggle_link={socialLinks[5]}
 medium_link=""
 />
 
+
+{/* the test code
+<img src = {`/images/${test_img_link}`} />  */}
 
 <Para description={ description }/>
 

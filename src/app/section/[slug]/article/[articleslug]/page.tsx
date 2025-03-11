@@ -21,6 +21,10 @@ const socialLinks = [
 
 const resume_link: string = "Resume.pdf";
 
+//const test_img_link : string =  "section/project/chat-app/chat-app-icon.png"
+
+
+
 // Fetch Article Data
 async function getArticleData(slug: string, articleslug: string) {
   const url = `http://127.0.0.1:5001/section/${slug}/article/${articleslug}`;
@@ -131,6 +135,8 @@ export default async function Article({ params }: { params: { slug: string, arti
 
         <HeadingBar title="Explore More" />
         <CardsPaignation cardData={paginationData} />
+        
+        {/* <img src = {`/images/${test_img_link}`} /> */} 
 
         <SocialMediaLinks 
           github_link={socialLinks[0]}
