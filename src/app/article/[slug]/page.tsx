@@ -1,5 +1,5 @@
 /*
-article page to render the article posts 
+article page to render the article posts not should be used further the section article page should be used 
 */
 //'use client' ; 
 import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";

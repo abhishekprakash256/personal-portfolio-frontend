@@ -1,3 +1,7 @@
+/*
+The page is used to render article  
+*/
+
 import { 
   ButtonBar, CardLists, AboutPic, CardsPaignation, NavBar, Footer, ArticleImage, 
   SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar, CustomBody, More 
@@ -17,7 +21,7 @@ const socialLinks = [
 
 const resume_link: string = "Resume.pdf";
 
-// Fetch Article Data with Debugging
+// Fetch Article Data
 async function getArticleData(slug: string, articleslug: string) {
   const url = `http://127.0.0.1:5001/section/${slug}/article/${articleslug}`;
 
@@ -47,7 +51,7 @@ async function getArticleData(slug: string, articleslug: string) {
   }
 }
 
-// Fetch Pagination Data with Debugging
+// Fetch Pagination Data 
 async function getPaginationData(): Promise<CardData[]> {
   const url = "http://127.0.0.1:5001/section/explore";
 
