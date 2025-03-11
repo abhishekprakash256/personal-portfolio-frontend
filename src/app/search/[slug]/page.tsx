@@ -30,11 +30,12 @@ const socialLinks = [
 
 
 
-
   
-  async function getSearchData(slug: string): Promise<CardData[]> {
+  async function getSearchData(slug: string): Promise<CardData[]> {  
+
+    //serarch url modified
     try {
-        const res = await fetch(`http://127.0.0.1:5000/search/${slug}`, {
+        const res = await fetch(`http://127.0.0.1:5001/search/${slug}`, {
             cache: "no-store",
         });
 
@@ -61,7 +62,7 @@ const socialLinks = [
 
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch(`http://127.0.0.1:5000/section/tech`, {
+  const res = await fetch(`http://127.0.0.1:5001/section/explore`, {
 
     
     cache: "no-store",
@@ -116,6 +117,8 @@ const capitalizeFirstLetter = (str: string) => {
                     <>
                     <HeadingBar title="Results" />
                     <CardsPaignation cardData={searchPageData} />
+                    <HeadingBar title="Explore More" />
+                    < CardsPaignation cardData= {paginationData} />
                     </>
                 )}
 
