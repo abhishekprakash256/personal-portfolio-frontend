@@ -36,7 +36,7 @@ async function getArticleData(slug: string, articleslug: string) {
     }
 
     const text = await res.text();
-    console.log("Raw API Response:", text);
+    //console.log("Raw API Response:", text);
 
     if (!text.trim()) {
       console.error("Empty response received from API");
@@ -74,12 +74,12 @@ async function getPaginationData(): Promise<CardData[]> {
 
 // Main Article Component
 export default async function Article({ params }: { params: { slug: string, articleslug: string } }) {
-  console.log("Params received:", params);
+  //console.log("Params received:", params);
 
-  const { slug, articleslug } = params;
+  const { slug, articleslug } = await params;
 
-  console.log("Extracted Slug:", slug);
-  console.log("Extracted Article Slug:", articleslug);
+  //console.log("Extracted Slug:", slug);
+  //console.log("Extracted Article Slug:", articleslug);
 
   const articleData = await getArticleData(slug, articleslug);
   const paginationData = await getPaginationData();
