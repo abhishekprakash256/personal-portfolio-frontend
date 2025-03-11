@@ -17,7 +17,7 @@ const socialLinks = [
   "https://gitlab.com/abhishekprakash256",
   "https://www.kaggle.com/abhishek256",
   "",
-];
+];    
 
 const resume_link: string = "Resume.pdf";
 
