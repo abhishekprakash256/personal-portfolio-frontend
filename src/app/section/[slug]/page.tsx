@@ -29,7 +29,7 @@ const resume_link: string = "Resuem.pdf";
 
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(slug: string): Promise<CardData[]> {
-  const res = await fetch(`http://127.0.0.1:5000/section/${slug}`, {
+  const res = await fetch(`http://127.0.0.1:5001/section/${slug}`, {
 
     
     cache: "no-store",
