@@ -17,9 +17,13 @@ const socialLinks = [
   "https://gitlab.com/abhishekprakash256",
   "https://www.kaggle.com/abhishek256",
   "",
-];
+];    
 
 const resume_link: string = "Resume.pdf";
+
+//const test_img_link : string =  "section/project/chat-app/chat-app-icon.png"
+
+
 
 // Fetch Article Data
 async function getArticleData(slug: string, articleslug: string) {
@@ -36,7 +40,7 @@ async function getArticleData(slug: string, articleslug: string) {
     }
 
     const text = await res.text();
-    console.log("Raw API Response:", text);
+    //console.log("Raw API Response:", text);
 
     if (!text.trim()) {
       console.error("Empty response received from API");
@@ -74,12 +78,12 @@ async function getPaginationData(): Promise<CardData[]> {
 
 // Main Article Component
 export default async function Article({ params }: { params: { slug: string, articleslug: string } }) {
-  console.log("Params received:", params);
+  //console.log("Params received:", params);
 
-  const { slug, articleslug } = params;
+  const { slug, articleslug } = await params;
 
-  console.log("Extracted Slug:", slug);
-  console.log("Extracted Article Slug:", articleslug);
+  //console.log("Extracted Slug:", slug);
+  //console.log("Extracted Article Slug:", articleslug);
 
   const articleData = await getArticleData(slug, articleslug);
   const paginationData = await getPaginationData();
@@ -131,6 +135,8 @@ export default async function Article({ params }: { params: { slug: string, arti
 
         <HeadingBar title="Explore More" />
         <CardsPaignation cardData={paginationData} />
+        
+        {/* <img src = {`/images/${test_img_link}`} /> */} 
 
         <SocialMediaLinks 
           github_link={socialLinks[0]}
