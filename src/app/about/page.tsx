@@ -163,19 +163,19 @@ return (
 
 <CardsPaignation cardData={tech_data} />
 
-<More more_link= "tech" /> 
+<More more_link= "/section/tech" /> 
 
 <HeadingBar title={"Projects"}/> 
 
 <CardsPaignation cardData={project_data} />
 
-<More more_link= "project" /> 
+<More more_link= "/section/project" /> 
 
 <HeadingBar title={"Life"}/> 
 
 <CardsPaignation cardData={life_data} />
 
-<More more_link= "life"/> 
+<More more_link= "/section/life"/> 
 
 <ButtonBar button_text = "Download Resume" link= {resume_link} />
 
