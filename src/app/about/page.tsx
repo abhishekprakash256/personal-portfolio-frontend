@@ -14,8 +14,8 @@ import Link from "next/link";
 
 
 
-// all the data is hard coded for static pages
-
+// all the data is hard coded for static pages  
+    
 const more_link : string = "www.google.com";
 const profile_pic : string = "./images/profile-pic/profile-pic.jpg";
 const skills_data : string = "#### **Programming Languages**: Python, JavaScript, TypeScript, Shell Scripting  \n#### **Web Development**: React, Next.js, Node.js, Flask, Bootstrap, REST APIs, NGINX  \n#### **Cloud & DevOps:** AWS, Docker, GitHub Actions, GitLab CI/CD, Ansible  \n#### **Databases:** PostgreSQL, MongoDB, Redis, SQL, SQLite  \n#### **Machine Learning & AI:** PyTorch, TensorFlow, Pandas, Scikit-learn, Deep Learning, Reinforcement Learning";
@@ -26,7 +26,7 @@ const experience_data4 : string = "#### **Research Assistant | Florida State Uni
 const about_me_desc : string = "I am Abhishek Prakash (Abhi), a professional with over two years of industry experience and a master's degree in computer science from <a href='https://www.fsu.edu' target='_blank' style='color: #CEB888; text-decoration: none;' onmouseover='this.style.color = \"#782F40\"' onmouseout='this.style.color=\"#CEB888\"'>Florida State University</a>. My expertise lies in various programming languages, with a strong emphasis on Python. I specialize in machine learning, automation, software development, and the design and deployment of cloud infrastructure as code. I am proficient in popular machine learning and deep learning frameworks such as PyTorch, TensorFlow, scikit-learn, and pandas. My comprehensive background in computer science, including an in-depth understanding of data structures and algorithms, underpins my professional journey. Throughout my career, I have been actively involved in a wide range of software projects, from developing small-scale tools to orchestrating large-scale production systems. My experience extends to website development, including front-end, back-end, and database integration, ensuring the robustness and efficiency of solutions through unit testing, data visualization, and data engineering.In addition to my core skills, I have specialized in Machine Learning Operations (MLOps), managing CI/CD pipelines and Docker images to ensure the seamless integration and deployment of machine learning models. I am adept at using automation tools like Ansible and Terraform, streamlining and automating MLOps processes to enhance the overall efficiency and reliability of machine learning workflows.";
 const education_data_fsu : string = "#### **Master of Science in Computer Science | Florida State University**  \n - ##### **Courses:** Deep Reinforcement Learning, Data and Computer Communication, Artificial Intelligence, Advanced Algorithms, Network System Admin, Intro to Data Science, Database management systems";
 const education_data_bit : string = "#### **Bachelors of Science in Computer Science | B.I.T** \n - ##### **Courses:** Artifical Intelligence, Logic Building in Cpp, Data Base , Computer Networking , Web Technologies  "
-const resume_link : string = "/resume.pdf";
+const resume_link : string = "/files/resume.pdf";
 const socialLinks = [
   "https://github.com/abhishekprakash256",
   "https://www.linkedin.com/in/abhishek256/",
