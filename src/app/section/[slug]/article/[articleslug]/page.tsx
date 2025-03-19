@@ -19,7 +19,7 @@ const socialLinks = [
   "",
 ];    
 
-const resume_link: string = "Resume.pdf";
+const resume_link : string = "./files/resume.pdf";
 
 //const test_img_link : string =  "section/project/chat-app/chat-app-icon.png"
 

@@ -17,7 +17,7 @@ const socialLinks = [
   "",
 ];
 
-const resume_link: string = "Resuem.pdf";
+const resume_link : string = "./files/resume.pdf";
 
 
 
