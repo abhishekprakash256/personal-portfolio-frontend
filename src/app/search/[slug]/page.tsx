@@ -24,7 +24,7 @@ const socialLinks = [
     "",
   ];
   
-  const resume_link : string = "Resume.pdf";
+  const resume_link : string = "/files/resume.pdf";
 
 
 
@@ -132,7 +132,7 @@ const capitalizeFirstLetter = (str: string) => {
                     medium_link=""
                 />
 
-                <ButtonBar button_text="Download Resume" link="Resume.pdf" />
+                <ButtonBar button_text="Download Resume" link= {resume_link } />
                 <SpaceBlock />
             </CustomBody>
             <Footer />
