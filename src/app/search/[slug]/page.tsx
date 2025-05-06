@@ -77,7 +77,7 @@ async function getPaginationData(): Promise<CardData[]> {
   const json = await res.json();
 
   // ✅ Only return the `data` field
-  return json.data || [];
+  return json.data || [];  
 }
 
 
