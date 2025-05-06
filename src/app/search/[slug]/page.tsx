@@ -6,7 +6,7 @@ also display a page if any result is not avaialble as well
 
 //'use client' ; 
 import { NotFound,ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';   
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 //import NotFound from "./NotFound";
 
