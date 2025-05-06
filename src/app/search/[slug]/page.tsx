@@ -90,42 +90,36 @@ const capitalizeFirstLetter = (str: string) => {
 
   
 
-  export default async function SearchPage({ params }: { params: { slug: string } }) {
-    const { slug } = await params; 
+  export default async function SearchPage({ params }: { params: Promise<{ slug: string }> }) {
     let searchPageData: CardData[] = [];
-    let paginationData : CardData[] = await getPaginationData(); 
+    let paginationData: CardData[] = [];
 
     try {
+        const { slug } = await params; // Awaiting the params as it is a Promise
+        paginationData = await getPaginationData();
         searchPageData = await getSearchData(slug);
     } catch (error) {
-        console.error("Error fetching search data:", error);
+        console.error("Error fetching data:", error);
     }
 
     return (
         <div>
             <NavBar />
             <CustomBody>
-                
-
                 {searchPageData.length === 0 ? (
-
-                  <>
-                    <NotFound />
-                    <HeadingBar title="Explore More" />
-                    < CardsPaignation cardData= {paginationData} />
-                    
-                    </>
-                
-                  ) : (
-
                     <>
-                    <HeadingBar title="Results" />
-                    <CardsPaignation cardData={searchPageData} />
-                    <HeadingBar title="Explore More" />
-                    < CardsPaignation cardData= {paginationData} />
+                        <NotFound />
+                        <HeadingBar title="Explore More" />
+                        <CardsPaignation cardData={paginationData} />
+                    </>
+                ) : (
+                    <>
+                        <HeadingBar title="Results" />
+                        <CardsPaignation cardData={searchPageData} />
+                        <HeadingBar title="Explore More" />
+                        <CardsPaignation cardData={paginationData} />
                     </>
                 )}
-
                 <SocialMediaLinks 
                     github_link="https://github.com/abhishekprakash256"
                     linkedin_link="https://www.linkedin.com/in/abhishek256/"
@@ -135,12 +129,10 @@ const capitalizeFirstLetter = (str: string) => {
                     kaggle_link="https://www.kaggle.com/abhishek256"
                     medium_link=""
                 />
-
-                <ButtonBar button_text="Download Resume" link= {resume_link } />
+                <ButtonBar button_text="Download Resume" link={resume_link} />
                 <SpaceBlock />
             </CustomBody>
             <Footer />
         </div>
     );
 }
-

@@ -51,17 +51,16 @@ const capitalizeFirstLetter = (str: string) => {
 
 
 
-export default async function SectionPage({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
+export default async function SectionPage({ params }: {  params: Promise<{ slug: string , params: string }> } ){
+  const { slug } = await params; // Removed `await` as `params` is not a Promise
   const paginationData = await getPaginationData(slug);
-  //const rout = useRouter() ;
+  //const rout = useRouter();
 
   return (
     <div>
-      <NavBar  />
+      <NavBar />
 
       <CustomBody>
-
         <HeadingBar title={`${capitalizeFirstLetter(slug)}`} />
 
         <CardsPaignation cardData={paginationData} /> {/* paginationData is of type CardData[] */}

@@ -74,15 +74,13 @@ async function getPaginationData(): Promise<CardData[]> {
 }
 
 
-// Main Article Component
-export default async function Article({ params }: { params: { slug: string, articleslug: string } }) {
-  //console.log("Params received:", params);
 
+// Main Article Component
+export default async function Article({ params }: { params: Promise<{ slug: string, articleslug: string }> }) {
+  // Await the params as it is now a Promise
   const { slug, articleslug } = await params;
 
-  //console.log("Extracted Slug:", slug);
-  //console.log("Extracted Article Slug:", articleslug);
-
+  // Fetch the article and pagination data
   const articleData = await getArticleData(slug, articleslug);
   const paginationData = await getPaginationData();
 
