@@ -26,6 +26,17 @@ bun dev
 ```
 
 
+## Note 
+
+before pushing the code for production server use build
+
+```bash 
+
+npm run build 
+
+```
+
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
