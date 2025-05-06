@@ -25,6 +25,13 @@ pnpm dev
 bun dev
 ```
 
+## To run 
+
+- docker mongo service is needed
+- mongo access is needed 
+- api gateway service is needed
+
+
 
 ## Note 
 
