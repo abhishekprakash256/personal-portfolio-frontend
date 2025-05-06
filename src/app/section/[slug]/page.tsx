@@ -1,5 +1,7 @@
-// app/section/[slug]/page.tsx
-//'use client';
+// This is a Next.js page component that fetches and displays blog posts based on the section slug.
+// This 
+
+
 import { ButtonBar, CardLists, AboutPic, CardsPaignation, NavBar, Footer, ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar, CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CardData } from "../../types"; // Import types
@@ -23,7 +25,7 @@ const resume_link : string = "/files/resume.pdf";
 
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(slug: string): Promise<CardData[]> {
-  
+
   const res = await fetch(`http://127.0.0.1:5001/blog/section/${slug}`, {
     cache: "no-store",
   });

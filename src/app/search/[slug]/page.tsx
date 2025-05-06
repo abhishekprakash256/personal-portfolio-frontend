@@ -29,13 +29,12 @@ const socialLinks = [
 
 
 
-
-  
-  async function getSearchData(slug: string): Promise<CardData[]> {  
-
-    //serarch url modified
+  async function getSearchData(slug: string): Promise<CardData[]> {
     try {
-        const res = await fetch(`http://127.0.0.1:5001/search/${slug}`, {
+        const url = new URL("http://127.0.0.1:5001/search");
+        url.searchParams.append("keyword", slug);
+
+        const res = await fetch(url.toString(), {
             cache: "no-store",
         });
 
@@ -43,37 +42,42 @@ const socialLinks = [
 
         if (!res.ok) {
             console.warn(`Server returned error: ${res.status} - ${res.statusText}`);
-            return []; // Avoid throwing errors, return empty results
-        }
-
-        const text = await res.text();
-        if (!text) {
-            console.warn("Empty response body received.");
             return [];
         }
 
-        return JSON.parse(text); // Safely parse JSON
+        const json = await res.json();
+
+        if (!json || !json.data) {
+            console.warn("No data field found in the response.");
+            return [];
+        }
+
+        return json.data;
     } catch (error) {
         console.error("Network or JSON parsing error:", error);
-        return []; // Return empty array on failure
+        return [];
     }
 }
 
 
+
+
+
+
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch(`http://127.0.0.1:5001/section/explore`, {
-
-    
+  const res = await fetch(`http://127.0.0.1:5001/blog/section/explore`, {
     cache: "no-store",
-
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch pagination data");
   }
 
-  return res.json();
+  const json = await res.json();
+
+  // ✅ Only return the `data` field
+  return json.data || [];
 }
 
 
