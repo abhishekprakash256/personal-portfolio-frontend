@@ -21,17 +21,10 @@ const resume_link : string = "/files/resume.pdf";
 
 
 
-
-
-
-
-
-
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(slug: string): Promise<CardData[]> {
-  const res = await fetch(`http://127.0.0.1:5001/section/${slug}`, {
-
-    
+  
+  const res = await fetch(`http://127.0.0.1:5001/blog/section/${slug}`, {
     cache: "no-store",
   });
 
@@ -39,14 +32,17 @@ async function getPaginationData(slug: string): Promise<CardData[]> {
     throw new Error("Failed to fetch pagination data");
   }
 
-  return res.json();
+  const json = await res.json();
+
+  // ✅ Only return the `data` field now
+  return json.data || [];
 }
+
 
 // Helper function to capitalize the first letter
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
 
 
 
