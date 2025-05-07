@@ -150,7 +150,7 @@ github_link = {socialLinks[0]}
 linkedin_link= {socialLinks[1]}
 twitter_link=""
 leetcode_link={socialLinks[3]}
-gitlab_link={socialLinks[4]}
+gitlab_link={socialLinks[4]}  
 kaggle_link={socialLinks[5]}
 medium_link=""
 />
