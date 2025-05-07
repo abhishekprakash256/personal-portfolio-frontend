@@ -118,12 +118,19 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 
         <SocialMediaLinks
           github_link={github_url}
+          github_icon= "icons/github-color.svg"
           linkedin_link={linkedin_url}
+          linkedin_icon=""
           twitter_link={twitter_url}
+          twitter_icon=""
           leetcode_link={leetcode_url}
+          leetcode_icon=""
           gitlab_link={gitlab_url}
+          gitlab_icon=""
           kaggle_link={kaggle_url}
+          kaggle_icon=""
           medium_link={medium_url}
+          medium_icon=""
         />
 
         <ButtonBar button_text="Demo" link={demo_link} />
@@ -134,15 +141,22 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
         
         {/* <img src = {`/images/${test_img_link}`} /> */} 
 
-        <SocialMediaLinks 
-          github_link={socialLinks[0]}
-          linkedin_link={socialLinks[1]}
-          twitter_link={socialLinks[2]}
+          <SocialMediaLinks 
+          github_link = {socialLinks[0] }
+          github_icon= "icons/github-color.svg"
+          linkedin_icon="icons/linkedin-color.svg"
+          gitlab_icon="icons/gitlab-color.svg"
+          leetcode_icon="icons/leetcode-color.svg"
+          kaggle_icon="icons/kaggle-color.svg"
+          medium_icon=""
+          twitter_icon=""
+          linkedin_link= {socialLinks[1]}
+          twitter_link=""
           leetcode_link={socialLinks[3]}
-          gitlab_link={socialLinks[4]}
+          gitlab_link={socialLinks[4]}  
           kaggle_link={socialLinks[5]}
-          medium_link={socialLinks[6]}
-        />
+          medium_link=""
+          />
 
         <ButtonBar button_text="Download Resume" link={resume_link} />
         <SpaceBlock />

@@ -64,15 +64,23 @@ export default async function SectionPage({ params }: {  params: Promise<{ slug:
         <HeadingBar title={`${capitalizeFirstLetter(slug)}`} />
 
         <CardsPaignation cardData={paginationData} /> {/* paginationData is of type CardData[] */}
-
+        
+        
         <SocialMediaLinks 
-          github_link={socialLinks[0]}
-          linkedin_link={socialLinks[1]}
-          twitter_link={socialLinks[2]}
-          leetcode_link={socialLinks[3]}
-          gitlab_link={socialLinks[4]}
-          kaggle_link={socialLinks[5]}
-          medium_link={socialLinks[6]}
+        github_link = {socialLinks[0] }
+        github_icon= "icons/github-color.svg"
+        linkedin_icon="icons/linkedin-color.svg"
+        gitlab_icon="icons/gitlab-color.svg"
+        leetcode_icon="icons/leetcode-color.svg"
+        kaggle_icon="icons/kaggle-color.svg"
+        medium_icon=""
+        twitter_icon=""
+        linkedin_link= {socialLinks[1]}
+        twitter_link=""
+        leetcode_link={socialLinks[3]}
+        gitlab_link={socialLinks[4]}  
+        kaggle_link={socialLinks[5]}
+        medium_link=""
         />
 
         <ButtonBar button_text="Download Resume" link={resume_link} />
