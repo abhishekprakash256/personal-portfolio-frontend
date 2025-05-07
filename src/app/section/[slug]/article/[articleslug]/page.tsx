@@ -26,8 +26,8 @@ const resume_link : string = "/files/resume.pdf";
 
 
 // Fetch Article Data
-async function getArticleData(slug: string, articleslug: string) {
-  const url = `http://127.0.0.1:5001/section/${slug}/article/${articleslug}`;
+async function getArticleData(slug: string, articleslug: string): Promise<ArticleData | null> {
+  const url = `http://127.0.0.1:5001/blog/section/${slug}/article/${articleslug}`;
 
   console.log("Fetching article data from:", url);
 
@@ -39,16 +39,10 @@ async function getArticleData(slug: string, articleslug: string) {
       throw new Error(`Failed to fetch article data: ${res.status}`);
     }
 
-    const text = await res.text();
-    //console.log("Raw API Response:", text);
+    const json = await res.json();
 
-    if (!text.trim()) {
-      console.error("Empty response received from API");
-      throw new Error("Received empty response from API");
-    }
-
-    const data = JSON.parse(text) as ArticleData;
-    return data;
+    // ✅ Only return the `data` part
+    return json.data || null;
   } catch (error) {
     console.error("Error fetching article data:", error);
     return null;
@@ -57,7 +51,7 @@ async function getArticleData(slug: string, articleslug: string) {
 
 // Fetch Pagination Data 
 async function getPaginationData(): Promise<CardData[]> {
-  const url = "http://127.0.0.1:5001/section/explore";
+  const url = "http://127.0.0.1:5001/blog/section/explore";
 
   console.log("Fetching pagination data from:", url);
 
@@ -69,22 +63,24 @@ async function getPaginationData(): Promise<CardData[]> {
       throw new Error("Failed to fetch pagination data");
     }
 
-    return res.json();
+    const json = await res.json();
+
+    // ✅ Only return the `data` part
+    return json.data || [];
   } catch (error) {
     console.error("Error fetching pagination data:", error);
     return [];
   }
 }
 
-// Main Article Component
-export default async function Article({ params }: { params: { slug: string, articleslug: string } }) {
-  //console.log("Params received:", params);
 
+
+// Main Article Component
+export default async function Article({ params }: { params: Promise<{ slug: string, articleslug: string }> }) {
+  // Await the params as it is now a Promise
   const { slug, articleslug } = await params;
 
-  //console.log("Extracted Slug:", slug);
-  //console.log("Extracted Article Slug:", articleslug);
-
+  // Fetch the article and pagination data
   const articleData = await getArticleData(slug, articleslug);
   const paginationData = await getPaginationData();
 

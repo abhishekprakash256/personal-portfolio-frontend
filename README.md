@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## Install dependicies
+
+```bash
+npm install
+```
+
+## Server runs in 
+
+http://localhost:3000
+
 ## Getting Started
 
 First, run the development server:
@@ -13,6 +24,26 @@ pnpm dev
 # or
 bun dev
 ```
+
+## To run 
+
+- docker mongo service is needed
+- mongo access is needed 
+- api gateway service is needed
+
+
+
+## Note 
+
+before pushing the code for production server use build
+
+```bash 
+
+npm run build 
+
+```
+
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
