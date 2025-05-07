@@ -6,7 +6,7 @@ also display a page if any result is not avaialble as well
 
 //'use client' ; 
 import { NotFound,ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';   
 import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 //import NotFound from "./NotFound";
 
@@ -29,13 +29,12 @@ const socialLinks = [
 
 
 
-
-  
-  async function getSearchData(slug: string): Promise<CardData[]> {  
-
-    //serarch url modified
+  async function getSearchData(slug: string): Promise<CardData[]> {
     try {
-        const res = await fetch(`http://127.0.0.1:5001/search/${slug}`, {
+        const url = new URL("http://127.0.0.1:5001/search");
+        url.searchParams.append("keyword", slug);
+
+        const res = await fetch(url.toString(), {
             cache: "no-store",
         });
 
@@ -43,37 +42,42 @@ const socialLinks = [
 
         if (!res.ok) {
             console.warn(`Server returned error: ${res.status} - ${res.statusText}`);
-            return []; // Avoid throwing errors, return empty results
-        }
-
-        const text = await res.text();
-        if (!text) {
-            console.warn("Empty response body received.");
             return [];
         }
 
-        return JSON.parse(text); // Safely parse JSON
+        const json = await res.json();
+
+        if (!json || !json.data) {
+            console.warn("No data field found in the response.");
+            return [];
+        }
+
+        return json.data;
     } catch (error) {
         console.error("Network or JSON parsing error:", error);
-        return []; // Return empty array on failure
+        return [];
     }
 }
 
 
+
+
+
+
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch(`http://127.0.0.1:5001/section/explore`, {
-
-    
+  const res = await fetch(`http://127.0.0.1:5001/blog/section/explore`, {
     cache: "no-store",
-
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch pagination data");
   }
 
-  return res.json();
+  const json = await res.json();
+
+  // ✅ Only return the `data` field
+  return json.data || [];  
 }
 
 
@@ -86,42 +90,36 @@ const capitalizeFirstLetter = (str: string) => {
 
   
 
-  export default async function SearchPage({ params }: { params: { slug: string } }) {
-    const { slug } = await params; 
+  export default async function SearchPage({ params }: { params: Promise<{ slug: string }> }) {
     let searchPageData: CardData[] = [];
-    let paginationData : CardData[] = await getPaginationData(); 
+    let paginationData: CardData[] = [];
 
     try {
+        const { slug } = await params; // Awaiting the params as it is a Promise
+        paginationData = await getPaginationData();
         searchPageData = await getSearchData(slug);
     } catch (error) {
-        console.error("Error fetching search data:", error);
+        console.error("Error fetching data:", error);
     }
 
     return (
         <div>
             <NavBar />
             <CustomBody>
-                
-
                 {searchPageData.length === 0 ? (
-
-                  <>
-                    <NotFound />
-                    <HeadingBar title="Explore More" />
-                    < CardsPaignation cardData= {paginationData} />
-                    
-                    </>
-                
-                  ) : (
-
                     <>
-                    <HeadingBar title="Results" />
-                    <CardsPaignation cardData={searchPageData} />
-                    <HeadingBar title="Explore More" />
-                    < CardsPaignation cardData= {paginationData} />
+                        <NotFound />
+                        <HeadingBar title="Explore More" />
+                        <CardsPaignation cardData={paginationData} />
+                    </>
+                ) : (
+                    <>
+                        <HeadingBar title="Results" />
+                        <CardsPaignation cardData={searchPageData} />
+                        <HeadingBar title="Explore More" />
+                        <CardsPaignation cardData={paginationData} />
                     </>
                 )}
-
                 <SocialMediaLinks 
                     github_link="https://github.com/abhishekprakash256"
                     linkedin_link="https://www.linkedin.com/in/abhishek256/"
@@ -131,12 +129,10 @@ const capitalizeFirstLetter = (str: string) => {
                     kaggle_link="https://www.kaggle.com/abhishek256"
                     medium_link=""
                 />
-
-                <ButtonBar button_text="Download Resume" link= {resume_link } />
+                <ButtonBar button_text="Download Resume" link={resume_link} />
                 <SpaceBlock />
             </CustomBody>
             <Footer />
         </div>
     );
 }
-
