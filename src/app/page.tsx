@@ -7,7 +7,6 @@ import {Button, Col, Row} from 'react-bootstrap';
 //import { useRouter } from 'next/navigation';
 
 
-
 // app/page.tsx (Main Page)
 import Link from 'next/link';
 
@@ -147,11 +146,12 @@ export default function Home() {
 
 <SocialMediaLinks 
 github_link = {socialLinks[0] }
-github_icon= "icons/github-color.svg"
-linkedin_icon="icons/linkedin-color.svg"
-gitlab_icon="icons/gitlab-color.svg"
-leetcode_icon="icons/leetcode-color.svg"
-kaggle_icon="icons/kaggle-color.svg"
+//github_icon =  "icons/github-color.svg"
+github_icon=  {"/icons/github-color.svg" }
+linkedin_icon= {"/icons/linkedin-color.svg" }
+gitlab_icon={"/icons/gitlab-color.svg" }
+leetcode_icon="/icons/leetcode-color.svg"
+kaggle_icon="/icons/kaggle-color.svg"
 medium_icon=""
 twitter_icon=""
 linkedin_link= {socialLinks[1]}
@@ -174,11 +174,11 @@ medium_link=""
 
 <SocialMediaLinks 
 github_link = {socialLinks[0] }
-github_icon= "icons/github-color.svg"
-linkedin_icon="icons/linkedin-color.svg"
-gitlab_icon="icons/gitlab-color.svg"
-leetcode_icon="icons/leetcode-color.svg"
-kaggle_icon="icons/kaggle-color.svg"
+github_icon= "/icons/github-color.svg"
+linkedin_icon="/icons/linkedin-color.svg"
+gitlab_icon="/icons/gitlab-color.svg"
+leetcode_icon="/icons/leetcode-color.svg"
+kaggle_icon="/icons/kaggle-color.svg"
 medium_icon=""
 twitter_icon=""
 linkedin_link= {socialLinks[1]}
