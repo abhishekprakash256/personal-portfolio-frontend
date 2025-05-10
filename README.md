@@ -37,6 +37,21 @@ bun dev
 
 before pushing the code for production server use build
 
+for the build sometinme remove the cache of the app and clean build that can cause errors too 
+
+commands -- 
+
+```bash
+rm -rf .next
+
+rm -rf node_modules
+rm package-lock.json  # or yarn.lock or pnpm-lock.yaml depending on what you use
+npm install
+
+
+```
+
+
 ```bash 
 
 npm run build 
