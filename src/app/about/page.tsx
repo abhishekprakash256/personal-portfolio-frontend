@@ -129,13 +129,14 @@ return (
 
 <SocialMediaLinks 
 github_link = {socialLinks[0] }
-github_icon= "icons/github-color.svg"
-linkedin_icon="icons/linkedin-color.svg"
-gitlab_icon="icons/gitlab-color.svg"
-leetcode_icon="icons/leetcode-color.svg"
-kaggle_icon="icons/kaggle-color.svg"
-medium_icon=""
-twitter_icon=""
+//github_icon =  "icons/github-color.svg"
+//github_icon=  {"/icons/github-color.svg" }
+//linkedin_icon= {"/icons/linkedin-color.svg" }
+//gitlab_icon={"/icons/gitlab-color.svg" }
+//leetcode_icon="/icons/leetcode-color.svg"
+//kaggle_icon="/icons/kaggle-color.svg"
+//medium_icon=""
+//twitter_icon=""
 linkedin_link= {socialLinks[1]}
 twitter_link=""
 leetcode_link={socialLinks[3]}

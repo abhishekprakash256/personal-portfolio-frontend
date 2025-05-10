@@ -118,19 +118,19 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 
         <SocialMediaLinks
           github_link={github_url}
-          github_icon= "../../../icons/github-color.svg"
+
           linkedin_link={linkedin_url}
-          linkedin_icon = "../../../icons/linkedin-color.svg" 
+          
           twitter_link={twitter_url}
-          twitter_icon="../../../icons/twitter-color.svg"
+         
           leetcode_link={leetcode_url}
-          leetcode_icon="../../../icons/leetcode-color.svg"
+         
           gitlab_link={gitlab_url}
-          gitlab_icon="../../../icons/gitlab-color.svg"
+          
           kaggle_link={kaggle_url}
-          kaggle_icon="../../../icons/kaggle-color.svg"
+          
           medium_link={medium_url}
-          medium_icon="../../../icons/medium-color.svg"
+       
         />
 
         <ButtonBar button_text="Demo" link={demo_link} />
@@ -143,13 +143,6 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 
           <SocialMediaLinks 
           github_link = {socialLinks[0] }
-          github_icon= "../../../icons/github-color.svg"
-          linkedin_icon="../../../icons/linkedin-color.svg"
-          gitlab_icon="../../../icons/gitlab-color.svg"
-          leetcode_icon="../../../icons/leetcode-color.svg"
-          kaggle_icon="../../../icons/kaggle-color.svg"
-          medium_icon=""
-          twitter_icon=""
           linkedin_link= {socialLinks[1]}
           twitter_link=""
           leetcode_link={socialLinks[3]}
