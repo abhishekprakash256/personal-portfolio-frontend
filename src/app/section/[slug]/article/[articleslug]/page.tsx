@@ -3,7 +3,7 @@ The page is used to render article
 */
 
 import { 
-  ButtonBar, CardLists, AboutPic, CardsPaignation, NavBar, Footer, ArticleImage, 
+  ButtonBar, AboutPic, CardsPaignation, NavBar, Footer, ArticleImage, 
   SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar, CustomBody, More 
 } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';

@@ -1,6 +1,6 @@
 
 //'use client';
-import {ButtonBar , CardLists, AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
+import {ButtonBar , AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/styles.css';
 import {Button, Col, Row} from 'react-bootstrap';

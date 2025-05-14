@@ -39,7 +39,7 @@ before pushing the code for production server use build
 
 for the build sometinme remove the cache of the app and clean build that can cause errors too 
 
-commands -- 
+commands --   
 
 ```bash
 rm -rf .next
