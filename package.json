@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "front-end-component-kit": "github:abhishekprakash256/front-end-component-kit",
+    "front-end-component-kit": "github:abhishekprakash256/front-end-component-kit#feature/blog-url",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
