@@ -7,7 +7,7 @@ import {
   SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar, CustomBody, More 
 } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CardData, ArticleData, SectionData } from "../../../../types"; 
+import { CardData, ArticleData, SectionData } from "../../../../../types"; 
 
 const socialLinks = [
   "https://github.com/abhishekprakash256",

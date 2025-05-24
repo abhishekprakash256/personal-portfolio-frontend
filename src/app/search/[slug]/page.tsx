@@ -14,7 +14,7 @@ import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 
 //import { useRouter } from 'next/navigation';
 
-const socialLinks = [
+const socialLinks = [     
     "https://github.com/abhishekprakash256",
     "https://www.linkedin.com/in/abhishek256/",
     "",
