@@ -171,19 +171,19 @@ medium_link=""
 
 <CardsPaignation cardData={tech_data} />
 
-<More more_link= "/section/tech" /> 
+<More more_link= "/blog/section/tech" /> 
 
 <HeadingBar title={"Projects"}/> 
 
 <CardsPaignation cardData={project_data} />
 
-<More more_link= "/section/project" /> 
+<More more_link= "/blog/section/project" /> 
 
 <HeadingBar title={"Life"}/> 
 
 <CardsPaignation cardData={life_data} />
 
-<More more_link= "/section/life"/> 
+<More more_link= "/blog/section/life"/> 
 
 <ButtonBar button_text = "Download Resume" link= {resume_link} />
 
