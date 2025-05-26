@@ -47,9 +47,6 @@ async function getPaginationData(): Promise<CardData[]> {
 
 
 
-
-
-
 export default async function tinyurl() {
     let paginationData: CardData[] = [];
 
@@ -59,6 +56,50 @@ try {
 } catch (error) {
     console.error("Error fetching data:", error);
 }
+
+
+
+// make the data transfer to the backend and get the url
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const url = formData.get("url") as string;
+
+    //console.log("Submitted URL:", url);
+    // Here you can add the logic to send the URL to your backend
+
+    fetch('http://localhost:5050/tu/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }
+    )
+    .then(data => {
+        console.log('Success:', data);
+        // Handle success, e.g., show a success message or redirect
+    }
+    )
+    .catch((error) => {
+        console.error('Error:', error);
+        // Handle error, e.g., show an error message
+    }
+    );
+
+}
+
+
+
+
+
 
 
 return (
@@ -73,11 +114,11 @@ return (
 
         <HeadingBar title={"Enter the url to generate tinyurl"}/>
 
+        
 
-        {/*
-            The tiny url submission form
-        */}
 
+
+    
 
             <HeadingBar title={"Explore"}/>
 
