@@ -74,6 +74,11 @@ return (
         <HeadingBar title={"Enter the url to generate tinyurl"}/>
 
 
+        {/*
+            The tiny url submission form
+        */}
+
+
             <HeadingBar title={"Explore"}/>
 
 
@@ -82,19 +87,17 @@ return (
                 <CardsPaignation cardData={paginationData} />
 
 
-            <ButtonBar button_text = "Download Resume" link= {resume_link} />
+                <SocialMediaLinks 
+                github_link = {socialLinks[0] }
+                linkedin_link= {socialLinks[1]}
+                twitter_link=""
+                leetcode_link={socialLinks[3]}
+                gitlab_link={socialLinks[4]}  
+                kaggle_link={socialLinks[5]}
+                medium_link=""
+                />
 
-
-        <SocialMediaLinks 
-        github_link = {socialLinks[0] }
-        linkedin_link= {socialLinks[1]}
-        twitter_link=""
-        leetcode_link={socialLinks[3]}
-        gitlab_link={socialLinks[4]}  
-        kaggle_link={socialLinks[5]}
-        medium_link=""
-        />
-
+        <ButtonBar button_text = "Download Resume" link= {resume_link} />
 
         <SpaceBlock></SpaceBlock>  { /*SpaceBlock component to create a space between the social media links and the footer */ }
 
