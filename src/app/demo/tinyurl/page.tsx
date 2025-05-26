@@ -8,6 +8,7 @@ import {ButtonBar ,  AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, Sp
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Row} from 'react-bootstrap';
 import '../../styles/styles.css';
+import {CardData, ArticleData, SectionData } from "../../types"; // Import types
 //import { useRouter } from 'next/navigation';
 
 
@@ -25,9 +26,40 @@ const socialLinks = [
 const resume_link : string = "/files/resume.pdf";
 
 
-export default function tinyurl() {
 
- // const router = useRouter();
+// This is an async function inside the component file, which is fine in the app directory
+async function getPaginationData(): Promise<CardData[]> {
+    const res = await fetch(`http://127.0.0.1:5001/blog/section/explore`, {
+      cache: "no-store",
+    });
+  
+    if (!res.ok) {
+      throw new Error("Failed to fetch pagination data");
+    }
+  
+    const json = await res.json();
+  
+    //  Only return the `data` field
+    return json.data || [];  
+  }
+
+
+
+
+
+
+
+
+export default async function tinyurl() {
+    let paginationData: CardData[] = [];
+
+try {
+    paginationData = await getPaginationData();
+
+} catch (error) {
+    console.error("Error fetching data:", error);
+}
+
 
 return (
     
@@ -37,38 +69,34 @@ return (
 
 <CustomBody>
 
-<HeadingBar title={"Tinyurl sevice"}/>
+        <HeadingBar title={"Tinyurl sevice"}/>
 
-<HeadingBar title={"Tech"}/> 
-
-
-<More more_link= "/blog/section/tech" /> 
-
-<ButtonBar button_text = "Submit" link= {resume_link} />
+        <HeadingBar title={"Enter the url to generate tinyurl"}/>
 
 
-<ButtonBar button_text = "Download Resume" link= {resume_link} />
-
-<SocialMediaLinks 
-github_link = {socialLinks[0] }
-//github_icon =  "icons/github-color.svg"
-//github_icon=  {"/icons/github-color.svg" }
-//linkedin_icon= {"/icons/linkedin-color.svg" }
-//gitlab_icon={"/icons/gitlab-color.svg" }
-//leetcode_icon="/icons/leetcode-color.svg"
-//kaggle_icon="/icons/kaggle-color.svg"
-//medium_icon=""
-//twitter_icon=""
-linkedin_link= {socialLinks[1]}
-twitter_link=""
-leetcode_link={socialLinks[3]}
-gitlab_link={socialLinks[4]}  
-kaggle_link={socialLinks[5]}
-medium_link=""
-/>
+            <HeadingBar title={"Explore"}/>
 
 
-<SpaceBlock></SpaceBlock>  { /*SpaceBlock component to create a space between the social media links and the footer */ }
+                <ButtonBar button_text = "Submit" link= {resume_link} />
+
+                <CardsPaignation cardData={paginationData} />
+
+
+            <ButtonBar button_text = "Download Resume" link= {resume_link} />
+
+
+        <SocialMediaLinks 
+        github_link = {socialLinks[0] }
+        linkedin_link= {socialLinks[1]}
+        twitter_link=""
+        leetcode_link={socialLinks[3]}
+        gitlab_link={socialLinks[4]}  
+        kaggle_link={socialLinks[5]}
+        medium_link=""
+        />
+
+
+        <SpaceBlock></SpaceBlock>  { /*SpaceBlock component to create a space between the social media links and the footer */ }
 
 </CustomBody>
 
