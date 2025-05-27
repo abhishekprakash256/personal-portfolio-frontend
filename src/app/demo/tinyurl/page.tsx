@@ -121,7 +121,6 @@ return (
 
                 <CardsPaignation cardData={paginationData} />
 
-
                 <SocialMediaLinks 
                 github_link = {socialLinks[0] }
                 linkedin_link= {socialLinks[1]}
@@ -131,6 +130,7 @@ return (
                 kaggle_link={socialLinks[5]}
                 medium_link=""
                 />
+
 
         <ButtonBar button_text = "Download Resume" link= {resume_link} />
 
