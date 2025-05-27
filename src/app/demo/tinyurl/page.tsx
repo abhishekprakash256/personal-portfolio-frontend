@@ -23,6 +23,7 @@ const socialLinks = [
     "https://www.kaggle.com/abhishek256",
     "",
   ];
+
 const resume_link : string = "/files/resume.pdf";
 
 
@@ -41,21 +42,8 @@ async function getPaginationData(): Promise<CardData[]> {
   
     //  Only return the `data` field
     return json.data || [];  
-  }
-
-
-
-
-
-export default async function tinyurl() {
-    let paginationData: CardData[] = [];
-
-try {
-    paginationData = await getPaginationData();
-
-} catch (error) {
-    console.error("Error fetching data:", error);
 }
+
 
 
 
@@ -102,6 +90,17 @@ function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 
 
 
+export default async function tinyurl() {
+    let paginationData: CardData[] = [];
+
+try {
+    paginationData = await getPaginationData();
+
+} catch (error) {
+    console.error("Error fetching data:", error);
+}
+
+
 return (
     
 <div>
@@ -114,11 +113,6 @@ return (
 
         <HeadingBar title={"Enter the url to generate tinyurl"}/>
 
-        
-
-
-
-    
 
             <HeadingBar title={"Explore"}/>
 
