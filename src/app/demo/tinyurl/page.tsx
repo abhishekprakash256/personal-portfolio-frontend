@@ -3,6 +3,7 @@ The page is used †o render the tinyurl page, which is a simple page that redir
 */
 
 
+/*
 //'use client';
 import {ButtonBar ,  AboutPic, CardsPaignation , NavBar, Footer,ArticleImage, SpaceBlock, SocialMediaLinks, Para, MarkDown, HeadingBar,CustomBody, More } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -23,6 +24,10 @@ const socialLinks = [
     "https://www.kaggle.com/abhishek256",
     "",
   ];
+
+
+
+
 
 const resume_link : string = "/files/resume.pdf";
 
@@ -134,7 +139,7 @@ return (
 
         <ButtonBar button_text = "Download Resume" link= {resume_link} />
 
-        <SpaceBlock></SpaceBlock>  { /*SpaceBlock component to create a space between the social media links and the footer */ }
+        <SpaceBlock></SpaceBlock>  
 
 </CustomBody>
 
@@ -145,3 +150,6 @@ return (
 
   );
 }
+
+*/
+
