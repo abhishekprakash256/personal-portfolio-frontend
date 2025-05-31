@@ -3,11 +3,12 @@ The testiing page for the url fetch requets using frtehc api
 */
 
 
-//'use client';   // the use of client is with react componenent
-import { NavBar, HeadingBar, CustomBody } from "front-end-component-kit";
+'use client';   // the use of client is with react componenent
+import { NavBar, HeadingBar, CustomBody, ButtonBar } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import { useState, useEffect } from 'react';
 
+
+import { useState} from 'react';
 
 
 
@@ -15,6 +16,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 async function submitData()
 
 {
+
+    
     const dummy_data = { url: "https://www.google.com/" }
 
     try  {
@@ -49,6 +52,8 @@ async function submitData()
     catch(error) {
 
       console.error('Error:', error);
+
+      return null
    }
 }
 
@@ -58,24 +63,31 @@ async function submitData()
 
 
 
-export default async function()
+export default function testurl()
 {
-    const data = await fetch('https://api.vercel.app/blog') ; 
-    const posts = await data.json() ; 
-    const data_url = await submitData() ; 
+    //const [posts, setPosts] = useState([])
+    const [tinyUrl, setTinyUrl] = useState('')
+
+  // Fetch blog posts on component mount
+
+
+    // Handle tiny URL generation on button click
+    const handleGenerateTinyUrl = async () => {
+        const data = await submitData()
+        if (data && data.tinyurl) {
+          setTinyUrl(data.tinyurl)
+        }
+      }
+
+    
     
     return (
 
         <div>
-      
-        <h1>Tiny URL: <a href={data_url}>{data_url}</a></h1>
-      <ul>
-        
 
-        {posts.map((post : any) => (
-          <li key={post.id}>{post.title}</li>
-        ))}
-      </ul>
+        <button onClick={handleGenerateTinyUrl}>Generate Tiny URL</button>
+      {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
+
       </div>
     )
 }
