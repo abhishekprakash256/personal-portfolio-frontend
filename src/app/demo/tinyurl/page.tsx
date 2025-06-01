@@ -5,8 +5,11 @@ The testiing page for the url fetch requets using frtehc api
 
 'use client';   // the use of client is with react componenent
 import { NavBar, HeadingBar, CustomBody, ButtonBar , SpaceBlock, Footer } from "front-end-component-kit";
-import { Container, Row, Col } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Button, Form } from "react-bootstrap" ;
+import 'bootstrap/dist/css/bootstrap.min.css' ;
+import "./tinyurl.css";
+import "./styles.css";
+
 
 
 
@@ -61,6 +64,8 @@ export default function TinyUrlGenerator() {
 
     <SpaceBlock></SpaceBlock> 
 
+    <Container>
+
     <Row className='text-center'>
 
     <Col>
@@ -69,29 +74,45 @@ export default function TinyUrlGenerator() {
 
     <Col >
 
-      <form onSubmit={handleGenerateTinyUrl}>
+      <Form onSubmit={handleGenerateTinyUrl}>
         <input
           type="text"
           name="url"
+          className="me-2 custom-border form-control custom-placeholder"
+          aria-label="Search"
           value={inputUrl}
           onChange={(e) => setInputUrl(e.target.value)}
           placeholder="Enter a long URL"
         />
        
-      </form>
+      </Form>
 
-      <SpaceBlock></SpaceBlock> 
 
-      <button type="submit">Generate Tiny URL</button>
-      {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
-
+    
       </Col>
 
       <Col>
 
       </Col>
 
+      </Row >
+
+      </Container>
+
+      <Container>
+
+      <Row className='rounded background-color-body mt-3 p-2'>
+      <Col className="text-center">
+
+      <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateTinyUrl}>Generate Tiny URL</Button>
+
+
+      </Col>
+
       </Row>
+      {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
+
+      </Container>
 
 
 

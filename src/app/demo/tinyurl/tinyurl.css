@@ -1,0 +1,45 @@
+
+.button-custom-color {
+    background-color: var(--light-blue);
+    border-color:var(--light-blue);
+    color: var(--button-text-color) !important;
+    transition: none; /* Prevent animation during state changes */
+}
+
+.button-custom-color:hover {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--button-text-hover-color) !important ; /* Font color on hover */
+}
+
+/* Prevent color change on click */
+.button-custom-color:active,
+.button-custom-color:focus {
+    background-color: var(--button-hover) !important; /* Same as hover */
+    border-color:var(--button-hover) !important;
+    color: var(--button-text-hover-color) !important;
+    /* Remove focus/active shadow */
+    /* Remove focus outline */
+}
+
+
+.form-control{
+              
+    background-color : var(--form-background-color);
+    color: var(--input-focus-text-color);
+  
+  }
+  
+  .custom-placeholder::placeholder{
+  
+    color: var( --text-color)
+  
+  }
+  
+  
+  
+  .form-control:focus {
+    background-color: var(--input-focus-background-color);
+    color: var(--input-focus-text-color);
+  
+  } 
