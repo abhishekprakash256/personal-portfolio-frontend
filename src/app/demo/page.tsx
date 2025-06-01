@@ -4,95 +4,82 @@ The testiing page for the url fetch requets using frtehc api
 
 
 'use client';   // the use of client is with react componenent
-import { NavBar, HeadingBar, CustomBody, ButtonBar } from "front-end-component-kit";
+import { NavBar, HeadingBar, CustomBody, ButtonBar , SpaceBlock, Footer } from "front-end-component-kit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-import { useState} from 'react';
 
+import { useState } from 'react'
 
-
-
-async function submitData()
-
-{
-
-    
-    const dummy_data = { url: "https://www.google.com/" }
-
-    try  {
-
-        const response = await fetch("http://localhost:5050/tu/submit" , 
-        {
-            method : 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-            },
-            
-            body: JSON.stringify(dummy_data) ,
-
-            
-        });
-
+// 🔹 Decoupled function for submitting URL to backend
+async function submitTinyUrl(url : string) {
+  try {
+    const response = await fetch('http://localhost:5050/tu/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    });
 
     if (!response.ok) {
-
-        throw new Error(`HTTP error status", ${response.ok}`)
-
+      throw new Error('Failed to generate tiny URL');
     }
 
-    const responseData = await response.json();
+    const data = await response.json();
+    return data.tinyurl;
 
-    console.log('Success:', responseData); 
-
-    return responseData ; 
-
-   }
-
-    catch(error) {
-
-      console.error('Error:', error);
-
-      return null
-   }
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
 }
 
 
 
+export default function TinyUrlGenerator() {
+  const [inputUrl, setInputUrl] = useState('');
+  const [tinyUrl, setTinyUrl] = useState('');
 
+  const handleGenerateTinyUrl = async (e : any) => {
+    e.preventDefault();
+    const result = await submitTinyUrl(inputUrl);
+    if (result) {
+      setTinyUrl(result);
+    }
+  };
 
-
-
-export default function testurl()
-{
-    //const [posts, setPosts] = useState([])
-    const [tinyUrl, setTinyUrl] = useState('')
-
-
-    // Handle tiny URL generation on button click
-    const handleGenerateTinyUrl = async () => {
-        const data = await submitData()
-        if (data && data.tinyurl) {
-          setTinyUrl(data.tinyurl)
-        }
-      }
-
+  return (
     
-    
-    return (
+    <div>
+    <NavBar></NavBar>
 
-        <div>
+    <CustomBody>
 
-        <ButtonBar button_text= "submit" link="" ></ButtonBar>
+    <HeadingBar title={"Enter the url to generate tinyurl"}/>
 
-        <button onClick={handleGenerateTinyUrl}>Generate Tiny URL</button>
+    <SpaceBlock></SpaceBlock>  
+
+      <form onSubmit={handleGenerateTinyUrl}>
+        <input
+          type="text"
+          name="url"
+          value={inputUrl}
+          onChange={(e) => setInputUrl(e.target.value)}
+          placeholder="Enter a long URL"
+        />
+        <button type="submit">Generate Tiny URL</button>
+      </form>
+
+
       {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
 
-      </div>
-    )
+      </CustomBody>
+
+      <Footer></Footer>
+    </div>
+  );
 }
-
-
 
 
 
