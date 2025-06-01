@@ -68,8 +68,6 @@ export default function testurl()
     //const [posts, setPosts] = useState([])
     const [tinyUrl, setTinyUrl] = useState('')
 
-  // Fetch blog posts on component mount
-
 
     // Handle tiny URL generation on button click
     const handleGenerateTinyUrl = async () => {
@@ -84,6 +82,8 @@ export default function testurl()
     return (
 
         <div>
+
+        <ButtonBar button_text= "submit" link="" ></ButtonBar>
 
         <button onClick={handleGenerateTinyUrl}>Generate Tiny URL</button>
       {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
