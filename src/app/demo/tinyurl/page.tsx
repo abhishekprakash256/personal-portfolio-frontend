@@ -4,12 +4,11 @@ The testiing page for the url fetch requets using frtehc api
 
 
 'use client';   // the use of client is with react componenent
+import 'bootstrap/dist/css/bootstrap.min.css' ;
 import { NavBar, HeadingBar, CustomBody, ButtonBar , SpaceBlock, Footer } from "front-end-component-kit";
 import { Container, Row, Col, Button, Form } from "react-bootstrap" ;
-import 'bootstrap/dist/css/bootstrap.min.css' ;
-import "./tinyurl.css";
-import "./styles.css";
-
+//import "./tinyurl.css";
+//import "./styles.css";
 
 
 
