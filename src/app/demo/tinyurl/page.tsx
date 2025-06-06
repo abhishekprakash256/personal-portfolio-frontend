@@ -73,6 +73,7 @@ export default function TinyUrlGenerator() {
       setCopyButtonDisabled(true);  // Disable the copy button
       setSubmitButtonDisabled(false);  // Disable the submit button
       setError('');  // Clear any previous error
+      
     }
   };
 
@@ -86,6 +87,7 @@ export default function TinyUrlGenerator() {
     setShowResetButton(false);  // Hide the reset button
     setSubmitButtonDisabled(true);  // Enable the submit button
     setCopyButtonDisabled(false);  // Enable the copy button
+    setShowAlert(false);  // Hide the alert
   };
 
 const copyUrl = () => {
@@ -93,7 +95,7 @@ const copyUrl = () => {
     navigator.clipboard.writeText(tinyUrl)
       .then(() => {
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 2000); // Auto-hide after 2s
+        //setTimeout(() => setShowAlert(false), 2000); // Auto-hide after 2s
       });
   }
 };
@@ -163,8 +165,19 @@ const copyUrl = () => {
 
       )}
 
+      </Container>
 
-      {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
+
+      {tinyUrl 
+
+      && (
+
+       <HeadingBar title={tinyUrl} />
+      
+      
+      )}
+
+      <Container>
 
 
     { copyButtonDisabled && (
