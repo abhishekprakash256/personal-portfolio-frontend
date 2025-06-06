@@ -43,14 +43,61 @@ async function submitTinyUrl(url : string) {
 export default function TinyUrlGenerator() {
   const [inputUrl, setInputUrl] = useState('');
   const [tinyUrl, setTinyUrl] = useState('');
+  const [error, setError] = useState('');
+
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
+  // State to manage the visibility of the reset button
+  const [showResetButton, setShowResetButton] = useState(false);
+
+  const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+
+
 
   const handleGenerateTinyUrl = async (e : any) => {
     e.preventDefault();
+
+    // validate the input URL for HTTP or HTTPS
+    if (!inputUrl || !/^https?:\/\//i.test(inputUrl)) {
+      //alert('Please enter a valid URL starting with http:// or https://');
+      setError('Please enter a valid URL starting with http:// or https://');
+      return;
+    }
+
     const result = await submitTinyUrl(inputUrl);
     if (result) {
       setTinyUrl(result);
+      setInputUrl('');  // Clear the input field after successful submission
+      setShowResetButton(true);  // Show the reset button
+      setCopyButtonDisabled(true);  // Disable the copy button
+      setSubmitButtonDisabled(false);  // Disable the submit button
+      setError('');  // Clear any previous error
     }
   };
+
+  // Function to reset the form
+  // and clear the tiny URL
+  // and error message
+  const resetForm = () => {
+    setInputUrl('');
+    setTinyUrl('');
+    setError('');
+    setShowResetButton(false);  // Hide the reset button
+    setSubmitButtonDisabled(true);  // Enable the submit button
+    setCopyButtonDisabled(false);  // Enable the copy button
+  };
+
+const copyUrl = () => {
+  if (tinyUrl) {
+    navigator.clipboard.writeText(tinyUrl)
+      .then(() => {
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 2000); // Auto-hide after 2s
+      });
+  }
+};
+
 
   return (
     
@@ -87,6 +134,8 @@ export default function TinyUrlGenerator() {
       </Form>
 
 
+       {error && <p className="text-danger bold">{error}</p>}
+
     
       </Col>
 
@@ -100,16 +149,58 @@ export default function TinyUrlGenerator() {
 
       <Container>
 
+
+      {submitButtonDisabled && (
       <Row className='rounded background-color-body mt-3 p-2'>
       <Col className="text-center">
 
       <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateTinyUrl}>Generate Tiny URL</Button>
 
-
+    
       </Col>
 
       </Row>
+
+      )}
+
+
       {tinyUrl && <h1>Tiny URL: {tinyUrl}</h1>}
+
+
+    { copyButtonDisabled && (
+      <Row className='rounded background-color-body mt-3 p-2'>
+      <Col className="text-center">
+
+    
+      <Button type="submit" className="button-custom-color m-1" onClick={copyUrl}>Copy URL</Button> 
+      
+    
+      </Col>
+
+      </Row> 
+    )}
+
+    {showAlert && (
+  <div className="alert alert-success text-center mt-2" role="alert">
+    ✅ Tiny URL copied to clipboard!
+  </div>
+    )}
+
+
+
+     { showResetButton && (
+      <Row className='rounded background-color-body mt-3 p-2'>
+      <Col className="text-center">
+
+    
+      <Button type="submit" className="button-custom-color m-1" onClick={resetForm}>Create Another URL</Button> 
+      
+    
+      </Col>
+
+      </Row> 
+    )}
+    
 
       </Container>
 
