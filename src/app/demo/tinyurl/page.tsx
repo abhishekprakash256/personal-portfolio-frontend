@@ -180,14 +180,18 @@ const copyUrl = () => {
       </Row> 
     )}
 
-    {showAlert && (
-  <div className="alert alert-success text-center mt-2" role="alert">
-    ✅ Tiny URL copied to clipboard!
-  </div>
+    </Container>
+
+      {showAlert && (
+    <div className="mx-0 my-2">
+      <HeadingBar title={"URL copied to clipboard!"} />
+    </div>
+
     )}
 
 
 
+      <Container>
      { showResetButton && (
       <Row className='rounded background-color-body mt-3 p-2'>
       <Col className="text-center">
