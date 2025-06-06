@@ -7,6 +7,9 @@ The testiing page for the url fetch requets using frtehc api
 import 'bootstrap/dist/css/bootstrap.min.css' ;
 import { NavBar, HeadingBar, CustomBody, ButtonBar , SpaceBlock, Footer } from "front-end-component-kit";
 import { Container, Row, Col, Button, Form } from "react-bootstrap" ;
+import QRCode from "react-qr-code";
+
+
 //import "./tinyurl.css";
 //import "./styles.css";
 
@@ -108,11 +111,11 @@ const copyUrl = () => {
 
     <CustomBody>
 
-    <HeadingBar title={"Enter the url to generate tinyurl"}/>
+    <HeadingBar title={"Enter URL to generate tinyurl"}/>
 
     <SpaceBlock></SpaceBlock> 
 
-    <Container>
+   
 
     <Row className='text-center'>
 
@@ -120,7 +123,7 @@ const copyUrl = () => {
 
     </Col>
 
-    <Col >
+    <Col xs={12} md={4} >
 
       <Form onSubmit={handleGenerateTinyUrl}>
         <input
@@ -130,13 +133,21 @@ const copyUrl = () => {
           aria-label="Search"
           value={inputUrl}
           onChange={(e) => setInputUrl(e.target.value)}
-          placeholder="Enter a long URL"
+          placeholder="Enter the long URL"
         />
        
       </Form>
 
 
-       {error && <p className="text-danger bold">{error}</p>}
+       {error && 
+       
+       (
+        <>
+       <SpaceBlock></SpaceBlock>
+       <p className="text-danger bold">{error}</p>
+       </>
+       )
+       }
 
     
       </Col>
@@ -147,7 +158,7 @@ const copyUrl = () => {
 
       </Row >
 
-      </Container>
+      
 
       <Container>
 
@@ -168,14 +179,16 @@ const copyUrl = () => {
       </Container>
 
 
-      {tinyUrl 
-
-      && (
-
-       <HeadingBar title={tinyUrl} />
-      
-      
+      {tinyUrl && (
+        <>
+          <HeadingBar title={tinyUrl} />
+          <SpaceBlock></SpaceBlock>
+          <div className="text-center">
+          <QRCode value={tinyUrl} className='rounded' size={200}/>
+          </div>
+        </>
       )}
+
 
       <Container>
 
