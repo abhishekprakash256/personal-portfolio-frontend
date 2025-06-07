@@ -1,0 +1,115 @@
+:root {
+    
+    --primary-dark-color: #000000;
+    --primary-light-color : #ffffff;
+
+    --light-gray: #e9ecef;
+
+    --primary-blue: #146C94;
+    --light-blue: #19A7CE;  
+    --button-hover: #0D87B0;
+
+
+
+    --background-color: var(--primary-light-color);
+
+    --text-color: var(--primary-dark-color);
+
+    --nav-link-color: var(--primary-dark-color);
+
+    --footer-background-color: var(--light-gray);
+
+    --footer-text-color: var(--primary-dark-color);
+
+    --navbar-brand-color: var(--primary-blue);
+
+    --form-background-color: var(--primary-light-color);
+
+    --button-text-color: var(--primary-light-color);
+
+    --nav-brand-hover-color: var(--light-blue);
+
+    --button-text-hover-color: var(--primary-light-color);
+
+    --input-focus-background-color: var(--primary-light-color);
+
+    --input-focus-text-color: var(--primary-dark-color);
+
+    --blue-text-color: var(--primary-blue);
+
+    --message-bubble-color-send: var(--light-gray);
+
+    --message-bubble-color-recv: var(--light-blue);
+
+    --message-text-color-send: var(--primary-blue);
+
+    --message-text-color-recv: var(--primary-light-color);
+
+    --md-code-color: var(--primary-dark-color);
+
+    --form-input-color: var(--primary-dark-color);
+
+    --blue-text-hover: var(--light-blue);
+
+    --social-media-color: var(--primary-light-color);
+
+    --social-media-color-border-hover: var( --primary-dark-color);
+ 
+  
+  
+  } 
+  
+  [data-theme="dark"]  {
+
+    --primary-light-color : #ffffff;
+    --primary-dark-color: #000000;
+    
+    --dark-gray: #343a40;
+
+    --primary-blue: #146C94;
+    --light-blue: #19A7CE;  
+
+
+    --background-color: var(--primary-dark-color);
+
+    --text-color: var(--primary-light-color);
+
+    --nav-link-color: var(--primary-light-color);
+
+    --footer-background-color: var(--dark-gray);
+
+    --footer-text-color: var(--primary-light-color);
+
+    --navbar-brand-color: var(--light-blue);
+
+    --form-background-color: var(--primary-dark-color);
+
+    --button-text-color: var(--primary-dark-color);
+
+    --nav-brand-hover-color: var(--light-blue);
+
+    --button-text-hover-color: var(--primary-dark-color);
+
+    --input-focus-background-color: var(--primary-dark-color);
+
+    --input-focus-text-color: var(--primary-light-color);
+
+    --blue-text-color: var(--light-blue);
+
+    --message-bubble-color-send: var(--dark-gary);
+
+    --message-bubble-color-recv: var(--light-blue);
+
+    --message-text-color-send: var(--light-blue);
+
+    --message-text-color-recv: var(--primary-dark-color);
+
+    --md-code-color: var(--primary-light-color);
+
+    --form-input-color: var(--primary-light-color);
+
+    --social-media-color: var(--primary-light-color);
+
+    --social-media-color-border-hover: var( --light-gray);
+  
+  }

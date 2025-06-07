@@ -27,9 +27,19 @@ bun dev
 
 ## To run 
 
-- docker mongo service is needed
-- mongo access is needed 
+- mongodb is needed either in docker or barematel (for database fetching)
+
+- mongo access service is needed 
+  runs in port 5000
+
 - api gateway service is needed
+  runs in port 5001
+
+- static media server is needed
+  runs in port 8080
+
+- run the personal porfolio frontend in last 
+- runs in port 3000
 
 
 
