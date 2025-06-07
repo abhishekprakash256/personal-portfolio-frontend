@@ -19,7 +19,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 async function submitTinyUrl(url: string) {
   try {
-    const response = await fetch('http://localhost:5050/tu/submit', {
+
+    // use http://localhost:5050/tu/submit for dev
+    //use https://meabhi.me/tu/submit for prod
+    const response = await fetch('https://meabhi.me/tu/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url }),
