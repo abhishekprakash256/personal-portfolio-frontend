@@ -32,10 +32,10 @@ const resume_link : string = "/files/resume.pdf";
 
 const Paignation_data = [
   {
-    card_title: "Card Title 1",
+    card_title: "Tiny URL",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
     img_src: "./images/cards.jpg",  /* the image file is in the public folder */
-    card_url: "https://example.com/card1", 
+    card_url: "https://meabhi.me/demo/tinyurl", 
   },
   {
     card_title: "Card Title 2",
