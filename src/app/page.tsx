@@ -33,9 +33,9 @@ const resume_link : string = "/files/resume.pdf";
 const Paignation_data = [
   {
     card_title: "Tiny URL",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "./images/cards.jpg",  /* the image file is in the public folder */
-    card_url: "https://meabhi.me/demo/tinyurl", 
+    card_para: "The Tiny-URL Generator is a URL shortening service developed as a web application using the Flask framework. This project aims to simplify the process of sharing long URLs by generating shorter, more manageable links. The backend leverages Redis for efficient data storage and retrieval, ensuring quick access and collision-free management of shortened URLs ",
+    img_src: "https://meabhi.me/static/blog/section/project/tinyurl/tinyurl-icon.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/tinyurl", 
   },
   {
     card_title: "Card Title 2",
