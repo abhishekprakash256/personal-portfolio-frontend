@@ -100,7 +100,7 @@ export default function TinyUrlGenerator() {
         <HeadingBar title={"Enter URL to generate tinyurl"} />
         <SpaceBlock />
 
-        <Row className='text-center'>
+        <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
             <Form onSubmit={handleGenerateTinyUrl}>
