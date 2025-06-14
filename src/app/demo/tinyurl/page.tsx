@@ -10,7 +10,7 @@ import { NavBar, HeadingBar, CustomBody, SpaceBlock, Footer } from "front-end-co
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 
 
 
@@ -53,7 +53,7 @@ export default function TinyUrlGenerator() {
 
   const smoothTransition = {
     duration: 0.5,
-    ease: 'easeInOut',
+    ease: easeInOut,
   };
 
 
