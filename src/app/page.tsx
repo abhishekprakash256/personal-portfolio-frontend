@@ -20,7 +20,7 @@ const socialLinks = [
   "https://leetcode.com/abhishekprakash256/",
   "https://gitlab.com/abhishekprakash256",
   "https://www.kaggle.com/abhishek256",
-  "https://medium.com/@yourprofile",
+  "https://medium.com/@yourprofile",  
 ];
 
 const description : string = "I am Abhishek Prakash (Abhi), a professional with over two years of industry experience and a master's degree in computer science from <a href='https://www.fsu.edu' target='_blank' style='color: #CEB888; text-decoration: none;' onmouseover='this.style.color = \"#782F40\"' onmouseout='this.style.color=\"#CEB888\"'>Florida State University</a>. My expertise lies in various programming languages, with a strong emphasis on Python. I specialize in machine learning, automation, software development, and the design and deployment of cloud infrastructure as code. I am proficient in popular machine learning and deep learning frameworks such as PyTorch, TensorFlow, scikit-learn, and pandas. My comprehensive background in computer science, including an in-depth understanding of data structures and algorithms, underpins my professional journey. Throughout my career, I have been actively involved in a wide range of software projects, from developing small-scale tools to orchestrating large-scale production systems. My experience extends to website development, including front-end, back-end, and database integration, ensuring the robustness and efficiency of solutions through unit testing, data visualization, and data engineering.In addition to my core skills, I have specialized in Machine Learning Operations (MLOps), managing CI/CD pipelines and Docker images to ensure the seamless integration and deployment of machine learning models. I am adept at using automation tools like Ansible and Terraform, streamlining and automating MLOps processes to enhance the overall efficiency and reliability of machine learning workflows.";
@@ -32,7 +32,7 @@ const resume_link : string = "/files/resume.pdf";
 
 const Paignation_data = [
   {
-    card_title: "Tiny URL",
+    card_title: "Tiny URL",  
     card_para: "The Tiny-URL Generator is a URL shortening service developed as a web application using the Flask framework. This project aims to simplify the process of sharing long URLs by generating shorter, more manageable links. The backend leverages Redis for efficient data storage and retrieval, ensuring quick access and collision-free management of shortened URLs ",
     img_src: "https://meabhi.me/static/blog/section/project/tinyurl/tinyurl-icon.png",  /* the image file is in the public folder */
     card_url: "/blog/section/project/article/tinyurl", 
