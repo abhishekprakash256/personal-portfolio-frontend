@@ -38,29 +38,29 @@ const Paignation_data = [
     card_url: "/blog/section/project/article/tinyurl", 
   },
   {
-    card_title: "Card Title 2",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
-    card_url: "https://example.com/card2",
+    card_title: "Federated Learning",
+    card_para: "Federated Learning is a decentralized learning paradigm where models are trained on various devices, and their parameters are combined to create a global model. Initially introduced by Google in 2017, it allows for effective model training without transferring sensitive data from devices",
+    img_src: "https://meabhi.me/static/blog/section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/federated-learning",
   },
   {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
+    card_title: "Patching Unpatching",
+    card_para: "Patching and Unpatching are a set of tools that are used for image processing. The patching tool is used to cut small square sections of the input image known as patches. The unpatching tool takes those patches and combines them back together to make the final image.",
+    img_src: "https://meabhi.me/static/blog/section/project/patching-unpatching/patching.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/patching-unpatching",
   },
 
   {
-    card_title: "Card Title 1",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "./images/cards.jpg",  /* the image file is in the public folder */
-    card_url: "https://example.com/card1", 
+    card_title: "Academic Website",
+    card_para: "Static Academic website made to showcase the profile and works, made using HTML, CSS, Media Query (for the responsive optimization for mobile, tablet and different size devices). The website is consist of 8 pages that shows the different aspects from main page to contact page. Google Maps API is used to display the map. CSS flex boxes are also used for more size responsive optmizatrions",
+    img_src: "https://meabhi.me/static/blog/section/project/academic-website/main_page.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/academic-website", 
   },
   {
-    card_title: "Card Title 2",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/federated-learning-flow.png", /* the image file is in the public folder */
-    card_url: "https://example.com/card2",
+    card_title: "Neural Style Transfer",
+    card_para: "The neural style transfer is implemented as per paper that came in 2015 title A Neural Algorithm of Artistic Style. The paper talks about combing the two images to create a new style image by using the style and feature transfer technique from both the images and tries to minimize the loss of the generated Gaussian image by using the custom loss function that can be tweaked by using the hyper-parameter alpha and beta. The implementation is done using pytorch",
+    img_src: "https://meabhi.me/static/blog/section/project/neural-transfer/image_1.png", /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/neural-transfer",
   },
   {
     card_title: "Card Title 3",
