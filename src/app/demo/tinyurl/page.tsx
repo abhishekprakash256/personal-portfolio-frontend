@@ -158,6 +158,7 @@ export default function TinyUrlGenerator() {
               <HeadingBar title={tinyUrl} />
               <SpaceBlock />
               <QRCode
+                title=''
                 value={tinyUrl}
                 size={200}
                 style={{
