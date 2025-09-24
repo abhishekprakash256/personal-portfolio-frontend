@@ -12,6 +12,7 @@ endpoint -->
 
 Get page /demo/chatapp/registration
 make a post request with json 
+to /chat-server/user/register a POST request
 
 {
   "UserOne": "Bob",
