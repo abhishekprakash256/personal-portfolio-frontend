@@ -14,9 +14,9 @@ export default function ChatClient() {
   const [input, setInput] = useState("");
   const wsRef = useRef<WebSocket | null>(null);
 
-  const chatHash = "DZ5uqxGii"; // hardcoded for now
-  const sender = "Ben";
-  const receiver = "Bob";
+  const chatHash = "6LRcGlCjvNB"; // hardcoded for now
+  const sender = "Abhi";
+  const receiver = "Anny";
 
   useEffect(() => {
     // Connect to Go WebSocket server
