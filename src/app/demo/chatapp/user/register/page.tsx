@@ -11,7 +11,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useState } from 'react';
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
-import { FaWeight } from 'react-icons/fa';
+//import { FaWeight } from 'react-icons/fa';
 
 
 
@@ -19,8 +19,10 @@ import { FaWeight } from 'react-icons/fa';
 
 async function submitUserName(userOne: string, userTwo: string) {
   try {
-    // dev
-    const response = await fetch("http://localhost:8080/chat-server/user/register", {
+    // dev http://localhost:8080/chat-server/user/register     Linux 
+    // dev  http://127.0.0.1:8080/chat-server/user/register   Mac 
+    // prod  http://meabhi.me/chat-server/user/register    
+    const response = await fetch("http://127.0.0.1:8080/chat-server/user/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ UserOne: userOne, UserTwo: userTwo }),
