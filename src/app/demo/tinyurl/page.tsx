@@ -45,6 +45,7 @@ export default function TinyUrlGenerator() {
   const [inputUrl, setInputUrl] = useState('');
   const [tinyUrl, setTinyUrl] = useState('');
   const [error, setError] = useState('');
+  const [inputForm , setInputForm] = useState(true) ;
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
@@ -69,6 +70,7 @@ export default function TinyUrlGenerator() {
       setInputUrl('');
       setShowResetButton(true);
       setCopyButtonDisabled(true);
+      setInputForm(false);
       setSubmitButtonDisabled(false);
       setError('');
     }
@@ -79,6 +81,7 @@ export default function TinyUrlGenerator() {
     setTinyUrl('');
     setError('');
     setShowResetButton(false);
+    setInputForm(true);
     setSubmitButtonDisabled(true);
     setCopyButtonDisabled(false);
     setShowAlert(false);
@@ -103,6 +106,9 @@ export default function TinyUrlGenerator() {
         <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
+
+          <AnimatePresence>
+          { inputForm && (
             <Form onSubmit={handleGenerateTinyUrl}>
               <input
                 type="text"
@@ -114,6 +120,9 @@ export default function TinyUrlGenerator() {
                 placeholder="Enter the long URL"
               />
             </Form>
+
+            )}
+          </AnimatePresence>
 
             <AnimatePresence>
               {error && (

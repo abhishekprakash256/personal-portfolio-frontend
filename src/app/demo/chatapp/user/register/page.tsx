@@ -54,6 +54,7 @@ export default function ChatServerRegistration() {
   const [inputUserTwo, setUserTwo] = useState('');
   const [chatUrl, setChatUrl] = useState('');
   const [error, setError] = useState('');
+  const [inputForm , setInputForm] = useState(true) ;
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
   const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
@@ -78,6 +79,7 @@ export default function ChatServerRegistration() {
       setUserTwo('');
       setShowResetButton(true);
       setCopyButtonDisabled(true);
+      setInputForm(false);
       setSubmitButtonDisabled(false);
       setError('');
     }
@@ -89,6 +91,7 @@ export default function ChatServerRegistration() {
     setChatUrl('');
     setError('');
     setShowResetButton(false);
+    setInputForm(true);
     setSubmitButtonDisabled(true);
     setCopyButtonDisabled(false);
     setShowAlert(false);
@@ -113,6 +116,9 @@ export default function ChatServerRegistration() {
         <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
+
+           <AnimatePresence>
+          { inputForm && (
             <Form onSubmit={handleGenerateChatUrl}>
               <input
                 type="text"
@@ -125,6 +131,7 @@ export default function ChatServerRegistration() {
               />
 
               <SpaceBlock></SpaceBlock>
+
               <input
                 type="text"
                 name="userTwo"
@@ -135,6 +142,9 @@ export default function ChatServerRegistration() {
                 placeholder="Enter the second user"
               />
             </Form>
+
+          )}
+          </AnimatePresence>
 
             <AnimatePresence>
               {error && (
