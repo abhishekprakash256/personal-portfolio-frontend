@@ -1,5 +1,10 @@
 "use client";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavBar, HeadingBar, CustomBody, SpaceBlock, Footer } from "front-end-component-kit";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import QRCode from "react-qr-code";
+import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState, useRef } from "react";
 
 type Message = {
