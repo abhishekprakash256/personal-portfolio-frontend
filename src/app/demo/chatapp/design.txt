@@ -40,3 +40,4 @@ and the qr code as well
 check for name not the same
 and pass in backend as uncapatilized
 handle the error response as well
+
