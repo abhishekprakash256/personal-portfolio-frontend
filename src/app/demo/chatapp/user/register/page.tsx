@@ -11,6 +11,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useState } from 'react';
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
+import { FaWeight } from 'react-icons/fa';
 
 
 
@@ -173,7 +174,8 @@ export default function ChatServerRegistration() {
               exit={{ opacity: 0, scale: 0.8 }}
               transition={smoothTransition}
             >
-              <HeadingBar title={chatUrl} />
+              <HeadingBar title={chatUrl}  />
+
               <SpaceBlock />
               <QRCode
                 title=''
