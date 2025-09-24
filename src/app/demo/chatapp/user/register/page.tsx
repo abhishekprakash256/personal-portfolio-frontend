@@ -42,6 +42,28 @@ async function submitUserName(userOne: string, userTwo: string) {
   }
 }
 
+//  Validation function
+function validateUsers(userOne: string, userTwo: string): { valid: boolean; error?: string; u1?: string; u2?: string } {
+  const specialCharRegex = /^[a-zA-Z0-9_]+$/;
+
+  if (!userOne || !userTwo) {
+    return { valid: false, error: "Both usernames are required." };
+  }
+
+  // Convert to lowercase
+  const u1 = userOne.trim().toLowerCase();
+  const u2 = userTwo.trim().toLowerCase();
+
+  if (u1 === u2) {
+    return { valid: false, error: "Usernames must be different." };
+  }
+
+  if (!specialCharRegex.test(u1) || !specialCharRegex.test(u2)) {
+    return { valid: false, error: "Usernames can only contain letters, numbers, and underscores." };
+  }
+
+  return { valid: true, u1, u2 };
+}
 
 
 
@@ -69,8 +91,14 @@ export default function ChatServerRegistration() {
 
   const handleGenerateChatUrl = async (e: any) => {
     e.preventDefault();
+
+    const { valid, error: validationError, u1, u2 } = validateUsers(inputUserOne, inputUserTwo);
+    if (!valid) {
+      setError(validationError || "Validation failed");
+      return;
+    }
    
-    const result = await submitUserName(inputUserOne , inputUserTwo);
+    const result = await submitUserName(u1!, u2!);
     console.log(result);
 
     if (result) {
