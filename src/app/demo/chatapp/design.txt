@@ -3,4 +3,39 @@ The flow of the front end -->
 pages need
 
 /demo/chatapp/registration --> for the registration page 
-/demo/chatapp/user/<hash> --> login page for the user 
+/demo/chatapp/user/<hash>/login --> login page for the user 
+
+
+the registration page 
+
+endpoint --> 
+
+Get page /demo/chatapp/registration
+make a post request with json 
+
+{
+  "UserOne": "Bob",
+  "UserTwo": "Ben"
+}
+
+
+get the request --> 
+
+{
+Status: "success",
+Code:   http.StatusOK,
+Data: map[string]string{
+    "userOne": data.UserOne,
+	"userTwo": data.UserTwo,
+	"hash":    uniqueHash,
+}
+}
+
+display the link --> 
+https://meabhi.me/demo/chatapp/user/<hash>/login
+
+give the instructions how to use the app 
+and the qr code as well 
+check for name not the same
+and pass in backend as uncapatilized
+handle the error response as well
