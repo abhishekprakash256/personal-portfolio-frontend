@@ -22,16 +22,17 @@ async function submitUserName(userOne: string, userTwo: string) {
     const response = await fetch("http://localhost:8080/chat-server/user/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        UserOne: userOne,
-        UserTwo: userTwo,
-      }),
+      body: JSON.stringify({ UserOne: userOne, UserTwo: userTwo }),
     });
 
     if (!response.ok) throw new Error("Failed to register users");
 
     const data = await response.json();
-    return data.tinyurl; // or whatever field your backend returns
+
+    // make the URL using template literal
+    const chaturl = `https://meabhi.me/demo/chatapp/user/${data.data.hash}/login`;
+
+    return chaturl;
   } catch (error) {
     console.error("Error:", error);
     return null;
@@ -44,10 +45,11 @@ async function submitUserName(userOne: string, userTwo: string) {
 
 
 
+
 export default function ChatServerRegistration() {
   const [inputUserOne, setUserOne] = useState('');
   const [inputUserTwo, setUserTwo] = useState('');
-  const [tinyUrl, setTinyUrl] = useState('');
+  const [chatUrl, setChatUrl] = useState('');
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [showResetButton, setShowResetButton] = useState(false);
@@ -61,12 +63,14 @@ export default function ChatServerRegistration() {
   };
 
 
-  const handleGenerateTinyUrl = async (e: any) => {
+  const handleGenerateChatUrl = async (e: any) => {
     e.preventDefault();
    
     const result = await submitUserName(inputUserOne , inputUserTwo);
+    console.log(result);
+
     if (result) {
-      setTinyUrl(result);
+      setChatUrl(result);
       setUserOne('');
       setUserTwo('');
       setShowResetButton(true);
@@ -79,7 +83,7 @@ export default function ChatServerRegistration() {
   const resetForm = () => {
     setUserOne('');
     setUserTwo('');
-    setTinyUrl('');
+    setChatUrl('');
     setError('');
     setShowResetButton(false);
     setSubmitButtonDisabled(true);
@@ -88,8 +92,8 @@ export default function ChatServerRegistration() {
   };
 
   const copyUrl = () => {
-    if (tinyUrl) {
-      navigator.clipboard.writeText(tinyUrl).then(() => {
+    if (chatUrl) {
+      navigator.clipboard.writeText(chatUrl).then(() => {
         setShowAlert(true);
         setTimeout(() => setShowAlert(false), 2000);
       });
@@ -106,7 +110,7 @@ export default function ChatServerRegistration() {
         <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
-            <Form onSubmit={handleGenerateTinyUrl}>
+            <Form onSubmit={handleGenerateChatUrl}>
               <input
                 type="text"
                 name="userOne"
@@ -151,8 +155,8 @@ export default function ChatServerRegistration() {
           {submitButtonDisabled && (
             <Row className='rounded background-color-body mt-3 p-2'>
               <Col className="text-center">
-                <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateTinyUrl}>
-                  Generate Tiny URL
+                <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateChatUrl}>
+                  Register User
                 </Button>
               </Col>
             </Row>
@@ -160,7 +164,7 @@ export default function ChatServerRegistration() {
         </Container>
 
         <AnimatePresence>
-          {tinyUrl && (
+          {chatUrl && (
             <motion.div
               key="qr"
               className="text-center"
@@ -169,11 +173,11 @@ export default function ChatServerRegistration() {
               exit={{ opacity: 0, scale: 0.8 }}
               transition={smoothTransition}
             >
-              <HeadingBar title={tinyUrl} />
+              <HeadingBar title={chatUrl} />
               <SpaceBlock />
               <QRCode
                 title=''
-                value={tinyUrl}
+                value={chatUrl}
                 size={200}
                 style={{
                   border: "2px solid black",
@@ -243,7 +247,7 @@ export default function ChatServerRegistration() {
                 <Row className='rounded background-color-body mt-3 p-2'>
                   <Col className="text-center">
                     <Button type="submit" className="button-custom-color m-1" onClick={resetForm}>
-                      Create Another URL
+                      Register Another User
                     </Button>
                   </Col>
                 </Row>
