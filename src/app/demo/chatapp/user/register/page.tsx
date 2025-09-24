@@ -111,15 +111,20 @@ export default function ChatServerRegistration() {
       <NavBar />
       <CustomBody>
         <HeadingBar title={"Enter Names to Register User"} />
-        <SpaceBlock />
+        
 
         <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
 
            <AnimatePresence>
+
+            
           { inputForm && (
+            
             <Form onSubmit={handleGenerateChatUrl}>
+
+              <SpaceBlock />
               <input
                 type="text"
                 name="userOne"
