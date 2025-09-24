@@ -16,24 +16,24 @@ import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 
 
 
-
-async function submitTinyUrl(url: string) {
-  
-    try {
-
-    // use http://localhost:8080/chat-server/user/register for dev
-    //use https://meabhi.me/tu/submit for prod
-    const response = await fetch('http://localhost:8080/chat-server/user/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url }),
-    
+async function submitUserName(userOne: string, userTwo: string) {
+  try {
+    // dev
+    const response = await fetch("http://localhost:8080/chat-server/user/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        UserOne: userOne,
+        UserTwo: userTwo,
+      }),
     });
-    if (!response.ok) throw new Error('Failed to generate tiny URL');
+
+    if (!response.ok) throw new Error("Failed to register users");
+
     const data = await response.json();
-    return data.tinyurl;
+    return data.tinyurl; // or whatever field your backend returns
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     return null;
   }
 }
@@ -43,8 +43,10 @@ async function submitTinyUrl(url: string) {
 
 
 
-export default function TinyUrlGenerator() {
-  const [inputUrl, setInputUrl] = useState('');
+
+export default function ChatServerRegistration() {
+  const [inputUserOne, setUserOne] = useState('');
+  const [inputUserTwo, setUserTwo] = useState('');
   const [tinyUrl, setTinyUrl] = useState('');
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -61,14 +63,12 @@ export default function TinyUrlGenerator() {
 
   const handleGenerateTinyUrl = async (e: any) => {
     e.preventDefault();
-    if (!inputUrl || !/^https?:\/\//i.test(inputUrl)) {
-      setError('Please enter a valid URL starting with http:// or https://');
-      return;
-    }
-    const result = await submitTinyUrl(inputUrl);
+   
+    const result = await submitUserName(inputUserOne , inputUserTwo);
     if (result) {
       setTinyUrl(result);
-      setInputUrl('');
+      setUserOne('');
+      setUserTwo('');
       setShowResetButton(true);
       setCopyButtonDisabled(true);
       setSubmitButtonDisabled(false);
@@ -77,7 +77,8 @@ export default function TinyUrlGenerator() {
   };
 
   const resetForm = () => {
-    setInputUrl('');
+    setUserOne('');
+    setUserTwo('');
     setTinyUrl('');
     setError('');
     setShowResetButton(false);
@@ -99,7 +100,7 @@ export default function TinyUrlGenerator() {
     <div>
       <NavBar />
       <CustomBody>
-        <HeadingBar title={"Enter URL to generate tinyurl"} />
+        <HeadingBar title={"Enter Names to Register User"} />
         <SpaceBlock />
 
         <Row className='text-center'>   
@@ -108,12 +109,23 @@ export default function TinyUrlGenerator() {
             <Form onSubmit={handleGenerateTinyUrl}>
               <input
                 type="text"
-                name="url"
+                name="userOne"
                 className="me-2 custom-border form-control custom-placeholder"
                 aria-label="Search"
-                value={inputUrl}
-                onChange={(e) => setInputUrl(e.target.value)}
-                placeholder="Enter the long URL"
+                value={inputUserOne}
+                onChange={(e) => setUserOne(e.target.value)}
+                placeholder="Enter the first user"
+              />
+
+              <SpaceBlock></SpaceBlock>
+              <input
+                type="text"
+                name="userTwo"
+                className="me-2 custom-border form-control custom-placeholder"
+                aria-label="Search"
+                value={inputUserTwo}
+                onChange={(e) => setUserTwo(e.target.value)}
+                placeholder="Enter the second user"
               />
             </Form>
 
