@@ -3,8 +3,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavBar, HeadingBar, CustomBody, SpaceBlock, Footer } from "front-end-component-kit";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
 
 type Message = {
@@ -72,14 +72,6 @@ async function loginUser(chatID: string, sender: string): Promise<LoginResponse 
 
 
 
-function handlelogin() {
-
-  // should return true if succesfull
-  // set the sender value in browser 
-  // set the receiver value in browser 
-  // set the chatid in the browser as well 
-
-}
 
 
 export default function ChatServerLogin({ params }: { params: Promise<{ slug: string }> }) {
@@ -89,6 +81,13 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
 
   const resolvedParams = use(params); //unwrap the promise
   const { slug } = resolvedParams;
+  
+  
+  const smoothTransition = {
+    duration: 0.5,
+    ease: easeInOut,
+  };
+
 
 
   // ---------- Handle Login ----------
@@ -142,11 +141,31 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
                   onChange={(e) => setSender(e.target.value)}
                   placeholder="Enter the user name"
                 />
-                {error && <p className="text-danger mt-2">{error}</p>}
+                
+               
+                
               </Form>
             </AnimatePresence>
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <SpaceBlock />
+                  <p className="text-danger bold">{error}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            
           </Col>
           <Col></Col>
+
+           
         </Row>
 
         <Container>
