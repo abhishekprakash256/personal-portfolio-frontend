@@ -53,6 +53,8 @@ async function loginUser(chatID: string, sender: string): Promise<LoginResponse 
       body: JSON.stringify({ UserName: sender, hash: chatID }),
     });
 
+    console.log(chatID , sender)
+
     if (!response.ok) throw new Error("Failed to login user");
 
     const data = await response.json();
