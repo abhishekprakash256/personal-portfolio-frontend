@@ -36,6 +36,40 @@ function validateUser(Sender: string ): { valid: boolean; error?: string; u1?: s
 }
 
 
+async function loginUser(ChatID: string , Sender : string ) {
+
+ try {
+    // dev http://localhost:8080/chat-server/user/login    Linux 
+    // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
+    // prod  http://meabhi.me/chat-server/user/login   
+
+    const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ UserName : Sender, hash : ChatID }),
+    });
+
+  if (!response.ok) throw new Error("Failed to register users");
+
+  const data = await response.json();
+    
+  return  data.data.hash  , data.data.sender , data.data.receiver
+
+  }
+
+  catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+
+}
+
+
+
+function handlelogin() {
+  
+
+}
 
 
 export default function ChatServerRegistration() {
@@ -54,9 +88,54 @@ export default function ChatServerRegistration() {
 return (
     <div>
       <NavBar />
+
       <CustomBody>
 
         <HeadingBar title={"Enter User Name to Login User"} />
+
+          <Row className='text-center'>   
+          <Col></Col>
+          <Col xs={12} md={4}>
+
+           <AnimatePresence>
+            
+            <Form onSubmit={handlelogin}>
+
+              <SpaceBlock />
+              <input
+                type="text"
+                name="userOne"
+                className="me-2 custom-border form-control custom-placeholder"
+                aria-label="Search"
+                value={sender}
+                onChange={(e) => setSender(e.target.value)}
+                placeholder="Enter the user name"
+              />
+
+            </Form>
+    
+          </AnimatePresence>
+
+          </Col>
+          <Col></Col>
+        </Row>
+
+
+          <Container>
+       
+            <Row className='rounded background-color-body mt-3 p-2'>
+              <Col className="text-center">
+                <Button type="submit" className="button-custom-color m-1" onClick={handlelogin}>
+                  Login User
+                </Button>
+              </Col>
+            </Row>
+            <SpaceBlock></SpaceBlock>
+          
+        </Container>
+
+
+
 
             </CustomBody>
             
