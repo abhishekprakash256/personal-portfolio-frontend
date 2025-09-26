@@ -6,6 +6,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
+import "../login/styles.css"
 
 type Message = {
   hash: string;
@@ -187,6 +188,76 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
 
           <SpaceBlock />
         </Container>
+
+
+        <Container>
+        
+        <Row className="rounded message-box-color text-center p-2">
+          
+          <Col xs={12} md={10} className ="p-2">
+            <AnimatePresence>
+              <Form onSubmit={handleLogin}>
+                
+                <input
+                  type="text"
+                  name="sender"
+                  className=" custom-border form-control custom-placeholder"
+                  value={sender}
+                  onChange={(e) => setSender(e.target.value)}
+                  placeholder="Type Message"
+                />
+                
+               
+                
+              </Form>
+            </AnimatePresence>
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <SpaceBlock />
+                  <p className="text-danger bold">{error}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            
+          </Col>
+            <Col className="text-center p-2">
+              <Button type="submit" className="button-custom-color" onClick={handleLogin}>
+                Send Message
+              </Button>
+            </Col>
+          
+
+           
+        </Row>     
+
+            <Row className="rounded background-color-body mt-3 text-center p-2">
+
+              <Col className="text-center">
+              <Button type="submit" className="button-custom-color m-1" onClick={handleLogin}>
+                Logout
+              </Button>
+            </Col>
+
+             <Col className="text-center">
+              <Button type="submit" className="button-custom-color m-1" onClick={handleLogin}>
+                End Chat
+              </Button>
+            </Col>
+
+          </Row>
+
+
+    </Container>
+
+
       </CustomBody>
 
       <Footer />
