@@ -6,7 +6,9 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
+import { useRouter } from "next/navigation";
 import "../login/styles.css"
+
 
 type Message = {
   hash: string;
@@ -48,7 +50,7 @@ async function loginUser(chatID: string, sender: string): Promise<LoginResponse 
     // dev http://localhost:8080/chat-server/user/login    Linux 
     // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
     // prod  http://meabhi.me/chat-server/user/login
-    const response = await fetch("http://localhost:8080/chat-server/user/login", {
+    const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ UserName: sender, hash: chatID }),
@@ -82,6 +84,7 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
 
   const resolvedParams = use(params); //unwrap the promise
   const { slug } = resolvedParams;
+  const router = useRouter();
   
   
   const smoothTransition = {
@@ -95,10 +98,18 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const smoothTransition = {
+    duration: 0.5,
+    ease: easeInOut,
+  };
+
+
     // Validate input
     const { valid, error: validationError, username } = validateUser(sender);
     if (!valid) {
       setError(validationError || "Invalid username");
+       //  Auto-clear error after 3 seconds
+      setTimeout(() => setError(""), 3000);
       return;
     }
 
@@ -106,6 +117,7 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
     const result = await loginUser(slug, username!);
     if (!result) {
       setError("Failed to login user. Please try again.");
+      setTimeout(() => setError(""), 3000);
       return;
     }
 
@@ -120,6 +132,9 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
     setError("");
 
     console.log(" Login successful:", result);
+
+    // Redirect to chat page
+    router.push(`/demo/chatapp/user/${result.hash}/chat`);
   };
 
   return (
@@ -181,7 +196,7 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
           {chatUrl && (
             <Row className="text-center mt-3">
               <Col>
-                <p className="text-success">Chat session started with hash: {chatUrl}</p>
+                <p className="text-success">Login Succesfull {chatUrl}</p>
               </Col>
             </Row>
           )}

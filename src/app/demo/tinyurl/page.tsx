@@ -62,6 +62,7 @@ export default function TinyUrlGenerator() {
     e.preventDefault();
     if (!inputUrl || !/^https?:\/\//i.test(inputUrl)) {
       setError('Please enter a valid URL starting with http:// or https://');
+      setTimeout(() => setError(""), 3000);
       return;
     }
     const result = await submitTinyUrl(inputUrl);
