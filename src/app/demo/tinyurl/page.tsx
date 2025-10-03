@@ -92,7 +92,7 @@ export default function TinyUrlGenerator() {
     if (tinyUrl) {
       navigator.clipboard.writeText(tinyUrl).then(() => {
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 2000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
     }
   };
