@@ -10,12 +10,6 @@ import { useRouter } from "next/navigation";
 import "../login/styles.css"
 
 
-type Message = {
-  hash: string;
-  sender: string;
-  receiver: string;
-  message: string;
-};
 
 
 // ---------- Types ----------
