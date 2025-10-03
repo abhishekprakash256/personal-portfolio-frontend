@@ -196,7 +196,7 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
           {chatUrl && (
             <Row className="text-center mt-3">
               <Col>
-                <p className="text-success">Login Succesfull {chatUrl}</p>
+                <p className="text-success">Login Succesfull </p>
               </Col>
             </Row>
           )}
