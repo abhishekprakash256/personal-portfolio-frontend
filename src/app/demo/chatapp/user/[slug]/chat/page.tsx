@@ -56,7 +56,6 @@ export default function ChatServerChat() {
     useEffect(() => {
     // If missing, go to start page
     if (sender === "" || chatHash === "") {
-    
         
       return;
     
