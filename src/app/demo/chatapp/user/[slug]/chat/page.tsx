@@ -30,35 +30,50 @@ import "../login/styles.css"
 
 
 
+export function useChatSession() {
+  const [chatData, setChatData] = useState({
+    sender: "", //  use null to differentiate "not loaded" from "empty"
+    receiver: "",
+    chatHash: "",
+    });
+
+    useEffect(() => { const sender = sessionStorage.getItem("sender") || ""; 
+    const receiver = sessionStorage.getItem("receiver") || ""; 
+    const chatHash = sessionStorage.getItem("chatHash") || ""; 
+    setChatData({ sender, receiver, chatHash }); 
+    }, []);
+
+    return chatData;
+}
 
 export default function ChatServerChat() {
   const router = useRouter();
+  const { sender, receiver, chatHash } = useChatSession();
 
-  // Direct read — no need for a loading state
-  const sender = sessionStorage.getItem("sender") ;
-  const receiver =  sessionStorage.getItem("receiver") ;
-  const chatHash = sessionStorage.getItem("chatHash") ;
+  console.log(sender, chatHash)
 
-  useEffect(() => {
-    // If either is missing, redirect immediately
-    if (!sender || !chatHash) {
-      router.push("/");
+    // Check login when session data is available
+    useEffect(() => {
+    // If missing, go to start page
+    if (sender === "" || chatHash === "") {
+    
+        
       return;
+    
     }
 
-    // Otherwise check login
     const loginCheck = async () => {
       try {
 
         // dev http://localhost:8080/chat-server/user/login    Linux 
         // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
         // prod  http://meabhi.me/chat-server/user/login
-
         const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ UserName: sender, hash: chatHash }),
         });
+
         if (!response.ok) {
           router.push(`/demo/chatapp/user/${chatHash}/login`);
         }
@@ -68,7 +83,9 @@ export default function ChatServerChat() {
     };
 
     loginCheck();
-  }, [sender, chatHash, router]);
+    }, [sender, chatHash, router]); // Only run when these values are ready
+
+
 
   return (
     <div>
