@@ -32,7 +32,7 @@ import "../login/styles.css"
 
 export function useChatSession() {
   const [chatData, setChatData] = useState({
-    sender: "", //  use null to differentiate "not loaded" from "empty"
+    sender: "",     //  use null to differentiate "not loaded" from "empty"
     receiver: "",
     chatHash: "",
     });
@@ -44,7 +44,9 @@ export function useChatSession() {
     }, []);
 
     return chatData;
+    
 }
+
 
 export default function ChatServerChat() {
   const router = useRouter();
@@ -67,6 +69,7 @@ export default function ChatServerChat() {
         // dev http://localhost:8080/chat-server/user/login    Linux 
         // dev  http://127.0.0.1:8080/chat-server/user/login   Mac
         // prod  http://meabhi.me/chat-server/user/login
+
         const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
