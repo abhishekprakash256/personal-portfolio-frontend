@@ -56,7 +56,7 @@ export default function ChatServerChat() {
     useEffect(() => {
     // If missing, go to start page
     if (sender === "" || chatHash === "") {
-        
+       
       return;
     
     }
@@ -65,7 +65,7 @@ export default function ChatServerChat() {
       try {
 
         // dev http://localhost:8080/chat-server/user/login    Linux 
-        // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
+        // dev  http://127.0.0.1:8080/chat-server/user/login   Mac
         // prod  http://meabhi.me/chat-server/user/login
         const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
           method: "POST",
@@ -83,7 +83,6 @@ export default function ChatServerChat() {
 
     loginCheck();
     }, [sender, chatHash, router]); // Only run when these values are ready
-
 
 
   return (
