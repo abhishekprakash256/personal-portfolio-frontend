@@ -31,7 +31,7 @@ import "../login/styles.css"
 
 
 // Hook to read sessionStorage
-export function useChatSession() {
+function useChatSession() {
   const [chatData, setChatData] = useState({
     sender: "",
     receiver: "",
