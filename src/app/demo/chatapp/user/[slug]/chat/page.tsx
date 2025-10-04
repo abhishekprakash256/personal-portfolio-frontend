@@ -30,46 +30,45 @@ import "../login/styles.css"
 
 
 
+// Hook to read sessionStorage
 export function useChatSession() {
   const [chatData, setChatData] = useState({
-    sender: "",     //  use null to differentiate "not loaded" from "empty"
+    sender: "",
     receiver: "",
     chatHash: "",
-    });
+  });
 
-    useEffect(() => { const sender = sessionStorage.getItem("sender") || ""; 
-    const receiver = sessionStorage.getItem("receiver") || ""; 
-    const chatHash = sessionStorage.getItem("chatHash") || ""; 
-    setChatData({ sender, receiver, chatHash }); 
-    }, []);
+  useEffect(() => {
+    const sender = sessionStorage.getItem("sender") || "";
+    const receiver = sessionStorage.getItem("receiver") || "";
+    const chatHash = sessionStorage.getItem("chatHash") || "";
+    setChatData({ sender, receiver, chatHash });
+  }, []);
 
-    return chatData;
-    
+  return chatData;
 }
+
+
 
 
 export default function ChatServerChat() {
   const router = useRouter();
   const { sender, receiver, chatHash } = useChatSession();
 
-  console.log(sender, chatHash)
+  // Run login check **after session data is loaded**
+  useEffect(() => {
+    // Wait for session load
+    if (!sender && !chatHash) return;
 
-    // Check login when session data is available
-    useEffect(() => {
-    // If missing, go to start page
-    if (sender === "" || chatHash === "") {
-       
+    // If session is invalid → redirect
+    if (!sender || !chatHash) {
+      router.push("/");
       return;
-    
     }
 
+    // Call API to verify login
     const loginCheck = async () => {
       try {
-
-        // dev http://localhost:8080/chat-server/user/login    Linux 
-        // dev  http://127.0.0.1:8080/chat-server/user/login   Mac
-        // prod  http://meabhi.me/chat-server/user/login
-
         const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -85,8 +84,12 @@ export default function ChatServerChat() {
     };
 
     loginCheck();
-    }, [sender, chatHash, router]); // Only run when these values are ready
+  }, [sender, chatHash, router]);
 
+  // Optional: show loading state before session is loaded
+  if (sender === "" && chatHash === "") {
+    return <div>Loading session...</div>;
+  }
 
   return (
     <div>
