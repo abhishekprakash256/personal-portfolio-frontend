@@ -29,34 +29,51 @@ import "../login/styles.css"
 
 
 
-export function useChatSession() {
-  const [chatData, setChatData] = useState({
-    sender: "",
-    receiver: "",
-    chatHash: "",
-  });
-
-  useEffect(() => {
-    const sender = sessionStorage.getItem("sender") || "";
-    const receiver = sessionStorage.getItem("receiver") || "";
-    const chatHash = sessionStorage.getItem("chatHash") || "";
-    setChatData({ sender, receiver, chatHash });
-  }, []);
-
-  return chatData;
-}
-
 
 
 export default function ChatServerChat() {
+  const router = useRouter();
 
-const { sender, receiver, chatHash } = useChatSession();
+  // Direct read — no need for a loading state
+  const sender = sessionStorage.getItem("sender") ;
+  const receiver =  sessionStorage.getItem("receiver") ;
+  const chatHash = sessionStorage.getItem("chatHash") ;
+
+  useEffect(() => {
+    // If either is missing, redirect immediately
+    if (!sender || !chatHash) {
+      router.push("/");
+      return;
+    }
+
+    // Otherwise check login
+    const loginCheck = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ UserName: sender, hash: chatHash }),
+        });
+        if (!response.ok) {
+          router.push(`/demo/chatapp/user/${chatHash}/login`);
+        }
+      } catch (error) {
+        console.error("Login check error:", error);
+      }
+    };
+
+    loginCheck();
+  }, [sender, chatHash, router]);
 
   return (
     <div>
       <NavBar />
       <CustomBody>
-        <HeadingBar title={`Welcome ${sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"}`} />
+        <HeadingBar
+          title={`Welcome ${
+            sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
+          }`}
+        />
       </CustomBody>
       <Footer />
     </div>
