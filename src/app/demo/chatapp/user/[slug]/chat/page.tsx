@@ -77,7 +77,7 @@ export default function ChatServerChat() {
         // dev http://localhost:8080/chat-server/user/login    Linux 
         // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
         // prod  http://meabhi.me/chat-server/user/login
-        const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
+        const response = await fetch("http://127.0.0.1:8050/chat-server/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ UserName: sender, hash: chatHash }),
