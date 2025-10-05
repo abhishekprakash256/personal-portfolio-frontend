@@ -41,6 +41,10 @@ run dev
 - run the personal porfolio frontend in last 
 - runs in port 3000
 
+- tiny url service runs on 5050
+
+- chat sever runs in port 8050 
+
 
 
 ## Note 
