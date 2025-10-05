@@ -36,13 +36,14 @@ function useChatSession() {
     sender: "",
     receiver: "",
     chatHash: "",
+    loaded : false,  // the flag to track the load state of the sesion storage
   });
 
   useEffect(() => {
     const sender = sessionStorage.getItem("sender") || "";
     const receiver = sessionStorage.getItem("receiver") || "";
     const chatHash = sessionStorage.getItem("chatHash") || "";
-    setChatData({ sender, receiver, chatHash });
+    setChatData({ sender, receiver, chatHash , loaded: true});
   }, []);
 
   return chatData;
@@ -53,22 +54,29 @@ function useChatSession() {
 
 export default function ChatServerChat() {
   const router = useRouter();
-  const { sender, receiver, chatHash } = useChatSession();
+  const { sender, receiver, chatHash , loaded} = useChatSession();
 
   // Run login check **after session data is loaded**
   useEffect(() => {
     // Wait for session load
-    if (!sender && !chatHash) return;
+    if (!loaded) return ;
 
+    console.log("Sender:", sender, "ChatHash:", chatHash); //
     // If session is invalid → redirect
     if (!sender || !chatHash) {
-      router.push("/");
-      return;
+    router.push("/");
+    return ;
+    
     }
 
     // Call API to verify login
     const loginCheck = async () => {
+
       try {
+
+        // dev http://localhost:8080/chat-server/user/login    Linux 
+        // dev  http://127.0.0.1:8080/chat-server/user/login   Mac 
+        // prod  http://meabhi.me/chat-server/user/login
         const response = await fetch("http://127.0.0.1:8080/chat-server/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -84,12 +92,24 @@ export default function ChatServerChat() {
     };
 
     loginCheck();
-  }, [sender, chatHash, router]);
+  }, [loaded, sender, chatHash, router]);
 
   // Optional: show loading state before session is loaded
-  if (sender === "" && chatHash === "") {
-    return <div>Loading session...</div>;
-  }
+  if (!loaded) {
+    
+    return ( 
+    <div>
+        <NavBar />
+        <CustomBody>
+        <HeadingBar
+          title={"Loading Session .. "}
+        />
+      </CustomBody>
+      <Footer />
+    </div> 
+    );
+    
+    }
 
   return (
     <div>
