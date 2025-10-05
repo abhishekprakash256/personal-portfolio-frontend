@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
 import { useRouter } from "next/navigation";
-import "../login/styles.css"
+import "../chat/styles.css"
 
 
 
@@ -61,7 +61,7 @@ export default function ChatServerChat() {
     // Wait for session load
     if (!loaded) return ;
 
-    console.log("Sender:", sender, "ChatHash:", chatHash); //
+    //console.log("Sender:", sender, "ChatHash:", chatHash); // testing
     // If session is invalid → redirect
     if (!sender || !chatHash) {
     router.push("/");
@@ -96,30 +96,34 @@ export default function ChatServerChat() {
 
   // Optional: show loading state before session is loaded
   if (!loaded) {
-    
-    return ( 
-    <div>
-        <NavBar />
-        <CustomBody>
-        <HeadingBar
-          title={"Loading Session .. "}
-        />
-      </CustomBody>
-      <Footer />
-    </div> 
-    );
-    
-    }
+    return (
+        
+    <div
+      style={{
+        backgroundColor: "var(--background-color)",
+        color: "var(--text-color)",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1 style={{ fontSize: "2rem" }}>Loading...</h1>
+    </div>
+    )
+  }
 
   return (
     <div>
+
       <NavBar />
       <CustomBody>
         <HeadingBar
           title={`Welcome ${
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
-        />
+        /> 
       </CustomBody>
       <Footer />
     </div>
