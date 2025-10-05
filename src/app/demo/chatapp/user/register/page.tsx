@@ -11,29 +11,58 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useState } from 'react';
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
+//import { FaWeight } from 'react-icons/fa';
 
 
 
 
 
-
-async function submitTinyUrl(url: string) {
+async function submitUserName(userOne: string, userTwo: string) {
   try {
-
-    // use http://localhost:5050/tu/submit for dev
-    //use https://meabhi.me/tu/submit for prod
-    const response = await fetch('https://meabhi.me/tu/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url }),
+    // dev http://localhost:8050/chat-service/api/v1/users/register     Linux 
+    // dev  http://127.0.0.1:8050/chat-service/api/v1/users/register   Mac 
+    // prod  http://meabhi.me/chat-service/api/v1/users/register   
+    const response = await fetch("http://localhost:8050/chat-service/api/v1/users/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ UserOne: userOne, UserTwo: userTwo }),
     });
-    if (!response.ok) throw new Error('Failed to generate tiny URL');
+
+    if (!response.ok) throw new Error("Failed to register users");
+
     const data = await response.json();
-    return data.tinyurl;
+
+    // make the URL using template literal
+    const chaturl = `https://meabhi.me/demo/chatapp/user/${data.data.hash}/login`;
+
+    return chaturl;
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     return null;
   }
+}
+
+//  Validation function
+function validateUsers(userOne: string, userTwo: string): { valid: boolean; error?: string; u1?: string; u2?: string } {
+  const specialCharRegex = /^[a-zA-Z0-9_]+$/;
+
+  if (!userOne || !userTwo) {
+    return { valid: false, error: "Both usernames are required." };
+  }
+
+  // Convert to lowercase
+  const u1 = userOne.trim().toLowerCase();
+  const u2 = userTwo.trim().toLowerCase();
+
+  if (u1 === u2) {
+    return { valid: false, error: "Usernames must be different." };
+  }
+
+  if (!specialCharRegex.test(u1) || !specialCharRegex.test(u2)) {
+    return { valid: false, error: "Usernames can only contain letters, numbers, and underscores." };
+  }
+
+  return { valid: true, u1, u2 };
 }
 
 
@@ -41,9 +70,11 @@ async function submitTinyUrl(url: string) {
 
 
 
-export default function TinyUrlGenerator() {
-  const [inputUrl, setInputUrl] = useState('');
-  const [tinyUrl, setTinyUrl] = useState('');
+
+export default function ChatServerRegistration() {
+  const [inputUserOne, setUserOne] = useState('');
+  const [inputUserTwo, setUserTwo] = useState('');
+  const [chatUrl, setChatUrl] = useState('');
   const [error, setError] = useState('');
   const [inputForm , setInputForm] = useState(true) ;
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -58,17 +89,22 @@ export default function TinyUrlGenerator() {
   };
 
 
-  const handleGenerateTinyUrl = async (e: any) => {
+  const handleGenerateChatUrl = async (e: any) => {
     e.preventDefault();
-    if (!inputUrl || !/^https?:\/\//i.test(inputUrl)) {
-      setError('Please enter a valid URL starting with http:// or https://');
-      setTimeout(() => setError(""), 3000);
+
+    const { valid, error: validationError, u1, u2 } = validateUsers(inputUserOne, inputUserTwo);
+    if (!valid) {
+      setError(validationError || "Validation failed");
       return;
     }
-    const result = await submitTinyUrl(inputUrl);
+   
+    const result = await submitUserName(u1!, u2!);
+    console.log(result);
+
     if (result) {
-      setTinyUrl(result);
-      setInputUrl('');
+      setChatUrl(result);
+      setUserOne('');
+      setUserTwo('');
       setShowResetButton(true);
       setCopyButtonDisabled(true);
       setInputForm(false);
@@ -78,8 +114,9 @@ export default function TinyUrlGenerator() {
   };
 
   const resetForm = () => {
-    setInputUrl('');
-    setTinyUrl('');
+    setUserOne('');
+    setUserTwo('');
+    setChatUrl('');
     setError('');
     setShowResetButton(false);
     setInputForm(true);
@@ -89,10 +126,10 @@ export default function TinyUrlGenerator() {
   };
 
   const copyUrl = () => {
-    if (tinyUrl) {
-      navigator.clipboard.writeText(tinyUrl).then(() => {
+    if (chatUrl) {
+      navigator.clipboard.writeText(chatUrl).then(() => {
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000);
+        setTimeout(() => setShowAlert(false), 2000);
       });
     }
   };
@@ -101,28 +138,45 @@ export default function TinyUrlGenerator() {
     <div>
       <NavBar />
       <CustomBody>
-        <HeadingBar title={"Enter URL to generate tinyurl"} />
-        <SpaceBlock />
+        <HeadingBar title={"Enter Names to Register User"} />
+        
 
         <Row className='text-center'>   
           <Col></Col>
           <Col xs={12} md={4}>
 
-          <AnimatePresence>
+           <AnimatePresence>
+
+            
           { inputForm && (
-            <Form onSubmit={handleGenerateTinyUrl}>
+            
+            <Form onSubmit={handleGenerateChatUrl}>
+
+              <SpaceBlock />
               <input
                 type="text"
-                name="url"
+                name="userOne"
                 className="me-2 custom-border form-control custom-placeholder"
                 aria-label="Search"
-                value={inputUrl}
-                onChange={(e) => setInputUrl(e.target.value)}
-                placeholder="Enter the long URL"
+                value={inputUserOne}
+                onChange={(e) => setUserOne(e.target.value)}
+                placeholder="Enter the first user"
+              />
+
+              <SpaceBlock></SpaceBlock>
+
+              <input
+                type="text"
+                name="userTwo"
+                className="me-2 custom-border form-control custom-placeholder"
+                aria-label="Search"
+                value={inputUserTwo}
+                onChange={(e) => setUserTwo(e.target.value)}
+                placeholder="Enter the second user"
               />
             </Form>
 
-            )}
+          )}
           </AnimatePresence>
 
             <AnimatePresence>
@@ -147,8 +201,8 @@ export default function TinyUrlGenerator() {
           {submitButtonDisabled && (
             <Row className='rounded background-color-body mt-3 p-2'>
               <Col className="text-center">
-                <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateTinyUrl}>
-                  Generate Tiny URL
+                <Button type="submit" className="button-custom-color m-1" onClick={handleGenerateChatUrl}>
+                  Register User
                 </Button>
               </Col>
             </Row>
@@ -156,7 +210,7 @@ export default function TinyUrlGenerator() {
         </Container>
 
         <AnimatePresence>
-          {tinyUrl && (
+          {chatUrl && (
             <motion.div
               key="qr"
               className="text-center"
@@ -165,11 +219,12 @@ export default function TinyUrlGenerator() {
               exit={{ opacity: 0, scale: 0.8 }}
               transition={smoothTransition}
             >
-              <HeadingBar title={tinyUrl} />
+              <HeadingBar title={chatUrl}  />
+
               <SpaceBlock />
               <QRCode
                 title=''
-                value={tinyUrl}
+                value={chatUrl}
                 size={200}
                 style={{
                   border: "2px solid black",
@@ -239,7 +294,7 @@ export default function TinyUrlGenerator() {
                 <Row className='rounded background-color-body mt-3 p-2'>
                   <Col className="text-center">
                     <Button type="submit" className="button-custom-color m-1" onClick={resetForm}>
-                      Create Another URL
+                      Register Another User
                     </Button>
                   </Col>
                 </Row>
