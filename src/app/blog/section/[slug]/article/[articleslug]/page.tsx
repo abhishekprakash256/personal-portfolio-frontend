@@ -27,7 +27,9 @@ const resume_link : string = "/files/resume.pdf";
 
 // Fetch Article Data
 async function getArticleData(slug: string, articleslug: string): Promise<ArticleData | null> {
-  const url = `http://127.0.0.1:5001/blog/section/${slug}/article/${articleslug}`;
+  const url = `https://meabhi.me//blog-service/api/v1/section/${slug}/article/${articleslug}`;
+
+  //http://127.0.0.1:5001/blog/section/${slug}/article/${articleslug}
 
   console.log("Fetching article data from:", url);
 
@@ -51,7 +53,10 @@ async function getArticleData(slug: string, articleslug: string): Promise<Articl
 
 // Fetch Pagination Data 
 async function getPaginationData(): Promise<CardData[]> {
-  const url = "http://127.0.0.1:5001/blog/section/explore";
+  const url = "https://meabhi.me/blog-service/api/v1/section/explore";
+
+  //http://127.0.0.1:5001/blog/section/explore
+  
 
   console.log("Fetching pagination data from:", url);
 
