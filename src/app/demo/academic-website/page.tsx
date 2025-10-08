@@ -15,7 +15,7 @@ const RedirectToStatic = () => {
 
   useEffect(() => {
     // Redirect to an external or internal URL
-    window.location.href = 'http://localhost:5100'; // or /demo/academic-website/index.html
+    window.location.href = 'https://meabhi.me/academic-website/'; // or /demo/academic-website/index.html
   }, []);
 
   return <p>Redirecting...</p>;
