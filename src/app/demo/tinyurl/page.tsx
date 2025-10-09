@@ -22,7 +22,7 @@ async function submitTinyUrl(url: string) {
 
     // use http://localhost:5050/tu/submit for dev
     //use https://meabhi.me/tu/submit for prod
-    const response = await fetch('https://meabhi.me/tu/api/v1/url/submit', {
+    const response = await fetch('https://api.meabhi.me/tu/v1/url/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url }),
