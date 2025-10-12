@@ -31,7 +31,7 @@ const socialLinks = [
 
   async function getSearchData(slug: string): Promise<CardData[]> {
     try {
-        const url = new URL("https://meabhi.me/blog-service/api/v1/search");
+        const url = new URL("https://api.meabhi.me/blog-service/v1/search");
 
         //https://127.0.0.1:5001/search
         url.searchParams.append("keyword", slug);
@@ -68,7 +68,7 @@ const socialLinks = [
 
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(): Promise<CardData[]> {
-  const res = await fetch(`https://meabhi.me/blog-service/api/v1/section/explore`, {
+  const res = await fetch(`https://api.meabhi.me/blog-service/v1/section/explore`, {
     cache: "no-store",
   });
 
