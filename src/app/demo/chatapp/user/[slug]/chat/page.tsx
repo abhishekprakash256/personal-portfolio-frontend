@@ -132,17 +132,20 @@ export default function ChatServerChat() {
           }`}
         /> 
 
+          <SpaceBlock/>
           <Row className="text-center">
-          <Col></Col>
-          <Col xs={6} md={6}>
+
+ 
+          
+          <Col xs={10} md={10}>
             <AnimatePresence>
               <Form>
-                <SpaceBlock />
+                
                 <input
                   type="text"
                   name="sender"
                   className="me-2 custom-border form-control custom-placeholder"
-                  value={sender}
+                  //value={sender}
                   //onChange={}
                   placeholder="Enter the Message"
                 />
@@ -169,12 +172,12 @@ export default function ChatServerChat() {
             
           </Col>
           <Col>
-            <Button type="submit" className="button-custom-color m-1" >
-                Send
+            <Button type="submit" className="" >
+                Send 
               </Button>
           </Col>
 
-           
+          
         </Row>
 
       </CustomBody>
