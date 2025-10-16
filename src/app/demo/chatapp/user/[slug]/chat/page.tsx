@@ -56,6 +56,13 @@ export default function ChatServerChat() {
   const router = useRouter();
   const { sender, receiver, chatHash , loaded} = useChatSession();
 
+    
+  const smoothTransition = {
+    duration: 0.5,
+    ease: easeInOut,
+  };
+
+
   // Run login check **after session data is loaded**
   useEffect(() => {
     // Wait for session load
@@ -124,6 +131,52 @@ export default function ChatServerChat() {
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
         /> 
+
+          <Row className="text-center">
+          <Col></Col>
+          <Col xs={6} md={6}>
+            <AnimatePresence>
+              <Form>
+                <SpaceBlock />
+                <input
+                  type="text"
+                  name="sender"
+                  className="me-2 custom-border form-control custom-placeholder"
+                  value={sender}
+                  //onChange={}
+                  placeholder="Enter the Message"
+                />
+                
+               
+                
+              </Form>
+            </AnimatePresence>
+            <AnimatePresence>
+              {(
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <SpaceBlock />
+                  <p className="text-danger bold">{}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            
+          </Col>
+          <Col>
+            <Button type="submit" className="button-custom-color m-1" >
+                Send
+              </Button>
+          </Col>
+
+           
+        </Row>
+
       </CustomBody>
       <Footer />
     </div>
