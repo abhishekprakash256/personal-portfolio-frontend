@@ -43,14 +43,20 @@ async function submitUserName(userOne: string, userTwo: string) {
 }
 
 //  Validation function
-function validateUsers(userOne: string, userTwo: string): { valid: boolean; error?: string; u1?: string; u2?: string } {
-  const specialCharRegex = /^[a-zA-Z0-9_]+$/;
+function validateUsers(userOne: string, userTwo: string): { 
+  valid: boolean; 
+  error?: string; 
+  u1?: string; 
+  u2?: string; 
+} {
+  // Must contain only letters, numbers, underscores AND at least one letter
+  const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;
 
   if (!userOne || !userTwo) {
     return { valid: false, error: "Both usernames are required." };
   }
 
-  // Convert to lowercase
+  // Normalize input
   const u1 = userOne.trim().toLowerCase();
   const u2 = userTwo.trim().toLowerCase();
 
@@ -58,14 +64,15 @@ function validateUsers(userOne: string, userTwo: string): { valid: boolean; erro
     return { valid: false, error: "Usernames must be different." };
   }
 
-  if (!specialCharRegex.test(u1) || !specialCharRegex.test(u2)) {
-    return { valid: false, error: "Usernames can only contain letters, numbers, and underscores." };
+  if (!usernameRegex.test(u1) || !usernameRegex.test(u2)) {
+    return { 
+      valid: false, 
+      error: "Usernames must contain at least one letter and can only include letters, numbers, and underscores." 
+    };
   }
 
   return { valid: true, u1, u2 };
 }
-
-
 
 
 
@@ -95,6 +102,7 @@ export default function ChatServerRegistration() {
     const { valid, error: validationError, u1, u2 } = validateUsers(inputUserOne, inputUserTwo);
     if (!valid) {
       setError(validationError || "Validation failed");
+      setTimeout(() => setError(""), 3000); // time out added
       return;
     }
    
