@@ -137,7 +137,7 @@ export default function ChatServerChat() {
 
  
           
-          <Col xs={10} md={10}>
+          <Col xs={8} md={10}>
             <AnimatePresence>
               <Form>
                 
@@ -177,7 +177,6 @@ export default function ChatServerChat() {
               </Button>
           </Col>
 
-          
         </Row>
 
       </CustomBody>
