@@ -23,14 +23,14 @@ type LoginResponse = {
 
 // ---------- Validation ----------
 function validateUser(sender: string): { valid: boolean; error?: string; username?: string } {
-  const specialCharRegex = /^[a-zA-Z0-9_]+$/;
+  const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;
   const username = sender.trim().toLowerCase();
 
   if (username.length === 0) {
     return { valid: false, error: "Username cannot be empty." };
   }
 
-  if (!specialCharRegex.test(username)) {
+  if (!usernameRegex.test(username)) {
     return { valid: false, error: "Username can only contain letters, numbers, and underscores." };
   }
 
