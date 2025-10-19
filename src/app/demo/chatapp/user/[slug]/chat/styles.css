@@ -118,3 +118,8 @@
 .message-box-color {
    background-color: var(--footer-background-color);
 }
+
+
+.input-text {
+  color: var(--text-color);
+}

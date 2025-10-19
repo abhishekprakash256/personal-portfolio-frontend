@@ -24,6 +24,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
 import "../chat/styles.css"
 
@@ -132,52 +133,70 @@ export default function ChatServerChat() {
           }`}
         /> 
 
-          <SpaceBlock/>
-          <Row className="text-center">
+        <Container>
 
- 
-          
+             <Row className="rounded background-color-body mt-3 p-2 text-center">
+
+              <h1>Messages</h1>
+             </Row>
+
+
+
+
+        </Container>
+
+        
+          <Container>
+
+          <Row className="rounded background-color-body mt-3 p-2 text-center">
+
           <Col xs={8} md={10}>
-            <AnimatePresence>
-              <Form>
-                
-                <input
-                  type="text"
-                  name="sender"
-                  className="me-2 custom-border form-control custom-placeholder"
-                  //value={sender}
-                  //onChange={}
-                  placeholder="Enter the Message"
-                />
-                
-               
-                
-              </Form>
-            </AnimatePresence>
-            <AnimatePresence>
-              {(
-                <motion.div
-                  key="error"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={smoothTransition}
-                >
-                  <SpaceBlock />
-                  <p className="text-danger bold">{}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             
+          <TextareaAutosize
+            minRows={1}
+            maxRows={6}
+            placeholder="Enter the Message"
+            className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-box-color input-text"
+          />
+                  
           </Col>
+
           <Col>
-            <Button type="submit" className="" >
+
+            <Button type="submit" className="button-custom-color m-1" >
                 Send 
               </Button>
+
           </Col>
 
         </Row>
+        
+        {/*  
+       <Row className="rounded background-color-body text-center mt-3 p-2">
+          <Col>
+
+            <Button type="submit" className="button-custom-color m-1" >
+                Logout 
+              </Button>
+
+          </Col>
+
+            <Col>
+
+            <Button type="submit" className="button-custom-color m-1" >
+                Endchat 
+              </Button>
+
+          </Col>
+
+       
+
+          </Row>
+
+           */}
+            
+        </Container>
+        <SpaceBlock></SpaceBlock>
 
       </CustomBody>
       <Footer />
