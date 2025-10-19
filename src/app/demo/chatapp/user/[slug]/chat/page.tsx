@@ -31,6 +31,15 @@ import "../chat/styles.css"
 
 
 
+interface Message {
+  MessageID: string;
+  Sender: string;
+  Receiver: string;
+  Message: string;
+  Timestamp: string;
+}
+
+
 // Hook to read sessionStorage
 function useChatSession() {
   const [chatData, setChatData] = useState({
@@ -53,9 +62,11 @@ function useChatSession() {
 
 
 
-export default function ChatServerChat() {
+export default function UserChatService() {
   const router = useRouter();
   const { sender, receiver, chatHash , loaded} = useChatSession();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMsg, setNewMsg] = useState("");
 
     
   const smoothTransition = {
@@ -102,6 +113,37 @@ export default function ChatServerChat() {
     loginCheck();
   }, [loaded, sender, chatHash, router]);
 
+
+    useEffect(() => {
+      if (!chatHash || !sender) return;
+
+      const fetchMessages = async () => {
+        try {
+          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              UserName: sender,
+              hash: chatHash,
+            }),
+          });
+
+          if (!res.ok) {
+            console.error("Failed to fetch messages:", res.status);
+            return;
+          }
+
+          const data = await res.json();
+          setMessages(data.messages || []);
+        } catch (err) {
+          console.error("Error fetching chat:", err);
+        }
+      };
+
+      fetchMessages();
+    }, [chatHash, sender]);
+
+
   // Optional: show loading state before session is loaded
   if (!loaded) {
     return (
@@ -121,6 +163,7 @@ export default function ChatServerChat() {
     </div>
     )
   }
+  
 
   return (
     <div>
@@ -133,42 +176,49 @@ export default function ChatServerChat() {
           }`}
         /> 
 
-        <Container>
 
-          {/* Message render*/}
+            <Container>
+                
+              {/* Message render*/}
 
-             <Row className="rounded background-color-body mt-3 p-2 text-center">
+              <Row className="rounded background-color-body mt-3 p-2 text-center">
 
+                {messages.map((msg) => {
+                  const isSender = msg.Sender === sender;
+
+                  return isSender ? (
+                    // Sender message (right side)
+                    <Row key={msg.MessageID} className="p-1 m-0">
+                      <Col></Col>
+                      <Col></Col>
+                      <Col xs={4} md={4} className="rounded message-box-color input-text d-inline-block pt-1 pb-1"
+                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
+                        <p className="mb-0">{msg.Message}</p>
+                        <small className=" d-block text-end" style={{ fontSize: "0.7rem" }}>
+                          {new Date(msg.Timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </small>
+                      </Col>
+                    </Row>
+                  ) : (
+                    // Receiver message (left side)
+                    <Row key={msg.MessageID} className="p-1 m-0">
+                      <Col xs={6} md={4} className="rounded button-custom-color d-inline-block pt-1 pb-1"
+                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
+                        <p className="mb-0 ">{msg.Message}</p>
+                        <small className="d-block text-start " style={{ fontSize: "0.7rem" }}>
+                          {new Date(msg.Timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </small>
+                      </Col>
+                    </Row>
+                  );
+                })}
+
+              </Row>
+
+ 
+
+              </Container>
               
-
-              <Row className="p-2 m-0">
-
-
-              <Col className="rounded button-custom-color " xs={4} md={4}>
-              <p className="p-2 mb-0">Reciever</p>
-              </Col>
-
-
-              </Row>
-
-       
-              <Row className="p-2 m-0">
-              <Col className=""></Col>
-              <Col className=""></Col>
-              <Col className="rounded message-box-color input-text" xs={4} md={4}>
-              <p className="p-1 mb-0">Sender</p>
-              </Col>
-
-              </Row>
-
-
-             </Row>
-
-            
-
-        </Container>
-
-        
           <Container>
 
           <Row className="rounded background-color-body mt-3 p-2 text-center ">
