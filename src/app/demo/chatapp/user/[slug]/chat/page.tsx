@@ -138,17 +138,38 @@ export default function ChatServerChat() {
              <Row className="rounded background-color-body mt-3 p-2 text-center">
 
               <h1>Messages</h1>
+
+              <Row className="p-2 m-0">
+
+
+              <Col className="rounded button-custom-color " xs={4} md={4}>
+              <p className="p-2 mb-0">Reciever</p>
+              </Col>
+
+
+              </Row>
+
+       
+              <Row className="p-2 m-0">
+              <Col className=""></Col>
+              <Col className=""></Col>
+              <Col className="rounded message-box-color input-text" xs={4} md={4}>
+              <p className="p-1 mb-0">Sender</p>
+              </Col>
+
+              </Row>
+
+
              </Row>
 
-
-
+            
 
         </Container>
 
         
           <Container>
 
-          <Row className="rounded background-color-body mt-3 p-2 text-center">
+          <Row className="rounded background-color-body mt-3 p-2 text-center ">
 
           <Col xs={8} md={10}>
             
