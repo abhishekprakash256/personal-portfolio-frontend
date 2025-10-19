@@ -176,12 +176,19 @@ export default function UserChatService() {
           }`}
         /> 
 
+            
 
             <Container>
                 
               {/* Message render*/}
 
-              <Row className="rounded background-color-body mt-3 p-2 text-center">
+              <Row className="rounded background-color-body mt-3 p-2 text-center" 
+              style={{
+              height: "600px",             // fixed height (adjust as needed)
+              overflowY: "auto",           // enable vertical scrolling
+              display: "flex",
+              flexDirection: "row",
+            }} >
 
                 {messages.map((msg) => {
                   const isSender = msg.Sender === sender;
@@ -217,7 +224,7 @@ export default function UserChatService() {
 
  
 
-              </Container>
+                </Container>
               
           <Container>
 
@@ -243,6 +250,8 @@ export default function UserChatService() {
           </Col>
 
         </Row>
+
+
         
         {/*  
        <Row className="rounded background-color-body text-center mt-3 p-2">
@@ -267,6 +276,8 @@ export default function UserChatService() {
           </Row>
 
            */}
+
+           
             
         </Container>
         <SpaceBlock></SpaceBlock>
