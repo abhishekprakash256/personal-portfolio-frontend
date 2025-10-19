@@ -21,7 +21,7 @@ return to the login page
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavBar, HeadingBar, CustomBody, SpaceBlock, Footer } from "front-end-component-kit";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef  } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
 import TextareaAutosize from "react-textarea-autosize";
@@ -67,6 +67,8 @@ export default function UserChatService() {
   const { sender, receiver, chatHash , loaded} = useChatSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMsg, setNewMsg] = useState("");
+  const [input, setInput] = useState("");
+  const wsRef = useRef<WebSocket | null>(null);
 
     
   const smoothTransition = {
@@ -142,6 +144,62 @@ export default function UserChatService() {
 
       fetchMessages();
     }, [chatHash, sender]);
+
+
+          // Connect to WebSocket
+      useEffect(() => {
+          if (!chatHash || !sender) return;
+
+          const ws = new WebSocket(
+            `wss://api.meabhi.me/chat-server/v1/ws/chat?hash=${chatHash}&user=${sender}`
+          );
+
+          ws.onopen = () => {
+            console.log("WebSocket connected");
+          };
+
+          ws.onmessage = (event) => {
+            try {
+              const msgData = JSON.parse(event.data);
+              console.log("New message:", msgData);
+              setMessages((prev) => [...prev, msgData]);
+            } catch (err) {
+              console.error("Error parsing message:", err);
+            }
+          };
+
+          ws.onerror = (err) => {
+            console.error("WebSocket error:", err);
+          };
+
+          ws.onclose = () => {
+            console.log("WebSocket disconnected");
+          };
+
+          wsRef.current = ws;
+
+          return () => {
+            ws.close();
+          };
+        }, [chatHash, sender]);
+      
+
+      // Send message
+      const handleSend = () => {
+        if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+
+        const msg = {
+          Hash: chatHash,
+          Sender: sender,
+          Recipient: receiver,
+          Message: input.trim(),
+        };
+
+        wsRef.current.send(JSON.stringify(msg));
+        console.log(msg);
+        setInput("");
+      };
+
 
 
   // Optional: show loading state before session is loaded
@@ -236,6 +294,8 @@ export default function UserChatService() {
             minRows={1}
             maxRows={6}
             placeholder="Enter the Message"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-box-color input-text"
           />
                   
@@ -243,7 +303,7 @@ export default function UserChatService() {
 
           <Col>
 
-            <Button type="submit" className="button-custom-color m-1" >
+            <Button type="submit" className="button-custom-color m-1" onClick={handleSend} >
                 Send 
               </Button>
 
