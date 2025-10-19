@@ -135,9 +135,11 @@ export default function ChatServerChat() {
 
         <Container>
 
+          {/* Message render*/}
+
              <Row className="rounded background-color-body mt-3 p-2 text-center">
 
-              <h1>Messages</h1>
+              
 
               <Row className="p-2 m-0">
 
