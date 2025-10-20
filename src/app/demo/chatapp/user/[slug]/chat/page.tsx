@@ -189,10 +189,10 @@ export default function UserChatService() {
         if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
 
         const msg = {
-          Hash: chatHash,
-          Sender: sender,
-          Recipient: receiver,
-          Message: input.trim(),
+          hash: chatHash,
+          sender: sender,
+          receiver: receiver,
+          message: input.trim(),
         };
 
         wsRef.current.send(JSON.stringify(msg));
