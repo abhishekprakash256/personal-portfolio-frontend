@@ -14,7 +14,7 @@ import "../login/styles.css"
 
 // ---------- Types ----------
 type LoginResponse = {
-  hash: string;
+  chatID: string;
   sender: string;
   receiver: string;
 };
@@ -44,10 +44,10 @@ async function loginUser(chatID: string, sender: string): Promise<LoginResponse 
     // dev http://localhost:8050/chat-service/api/v1/users/login   Linux 
     // dev  http://127.0.0.1:8050/chat-service/api/v1/users/login   Mac 
     // prod  http://meabhi.me/chat-service/api/v1/users/login
-    const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
+    const response = await fetch("http://localhost:8050/chat-service/v1/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ UserName: sender, hash: chatID }),
+      body: JSON.stringify({ UserName: sender, chatID: chatID }),
     });
 
     console.log(chatID , sender)
@@ -57,7 +57,7 @@ async function loginUser(chatID: string, sender: string): Promise<LoginResponse 
     const data = await response.json();
 
     return {
-      hash: data.data.hash,
+      chatID: data.data.chatID,
       sender: data.data.sender,
       receiver: data.data.receiver,
     };
@@ -116,19 +116,19 @@ export default function ChatServerLogin({ params }: { params: Promise<{ slug: st
     }
 
     // Save data to browser sessionStorage
-    sessionStorage.setItem("chatHash", result.hash);
+    sessionStorage.setItem("chatID", result.chatID);
     sessionStorage.setItem("sender", result.sender.toLowerCase());
     sessionStorage.setItem("receiver", result.receiver.toLowerCase());
 
     // Update UI state
-    setChatUrl(result.hash);
+    setChatUrl(result.chatID);
     setSender("");
     setError("");
 
     console.log(" Login successful:", result);
 
     // Redirect to chat page
-    router.push(`/demo/chatapp/user/${result.hash}/chat`);
+    router.push(`/demo/chatapp/user/${result.chatID}/chat`);
   };
 
   return (

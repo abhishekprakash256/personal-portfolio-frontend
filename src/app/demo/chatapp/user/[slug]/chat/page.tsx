@@ -3,7 +3,7 @@ The chat app page for the user
 
 flow --> 
 
-the chat page checks the session storage data 3 data --> chathash , sender and reciver
+the chat page checks the session storage data 3 data --> chatID , sender and reciver
 
 if the data is found 
 check the data with the backend server 
@@ -12,6 +12,12 @@ check the data with the backend server
 
 if the data not found or data is wrong 
 return to the login page 
+
+
+gegnerate the UUID for the session 
+when the connection wll happen always check the value first then make the value and put it
+
+
 
 
 */
@@ -26,17 +32,18 @@ import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 import "../chat/styles.css"
 
 
 
 
 interface Message {
-  MessageID: string;
+  messageID: string;
   Sender: string;
   Receiver: string;
   Message: string;
-  Timestamp: string;
+  time: string;
 }
 
 
@@ -45,15 +52,24 @@ function useChatSession() {
   const [chatData, setChatData] = useState({
     sender: "",
     receiver: "",
-    chatHash: "",
+    chatID: "",
+    sessionID: "",  // generate the session id 
     loaded : false,  // the flag to track the load state of the sesion storage
   });
 
   useEffect(() => {
     const sender = sessionStorage.getItem("sender") || "";
     const receiver = sessionStorage.getItem("receiver") || "";
-    const chatHash = sessionStorage.getItem("chatHash") || "";
-    setChatData({ sender, receiver, chatHash , loaded: true});
+    const chatID = sessionStorage.getItem("chatID") || "";
+    let sessionID = sessionStorage.getItem("sessionID");
+    
+     // Generate a new sessionID only if it doesn't exist
+    if (!sessionID) {
+      sessionID = uuidv4();
+      sessionStorage.setItem("sessionID", sessionID);
+    }
+
+    setChatData({ sender, receiver, chatID , sessionID, loaded: true});
   }, []);
 
   return chatData;
@@ -64,7 +80,7 @@ function useChatSession() {
 
 export default function UserChatService() {
   const router = useRouter();
-  const { sender, receiver, chatHash , loaded} = useChatSession();
+  const { sender, receiver, chatID , sessionID , loaded} = useChatSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMsg, setNewMsg] = useState("");
   const [input, setInput] = useState("");
@@ -82,9 +98,9 @@ export default function UserChatService() {
     // Wait for session load
     if (!loaded) return ;
 
-    //console.log("Sender:", sender, "ChatHash:", chatHash); // testing
+    //console.log("Sender:", sender, "ChatID:", chatID); // testing
     // If session is invalid → redirect
-    if (!sender || !chatHash) {
+    if (!sender || !chatID || !sessionID) {
     router.push("/");
     return ;
     
@@ -98,14 +114,14 @@ export default function UserChatService() {
         // dev http://localhost:8080/chat-service/api/v1/users/login   Linux 
         // dev  http://127.0.0.1:8080/chat-service/api/v1/users/login  Mac 
         // prod  http://meabhi.me/chat-service/api/v1/users/login
-        const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
+        const response = await fetch("http://localhost:8050/chat-service/v1/users/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ UserName: sender, hash: chatHash }),
+          body: JSON.stringify({ UserName: sender, ChatID: chatID }),
         });
 
         if (!response.ok) {
-          router.push(`/demo/chatapp/user/${chatHash}/login`);
+          router.push(`/demo/chatapp/user/${chatID}/login`);
         }
       } catch (error) {
         console.error("Login check error:", error);
@@ -113,20 +129,22 @@ export default function UserChatService() {
     };
 
     loginCheck();
-  }, [loaded, sender, chatHash, router]);
+  }, [loaded, sender, chatID, router]);
 
 
     useEffect(() => {
-      if (!chatHash || !sender) return;
+      if (!chatID || !sender) return;
 
       const fetchMessages = async () => {
         try {
-          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+
+          // https://api.meabhi.me/chat-service/v1/users/chat/messages
+          const res = await fetch("http://localhost:8050/chat-service/v1/users/chat/messages", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               UserName: sender,
-              hash: chatHash,
+              hash: chatID,
             }),
           });
 
@@ -143,15 +161,17 @@ export default function UserChatService() {
       };
 
       fetchMessages();
-    }, [chatHash, sender]);
+    }, [chatID, sender]);
 
 
           // Connect to WebSocket
       useEffect(() => {
-          if (!chatHash || !sender) return;
+          if (!chatID || !sender) return;
 
           const ws = new WebSocket(
-            `wss://api.meabhi.me/chat-server/v1/ws/chat?hash=${chatHash}&user=${sender}`
+            // for prod wss://api.meabhi.me/chat-server/v1/ws/chat?hash=${chatID}&user=${sender}
+            // for the dev env ws://localhost:8050/chat-server/v1/ws/chat?hash=${chatID}&user=${sender}
+            `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
           );
 
           ws.onopen = () => {
@@ -181,15 +201,17 @@ export default function UserChatService() {
           return () => {
             ws.close();
           };
-        }, [chatHash, sender]);
+        }, [chatID, sender]);
       
 
       // Send message
       const handleSend = () => {
         if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
 
+        // make the message const diff , add timestamp and messageid when message recievd
+
         const msg = {
-          hash: chatHash,
+          chatID: chatID,
           sender: sender,
           receiver: receiver,
           message: input.trim(),
@@ -253,25 +275,25 @@ export default function UserChatService() {
 
                   return isSender ? (
                     // Sender message (right side)
-                    <Row key={msg.MessageID} className="p-1 m-0">
+                    <Row key={msg.messageID} className="p-1 m-0">
                       <Col></Col>
                       <Col></Col>
                       <Col xs={4} md={4} className="rounded message-box-color input-text d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
                         <p className="mb-0">{msg.Message}</p>
                         <small className=" d-block text-end" style={{ fontSize: "0.7rem" }}>
-                          {new Date(msg.Timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </small>
                       </Col>
                     </Row>
                   ) : (
                     // Receiver message (left side)
-                    <Row key={msg.MessageID} className="p-1 m-0">
+                    <Row key={msg.messageID} className="p-1 m-0">
                       <Col xs={6} md={4} className="rounded button-custom-color d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
                         <p className="mb-0 ">{msg.Message}</p>
                         <small className="d-block text-start " style={{ fontSize: "0.7rem" }}>
-                          {new Date(msg.Timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </small>
                       </Col>
                     </Row>
