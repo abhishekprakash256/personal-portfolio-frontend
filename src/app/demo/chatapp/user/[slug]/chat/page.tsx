@@ -39,7 +39,7 @@ import "../chat/styles.css"
 
 
 interface Message {
-  messageid: number;
+  messageid: number | null;
   sender: string;
   receiver: string;
   message: string;
@@ -82,7 +82,7 @@ export default function UserChatService() {
   const router = useRouter();
   const { sender, receiver, chatID , sessionID , loaded} = useChatSession();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [lastMessageID, setLastMessageID] = useState(0);
+  const [lastMessageID, setLastMessageID] = useState<number | null>(null);
   const [newMsg, setNewMsg] = useState("");
   const [input, setInput] = useState("");
   const wsRef = useRef<WebSocket | null>(null);
@@ -172,62 +172,113 @@ export default function UserChatService() {
 
 
       // Connect to WebSocket
-      useEffect(() => {
-          if (!chatID || !sender) return;
 
-          const ws = new WebSocket(
-            // for prod wss://api.meabhi.me/chat-server/v1/ws/chat?hash=${chatID}&user=${sender}
-            // for the dev env ws://localhost:8050/chat-server/v1/ws/chat?hash=${chatID}&user=${sender}
-            `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
-          );
 
-          ws.onopen = () => {
-            console.log("WebSocket connected");
-          };
+    useEffect(() => {
+      if (!chatID || !sender) return;
 
-          ws.onmessage = (event) => {
-            try {
-              const msgData = JSON.parse(event.data);
-              console.log("New message:", msgData);
-              setMessages((prev) => [...prev, msgData]);
-            } catch (err) {
-              console.error("Error parsing message:", err);
+      const ws = new WebSocket(
+        `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
+      );
+
+      ws.onopen = () => {
+        console.log("WebSocket connected");
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const msgData = JSON.parse(event.data);
+          console.log("New message:", msgData);
+
+          setMessages((prev) => {
+            // Check if it's replacing a temporary message (same sender & same message text)
+            const existingIndex = prev.findIndex(
+              (m) =>
+                m.sender === msgData.sender &&
+                m.message === msgData.message &&
+                m.messageid && m.messageid < 0 // negative temp ID
+            );
+
+            if (existingIndex !== -1) {
+              // Replace temp message with server one
+              const updated = [...prev];
+              updated[existingIndex] = msgData;
+              return updated;
             }
-          };
 
-          ws.onerror = (err) => {
-            console.error("WebSocket error:", err);
-          };
+            // Otherwise append normally
+            return [...prev, msgData];
+          });
 
-          ws.onclose = () => {
-            console.log("WebSocket disconnected");
-          };
+          // Update last real message ID
+          if (msgData.messageid && !isNaN(msgData.messageid)) {
+            setLastMessageID((prev) =>
+              prev ? Math.max(prev, msgData.messageid) : msgData.messageid
+            );
+          }
+        } catch (err) {
+          console.error("Error parsing message:", err);
+        }
+      };
 
-          wsRef.current = ws;
+      ws.onerror = (err) => {
+        console.error("WebSocket error:", err);
+      };
 
-          return () => {
-            ws.close();
-          };
-        }, [chatID, sender]);
-      
+      ws.onclose = () => {
+        console.log("WebSocket disconnected");
+      };
+
+      wsRef.current = ws;
+
+      return () => {
+        ws.close();
+      };
+    }, [chatID, sender]);
+
+          
 
       // Send message
-      const handleSend = () => {
-        if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+    const handleSend = () => {
+      if (
+        !input.trim() ||
+        !wsRef.current ||
+        wsRef.current.readyState !== WebSocket.OPEN
+      ) {
+        return;
+      }
 
-        // make the message const diff , add timestamp and messageid when message recievd
+      // If we already have real IDs from DB, increment them
+      // Otherwise, use a negative ID for temporary unsaved message
+      const tempID =
+        lastMessageID && lastMessageID > 0
+          ? lastMessageID + 1
+          : -(Date.now() % 1000000); // unique negative temp ID
 
-        const msg = {
-          chatID: chatID,
-          sender: sender,
-          receiver: receiver,
-          message: input.trim(),
-        };
-
-        wsRef.current.send(JSON.stringify(msg));
-        console.log(msg);
-        setInput("");
+      const msg = {
+        messageid: tempID,
+        chatid: chatID,
+        sender: sender,
+        receiver: receiver,
+        message: input.trim(),
+        time: new Date().toISOString(), // add time for immediate render
       };
+
+      // Add to local state immediately
+      setMessages((prev) => [...prev, msg]);
+
+      // If we had a real ID, bump the counter
+      if (tempID > 0) {
+        setLastMessageID(tempID);
+      }
+
+      // Send to server
+      wsRef.current.send(JSON.stringify(msg));
+      console.log("Sent message:", msg);
+
+      // Clear input
+      setInput("");
+    };
 
 
 
