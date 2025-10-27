@@ -39,10 +39,10 @@ import "../chat/styles.css"
 
 
 interface Message {
-  messageID: string;
-  Sender: string;
-  Receiver: string;
-  Message: string;
+  messageid: string;
+  sender: string;
+  receiver: string;
+  message: string;
   time: string;
 }
 
@@ -164,7 +164,7 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
 
-          // Connect to WebSocket
+      // Connect to WebSocket
       useEffect(() => {
           if (!chatID || !sender) return;
 
@@ -271,16 +271,16 @@ export default function UserChatService() {
             }} >
 
                 {messages.map((msg) => {
-                  const isSender = msg.Sender === sender;
+                  const isSender = msg.receiver === sender;
 
                   return isSender ? (
                     // Sender message (right side)
-                    <Row key={msg.messageID} className="p-1 m-0">
+                    <Row key={msg.messageid} className="p-1 m-0"> 
                       <Col></Col>
                       <Col></Col>
                       <Col xs={4} md={4} className="rounded message-box-color input-text d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
-                        <p className="mb-0">{msg.Message}</p>
+                        <p className="mb-0">{msg.message}</p>
                         <small className=" d-block text-end" style={{ fontSize: "0.7rem" }}>
                           {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </small>
@@ -288,10 +288,10 @@ export default function UserChatService() {
                     </Row>
                   ) : (
                     // Receiver message (left side)
-                    <Row key={msg.messageID} className="p-1 m-0">
+                    <Row key={msg.messageid} className="p-1 m-0">
                       <Col xs={6} md={4} className="rounded button-custom-color d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
-                        <p className="mb-0 ">{msg.Message}</p>
+                        <p className="mb-0 ">{msg.message}</p>
                         <small className="d-block text-start " style={{ fontSize: "0.7rem" }}>
                           {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </small>
