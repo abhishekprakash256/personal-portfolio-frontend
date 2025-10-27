@@ -39,7 +39,7 @@ import "../chat/styles.css"
 
 
 interface Message {
-  messageid: string;
+  messageid: number;
   sender: string;
   receiver: string;
   message: string;
@@ -82,6 +82,7 @@ export default function UserChatService() {
   const router = useRouter();
   const { sender, receiver, chatID , sessionID , loaded} = useChatSession();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastMessageID, setLastMessageID] = useState(0);
   const [newMsg, setNewMsg] = useState("");
   const [input, setInput] = useState("");
   const wsRef = useRef<WebSocket | null>(null);
@@ -155,6 +156,12 @@ export default function UserChatService() {
 
           const data = await res.json();
           setMessages(data.messages || []);
+        
+        if (data.messages?.length) {
+          const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
+          setLastMessageID(maxID);
+        }
+
         } catch (err) {
           console.error("Error fetching chat:", err);
         }
@@ -271,7 +278,8 @@ export default function UserChatService() {
             }} >
 
                 {messages.map((msg) => {
-                  const isSender = msg.receiver === sender;
+                  
+                  const isSender = msg.sender === sender;
 
                   return isSender ? (
                     // Sender message (right side)
