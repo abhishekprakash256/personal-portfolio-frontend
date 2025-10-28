@@ -172,69 +172,72 @@ export default function UserChatService() {
 
 
       // Connect to WebSocket
+  useEffect(() => {
+  if (!chatID || !sender ) return;
 
+  let ws: WebSocket | null = null;
+  let heartbeatInterval: NodeJS.Timeout | null = null;
+  let reconnectTimeout: NodeJS.Timeout | null = null;
 
-    useEffect(() => {
-      if (!chatID || !sender) return;
+  const connectWebSocket = () => {
+    // Always clear first
+    if (ws) ws.close();
 
-      const ws = new WebSocket(
-        `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
-      );
+    // For prod use wss://
+    ws = new WebSocket(
+      `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
+    );
 
-      ws.onopen = () => {
-        console.log("WebSocket connected");
-      };
+    ws.onopen = () => {
+      console.log(" WebSocket connected");
 
-      ws.onmessage = (event) => {
-        try {
-          const msgData = JSON.parse(event.data);
-          console.log("New message:", msgData);
-
-          setMessages((prev) => {
-            // Check if it's replacing a temporary message (same sender & same message text)
-            const existingIndex = prev.findIndex(
-              (m) =>
-                m.sender === msgData.sender &&
-                m.message === msgData.message &&
-                m.messageid && m.messageid < 0 // negative temp ID
-            );
-
-            if (existingIndex !== -1) {
-              // Replace temp message with server one
-              const updated = [...prev];
-              updated[existingIndex] = msgData;
-              return updated;
-            }
-
-            // Otherwise append normally
-            return [...prev, msgData];
-          });
-
-          // Update last real message ID
-          if (msgData.messageid && !isNaN(msgData.messageid)) {
-            setLastMessageID((prev) =>
-              prev ? Math.max(prev, msgData.messageid) : msgData.messageid
-            );
-          }
-        } catch (err) {
-          console.error("Error parsing message:", err);
+      // Start heartbeat ping every 25s
+      heartbeatInterval = setInterval(() => {
+        if (ws?.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: "ping", sessionID }));
         }
-      };
+      }, 25000);
+    };
 
-      ws.onerror = (err) => {
-        console.error("WebSocket error:", err);
-      };
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
 
-      ws.onclose = () => {
-        console.log("WebSocket disconnected");
-      };
+        // Ignore pongs
+        if (data.type === "pong") return;
 
-      wsRef.current = ws;
+        setMessages((prev) => [...prev, data]);
+      } catch (err) {
+        console.error("Error parsing WebSocket message:", err);
+      }
+    };
 
-      return () => {
-        ws.close();
-      };
-    }, [chatID, sender]);
+    ws.onerror = (err) => {
+      console.error(" WebSocket error:", err);
+      ws?.close();
+    };
+
+    ws.onclose = (e) => {
+      console.warn(" WebSocket closed:", e.reason);
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      // Reconnect after delay
+      reconnectTimeout = setTimeout(() => connectWebSocket(), 3000);
+    };
+
+    wsRef.current = ws;
+  };
+
+  connectWebSocket();
+
+  // Cleanup
+  return () => {
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    if (reconnectTimeout) clearTimeout(reconnectTimeout);
+    ws?.close();
+  };
+}, [chatID, sender, sessionID]);
+
+   
 
           
 
