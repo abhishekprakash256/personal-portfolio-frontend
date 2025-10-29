@@ -59,7 +59,7 @@ export default function TestChatService() {
     lastJsonMessage,
     readyState,
     getWebSocket,
-    } = useWebSocket(socketUrl, {
+    } = useWebSocket<Message>(socketUrl, {
     onOpen: () => console.log('client is connected to server'),
 
    
@@ -72,10 +72,10 @@ export default function TestChatService() {
     React.useEffect(() => {
         if (lastJsonMessage !== null) {
         console.log('Received Object:', lastJsonMessage);
-        //console.log('Message' , lastJsonMessage.message) ;
-        //console.log('Sender' , lastJsonMessage.sender) ;
-        //console.log('Recipient' , lastJsonMessage.receiver) ;
-        //console.log('Time' , lastJsonMessage.time) ;
+        console.log('Message' , lastJsonMessage.message) ;
+        console.log('Sender' , lastJsonMessage.sender) ;
+        console.log('Recipient' , lastJsonMessage.receiver) ;
+        console.log('Time' , lastJsonMessage.time) ;
         }
     }, [lastJsonMessage]);
 
