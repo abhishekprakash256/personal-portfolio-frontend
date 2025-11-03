@@ -46,7 +46,7 @@ export default function TestChatService() {
     const sessionID = "b14d0fe2-7dc7-4544-afd2-d292f48db712" ;
     const chatID = "qQyvvJ9s" ;
     const sender = "ben" ;
-    const recipient = "ben" ; 
+    const recipient = "bob" ; 
 
 
 
