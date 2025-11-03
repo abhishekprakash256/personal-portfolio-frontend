@@ -33,7 +33,6 @@ import { use } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import useWebSocket from 'react-use-websocket';
 import "../chat/styles.css"
 
 
