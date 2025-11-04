@@ -41,10 +41,10 @@ function validateUser(sender: string): { valid: boolean; error?: string; usernam
 async function loginUser(chatID: string, sender: string): Promise<LoginResponse | null> {
   try {
     
-    // dev http://localhost:8050/chat-service/api/v1/users/login   Linux 
-    // dev  http://127.0.0.1:8050/chat-service/api/v1/users/login   Mac 
-    // prod  https://api.meabhi.me/chat-service/api/v1/users/login
-    const response = await fetch("https://api.meabhi.me/chat-service/api/v1/users/login", {
+    // dev http://localhost:8050/chat-service/v1/users/login   Linux 
+    // dev  http://127.0.0.1:8050/chat-service/v1/users/login   Mac 
+    // prod  https://api.meabhi.me/chat-service/v1/users/login
+    const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ UserName: sender, chatID: chatID }),
