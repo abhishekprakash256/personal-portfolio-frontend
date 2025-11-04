@@ -33,7 +33,6 @@ import { use } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import useWebSocket from 'react-use-websocket';  // the use of new websocket
 import "../chat/styles.css"
 
 
@@ -48,7 +47,7 @@ interface Message {
 }
 
 
-// Read the session storage values 
+// Hook to read sessionStorage
 function useChatSession() {
   const [chatData, setChatData] = useState({
     sender: "",
@@ -80,20 +79,12 @@ function useChatSession() {
 
 
 export default function UserChatService() {
-
-  // the main chat function for the user chat session
   const router = useRouter();
-
   const { sender, receiver, chatID , sessionID , loaded} = useChatSession();
-
   const [messages, setMessages] = useState<Message[]>([]);
-
-  const [lastMessageID, setLastMessageID] = useState<number | null>(null);  // handled by the websocket
-
+  const [lastMessageID, setLastMessageID] = useState<number | null>(null);
   const [newMsg, setNewMsg] = useState("");
-
   const [input, setInput] = useState("");
-
   const wsRef = useRef<WebSocket | null>(null);
 
     
@@ -124,7 +115,7 @@ export default function UserChatService() {
         // dev http://localhost:8080/chat-service/api/v1/users/login   Linux 
         // dev  http://127.0.0.1:8080/chat-service/api/v1/users/login  Mac 
         // prod  http://meabhi.me/chat-service/api/v1/users/login
-        const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
+        const response = await fetch("http://localhost:8050/chat-service/v1/users/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ UserName: sender, ChatID: chatID }),
@@ -149,7 +140,7 @@ export default function UserChatService() {
         try {
 
           // https://api.meabhi.me/chat-service/v1/users/chat/messages
-          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+          const res = await fetch("http://localhost:8050/chat-service/v1/users/chat/messages", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -194,7 +185,7 @@ export default function UserChatService() {
 
     // For prod use wss://
     ws = new WebSocket(
-      `wss://api.meabhi.me/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
+      `ws://localhost:8050/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
     );
 
     ws.onopen = () => {
