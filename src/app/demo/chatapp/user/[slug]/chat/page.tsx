@@ -22,6 +22,30 @@ when the connection wll happen always check the value first then make the value 
 
 */
 
+/*
+The chat app page for the user
+
+flow --> 
+
+the chat page checks the session storage data 3 data --> chatID , sender and reciver
+
+if the data is found 
+check the data with the backend server 
+    -> if the data is correct connect to the ws server 
+    -> establish the connection
+
+if the data not found or data is wrong 
+return to the login page 
+
+
+gegnerate the UUID for the session 
+when the connection wll happen always check the value first then make the value and put it
+
+
+
+
+*/
+
 "use client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -96,6 +120,9 @@ export default function UserChatService() {
 
   const wsRef = useRef<WebSocket | null>(null);
 
+  // Inside your component
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
     
   const smoothTransition = {
     duration: 0.5,
@@ -103,8 +130,8 @@ export default function UserChatService() {
   };
 
 
-  // Run login check **after session data is loaded**
-  useEffect(() => {
+    // Run login check **after session data is loaded**
+    useEffect(() => {
     // Wait for session load
     if (!loaded) return ;
 
@@ -180,13 +207,13 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
 
-      // Connect to WebSocket
-  useEffect(() => {
-  if (!chatID || !sender ) return;
+    // Connect to WebSocket
+    useEffect(() => {
+    if (!chatID || !sender ) return;
 
-  let ws: WebSocket | null = null;
-  let heartbeatInterval: NodeJS.Timeout | null = null;
-  let reconnectTimeout: NodeJS.Timeout | null = null;
+    let ws: WebSocket | null = null;
+    let heartbeatInterval: NodeJS.Timeout | null = null;
+    let reconnectTimeout: NodeJS.Timeout | null = null;
 
   const connectWebSocket = () => {
     // Always clear first
@@ -238,15 +265,15 @@ export default function UserChatService() {
 
   connectWebSocket();
 
-  // Cleanup
-  return () => {
-    if (heartbeatInterval) clearInterval(heartbeatInterval);
-    if (reconnectTimeout) clearTimeout(reconnectTimeout);
-    ws?.close();
-  };
-}, [chatID, sender, sessionID]);
+      // Cleanup
+      return () => {
+        if (heartbeatInterval) clearInterval(heartbeatInterval);
+        if (reconnectTimeout) clearTimeout(reconnectTimeout);
+        ws?.close();
+      };
+    }, [chatID, sender, sessionID]);
 
-   
+      
 
           
 
@@ -293,6 +320,14 @@ export default function UserChatService() {
     };
 
 
+    // Whenever messages change, scroll to bottom
+    useEffect(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, [messages]);
+
+
 
   // Optional: show loading state before session is loaded
   if (!loaded) {
@@ -325,9 +360,6 @@ export default function UserChatService() {
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
         /> 
-
-            
-
             <Container>
                 
               {/* Message render*/}
@@ -341,7 +373,8 @@ export default function UserChatService() {
               flexDirection: "row",
             }} >
 
-                {messages.map((msg) => {
+            
+            {messages.map((msg) => {
                   
                   const isSender = msg.sender === sender;
 
@@ -372,11 +405,13 @@ export default function UserChatService() {
                   );
                 })}
 
+                <div ref={messagesEndRef} />
+
               </Row>
 
  
 
-                </Container>
+          </Container>
               
           <Container>
 
