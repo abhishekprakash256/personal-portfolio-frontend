@@ -349,7 +349,7 @@ export default function UserChatService() {
                     <Row key={msg.messageid} className="p-1 m-0"> 
                       <Col></Col>
                       <Col></Col>
-                      <Col xs={4} md={4} className="rounded message-box-color input-text d-inline-block pt-1 pb-1"
+                      <Col xs={4} md={4} className="rounded-start rounded-top message-box-color input-text d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
                         <p className="mb-0">{msg.message}</p>
                         <small className=" d-block text-end" style={{ fontSize: "0.7rem" }}>
@@ -360,7 +360,7 @@ export default function UserChatService() {
                   ) : (
                     // Receiver message (left side)
                     <Row key={msg.messageid} className="p-1 m-0">
-                      <Col xs={6} md={4} className="rounded button-custom-color d-inline-block pt-1 pb-1"
+                      <Col xs={6} md={4} className="rounded-end rounded-top button-custom-color d-inline-block pt-1 pb-1"
                       style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
                         <p className="mb-0 ">{msg.message}</p>
                         <small className="d-block text-start " style={{ fontSize: "0.7rem" }}>
