@@ -334,8 +334,9 @@ export default function UserChatService() {
 
               <Row className="rounded background-color-body mt-3 p-2 text-center" 
               style={{
-              height: "600px",             // fixed height (adjust as needed)
-              overflowY: "auto",           // enable vertical scrolling
+              minHeight: "200px",        // minimum height
+              maxHeight: "600px",        // maximum height
+              overflowY: "auto",         // enable vertical scrolling
               display: "flex",
               flexDirection: "row",
             }} >
@@ -390,13 +391,15 @@ export default function UserChatService() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-box-color input-text"
+            style={{ width: "auto" }}
           />
                   
           </Col>
+          
 
           <Col>
 
-            <Button type="submit" className="button-custom-color m-1" onClick={handleSend} >
+            <Button type="submit" className="button-custom-color m-1 " onClick={handleSend} >
                 Send 
               </Button>
 
