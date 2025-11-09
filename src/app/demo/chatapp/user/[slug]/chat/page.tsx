@@ -198,13 +198,28 @@ export default function UserChatService() {
 
   const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages);
 
+  // ---- at top of component ----
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+
   // ---------------------------
   // Scroll to bottom on new message
   // ---------------------------
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  //useEffect(() => {
+  //  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  //}, [messages]);
 
+
+  // ---- inside useEffect -----
+  useEffect(() => {
+    const container = messageContainerRef.current;
+    if (!container) return;
+
+    // Scroll only inside the message container
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
 
 
     // Run login check **after session data is loaded**
@@ -361,8 +376,9 @@ export default function UserChatService() {
         <Container>
                 
           {/* Message render*/}
-
-          <Row className="rounded background-color-body mt-3 p-2 text-center" 
+          
+          {/*
+         <Row className="rounded background-color-body mt-3 p-2 text-center" 
               style={{
               minHeight: "200px",        // minimum height
               maxHeight: "600px",        // maximum height
@@ -405,7 +421,67 @@ export default function UserChatService() {
 
                 <div ref={messagesEndRef} />
 
-              </Row>
+          </Row>
+
+          */}
+
+          {/* The new Message box*/}
+          <Row
+            ref={messageContainerRef}
+            className="rounded background-color-body mt-3 p-2 text-center"
+            style={{
+              minHeight: "200px",        // minimum height
+              maxHeight: "600px",        // maximum height
+              overflowY: "auto",         // enable vertical scrolling
+              display: "flex",
+              flexDirection: "row",   // must be column for vertical layout
+            }}
+            >
+
+            {messages.map((msg) => {
+              const isSender = msg.sender === sender;
+
+              return isSender ? (
+                <Row key={msg.messageid} className="p-1 m-0">
+                  <Col></Col>
+                  <Col></Col>
+                  <Col
+                    xs={4}
+                    md={4}
+                    className="rounded-start rounded-top message-box-color input-text d-inline-block pt-1 pb-1"
+                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
+                  >
+                    <p className="mb-0">{msg.message}</p>
+                    <small className="d-block text-end" style={{ fontSize: "0.7rem" }}>
+                      {new Date(msg.time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </small>
+                  </Col>
+                </Row>
+              ) : (
+                <Row key={msg.messageid} className="p-1 m-0">
+                  <Col
+                    xs={6}
+                    md={4}
+                    className="rounded-end rounded-top button-custom-color d-inline-block pt-1 pb-1"
+                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
+                  >
+                    <p className="mb-0">{msg.message}</p>
+                    <small className="d-block text-start" style={{ fontSize: "0.7rem" }}>
+                      {new Date(msg.time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </small>
+                  </Col>
+                </Row>
+              );
+            })}
+
+            <div ref={messagesEndRef} />
+          </Row>
 
 
           </Container>
