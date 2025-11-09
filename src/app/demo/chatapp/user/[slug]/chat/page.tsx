@@ -204,12 +204,6 @@ export default function UserChatService() {
   // ---------------------------
   // Scroll to bottom on new message
   // ---------------------------
-  //useEffect(() => {
-  //  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  //}, [messages]);
-
-
-  // ---- inside useEffect -----
   useEffect(() => {
     const container = messageContainerRef.current;
     if (!container) return;
@@ -219,21 +213,21 @@ export default function UserChatService() {
       top: container.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages]);
+    }, [messages]);
 
 
-    // Run login check **after session data is loaded**
-    useEffect(() => {
-    // Wait for session load
-    if (!loaded) return ;
+  // Run login check **after session data is loaded**
+  useEffect(() => {
+  // Wait for session load
+  if (!loaded) return ;
 
-    //console.log("Sender:", sender, "ChatID:", chatID); // testing
-    // If session is invalid → redirect
-    if (!sender || !chatID || !sessionID) {
-    router.push("/");
-    return ;
-    
-    }
+  //console.log("Sender:", sender, "ChatID:", chatID); // testing
+  // If session is invalid → redirect
+  if (!sender || !chatID || !sessionID) {
+  router.push("/");
+  return ;
+  
+  }
 
   // Call API to verify login
   const loginCheck = async () => {
@@ -459,7 +453,6 @@ export default function UserChatService() {
           />
                   
           </Col>
-          
 
           <Col>
 
