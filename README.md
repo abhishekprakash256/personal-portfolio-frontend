@@ -43,7 +43,7 @@ run dev
 
 - tiny url service runs on 5050
 
-- chat sever runs in port 8050 
+- chat sever runs in port 8050    
 
 
 
