@@ -138,6 +138,8 @@ function useChatWebSocket(
       wsRef.current.onmessage = (event) => {
         try {
           const data: Message & { type?: string } = JSON.parse(event.data);
+
+          console.log(data) ; // testing 
           if (data.type === "pong") return; // ignore heartbeat
 
           console.log("Incoming message:", data);  // Testing the incoming message 
@@ -280,8 +282,19 @@ export default function UserChatService() {
           console.error("Error fetching chat:", err);
         }
       };
+    
 
+    // Run the fetch message in 
+    fetchMessages();
+    
+    // Then run every 10 seconds
+    const interval = setInterval(() => {
       fetchMessages();
+    }, 10000); // 10 seconds
+
+    // Cleanup on unmount or dependency change
+    return () => clearInterval(interval);
+
     }, [chatID, sender]);
 
 
