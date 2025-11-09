@@ -144,7 +144,6 @@ function useChatWebSocket(
 
           setMessages((prev) => [...prev, data]);
           
-
         } catch (err) {
           console.error("WebSocket parse error:", err);
         }
@@ -410,6 +409,13 @@ export default function UserChatService() {
             placeholder="Enter the Message"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault(); // prevent newline
+             handleSend();       // send message
+            }
+            }}
+
             className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-box-color input-text"
             style={{ width: "auto" }}
           />
