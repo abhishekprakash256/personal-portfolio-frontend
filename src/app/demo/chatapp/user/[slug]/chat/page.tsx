@@ -65,6 +65,7 @@ import "../chat/styles.css"
 
 interface Message {
   messageid: number | null;
+  chatid : string;
   sender: string;
   receiver: string;
   message: string;
@@ -101,7 +102,83 @@ function useChatSession() {
 }
 
 
+// ---------------------------
+// Custom hook: WebSocket
+// ---------------------------
+function useChatWebSocket(
+  chatID: string,
+  sender: string,
+  sessionID: string,
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>
+) {
+  const wsRef = useRef<WebSocket | null>(null);
+  const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
+  const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    if (!chatID || !sender || !sessionID) return;
+
+    const connect = () => {
+      wsRef.current?.close();
+
+      wsRef.current = new WebSocket(
+        `wss://api.meabhi.me/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
+      );
+
+      wsRef.current.onopen = () => {
+        console.log("WebSocket connected");
+
+        heartbeatInterval.current = setInterval(() => {
+          if (wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: "ping", sessionID }));
+          }
+        }, 15000);
+      };
+
+      wsRef.current.onmessage = (event) => {
+        try {
+          const data: Message & { type?: string } = JSON.parse(event.data);
+          if (data.type === "pong") return; // ignore heartbeat
+
+          console.log("Incoming message:", data);  // Testing the incoming message 
+
+          setMessages((prev) => [...prev, data]);
+          
+
+        } catch (err) {
+          console.error("WebSocket parse error:", err);
+        }
+      };
+
+      wsRef.current.onerror = (err) => {
+        console.error("WebSocket error:", err);
+        wsRef.current?.close();
+      };
+
+      wsRef.current.onclose = (e) => {
+        console.warn("WebSocket closed:", e.reason);
+        heartbeatInterval.current && clearInterval(heartbeatInterval.current);
+        reconnectTimeout.current = setTimeout(connect, 3000);
+      };
+    };
+
+    connect();
+
+    return () => {
+      heartbeatInterval.current && clearInterval(heartbeatInterval.current);
+      reconnectTimeout.current && clearTimeout(reconnectTimeout.current);
+      wsRef.current?.close();
+    };
+  }, [chatID, sender, sessionID]);
+
+  return wsRef;
+}
+
+
+
+
+
+// The function for the main message parsing
 
 export default function UserChatService() {
 
@@ -114,20 +191,19 @@ export default function UserChatService() {
 
   const [lastMessageID, setLastMessageID] = useState<number | null>(null);  // handled by the websocket
 
-  const [newMsg, setNewMsg] = useState("");
-
   const [input, setInput] = useState("");
 
-  const wsRef = useRef<WebSocket | null>(null);
-
-  // Inside your component
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-    
-  const smoothTransition = {
-    duration: 0.5,
-    ease: easeInOut,
-  };
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages);
+
+  // ---------------------------
+  // Scroll to bottom on new message
+  // ---------------------------
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
 
 
     // Run login check **after session data is loaded**
@@ -143,36 +219,39 @@ export default function UserChatService() {
     
     }
 
-    // Call API to verify login
-    const loginCheck = async () => {
+  // Call API to verify login
+  const loginCheck = async () => {
 
-      try {
+    try {
 
-        // dev http://localhost:8080/chat-service/api/v1/users/login   Linux 
-        // dev  http://127.0.0.1:8080/chat-service/api/v1/users/login  Mac 
-        // prod  http://meabhi.me/chat-service/api/v1/users/login
-        const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ UserName: sender, ChatID: chatID }),
-        });
+      // dev http://localhost:8080/chat-service/api/v1/users/login   Linux 
+      // dev  http://127.0.0.1:8080/chat-service/api/v1/users/login  Mac 
+      // prod  http://meabhi.me/chat-service/api/v1/users/login
+      const response = await fetch("https://api.meabhi.me/chat-service/v1/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ UserName: sender, ChatID: chatID }),
+      });
 
-        if (!response.ok) {
-          router.push(`/demo/chatapp/user/${chatID}/login`);
-        }
-      } catch (error) {
-        console.error("Login check error:", error);
+      if (!response.ok) {
+        router.push(`/demo/chatapp/user/${chatID}/login`);
       }
-    };
+    } catch (error) {
+      console.error("Login check error:", error);
+    }
+  };
 
     loginCheck();
   }, [loaded, sender, chatID, router]);
 
+  // ---------------------------
+  // Fetch previous messages
+  // ---------------------------
+  useEffect(() => {
+      
+    if (!chatID || !sender) return;
 
-    useEffect(() => {
-      if (!chatID || !sender) return;
-
-      const fetchMessages = async () => {
+    const fetchMessages = async () => {
         try {
 
           // https://api.meabhi.me/chat-service/v1/users/chat/messages
@@ -207,126 +286,33 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
 
-    // Connect to WebSocket
-    useEffect(() => {
-    if (!chatID || !sender ) return;
-
-    let ws: WebSocket | null = null;
-    let heartbeatInterval: NodeJS.Timeout | null = null;
-    let reconnectTimeout: NodeJS.Timeout | null = null;
-
-  const connectWebSocket = () => {
-    // Always clear first
-    if (ws) ws.close();
-
-    // For prod use wss://
-    ws = new WebSocket(
-      `wss://api.meabhi.me/chat-server/v1/ws/chat?chatID=${chatID}&sessionID=${sessionID}&user=${sender}`
-    );
-
-    ws.onopen = () => {
-      console.log(" WebSocket connected");
-
-      // Start heartbeat ping every 25s
-      heartbeatInterval = setInterval(() => {
-        if (ws?.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "ping", sessionID }));
-        }
-      }, 25000);
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-
-        // Ignore pongs
-        if (data.type === "pong") return;
-
-        setMessages((prev) => [...prev, data]);
-      } catch (err) {
-        console.error("Error parsing WebSocket message:", err);
-      }
-    };
-
-    ws.onerror = (err) => {
-      console.error(" WebSocket error:", err);
-      ws?.close();
-    };
-
-    ws.onclose = (e) => {
-      console.warn(" WebSocket closed:", e.reason);
-      if (heartbeatInterval) clearInterval(heartbeatInterval);
-      // Reconnect after delay
-      reconnectTimeout = setTimeout(() => connectWebSocket(), 3000);
-    };
-
-    wsRef.current = ws;
-  };
-
-  connectWebSocket();
-
-      // Cleanup
-      return () => {
-        if (heartbeatInterval) clearInterval(heartbeatInterval);
-        if (reconnectTimeout) clearTimeout(reconnectTimeout);
-        ws?.close();
-      };
-    }, [chatID, sender, sessionID]);
-
-      
-
-          
-
-      // Send message
+    // ---------------------------
+    // Send new message
+    // ---------------------------
     const handleSend = () => {
-      if (
-        !input.trim() ||
-        !wsRef.current ||
-        wsRef.current.readyState !== WebSocket.OPEN
-      ) {
+      if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN)
         return;
-      }
 
-      // If we already have real IDs from DB, increment them
-      // Otherwise, use a negative ID for temporary unsaved message
-      const tempID =
-        lastMessageID && lastMessageID > 0
-          ? lastMessageID + 1
-          : -(Date.now() % 1000000); // unique negative temp ID
+      const tempID = lastMessageID && lastMessageID > 0
+        ? lastMessageID + 1
+        : -(Date.now() % 1000000);
 
-      const msg = {
+      const msg: Message = {
         messageid: tempID,
-        chatid: chatID,
-        sender: sender,
-        receiver: receiver,
+        chatid :  chatID,
+        sender,
+        receiver,
         message: input.trim(),
-        time: new Date().toISOString(), // add time for immediate render
+        time: new Date().toISOString(),
       };
 
-      // Add to local state immediately
+      console.log(msg) ; //test the sending message ------------------
+
       setMessages((prev) => [...prev, msg]);
-
-      // If we had a real ID, bump the counter
-      if (tempID > 0) {
-        setLastMessageID(tempID);
-      }
-
-      // Send to server
+      tempID > 0 && setLastMessageID(tempID);
       wsRef.current.send(JSON.stringify(msg));
-      console.log("Sent message:", msg);
-
-      // Clear input
       setInput("");
     };
-
-
-    // Whenever messages change, scroll to bottom
-    useEffect(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, [messages]);
-
 
 
   // Optional: show loading state before session is loaded
@@ -360,11 +346,11 @@ export default function UserChatService() {
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
         /> 
-            <Container>
+        <Container>
                 
-              {/* Message render*/}
+          {/* Message render*/}
 
-              <Row className="rounded background-color-body mt-3 p-2 text-center" 
+          <Row className="rounded background-color-body mt-3 p-2 text-center" 
               style={{
               minHeight: "200px",        // minimum height
               maxHeight: "600px",        // maximum height
@@ -409,7 +395,6 @@ export default function UserChatService() {
 
               </Row>
 
- 
 
           </Container>
               
@@ -442,34 +427,7 @@ export default function UserChatService() {
 
         </Row>
 
-
-        
-        {/*  
-       <Row className="rounded background-color-body text-center mt-3 p-2">
-          <Col>
-
-            <Button type="submit" className="button-custom-color m-1" >
-                Logout 
-              </Button>
-
-          </Col>
-
-            <Col>
-
-            <Button type="submit" className="button-custom-color m-1" >
-                Endchat 
-              </Button>
-
-          </Col>
-
-       
-
-          </Row>
-
-           */}
-
-           
-            
+ 
         </Container>
         <SpaceBlock></SpaceBlock>
 
