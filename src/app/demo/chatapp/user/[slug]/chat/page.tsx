@@ -374,56 +374,6 @@ export default function UserChatService() {
           }`}
         /> 
         <Container>
-                
-          {/* Message render*/}
-          
-          {/*
-         <Row className="rounded background-color-body mt-3 p-2 text-center" 
-              style={{
-              minHeight: "200px",        // minimum height
-              maxHeight: "600px",        // maximum height
-              overflowY: "auto",         // enable vertical scrolling
-              display: "flex",
-              flexDirection: "row",
-            }} >
-
-            
-            {messages.map((msg) => {
-                  
-                  const isSender = msg.sender === sender;
-
-                  return isSender ? (
-                    // Sender message (right side)
-                    <Row key={msg.messageid} className="p-1 m-0"> 
-                      <Col></Col>
-                      <Col></Col>
-                      <Col xs={4} md={4} className="rounded-start rounded-top message-box-color input-text d-inline-block pt-1 pb-1"
-                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
-                        <p className="mb-0">{msg.message}</p>
-                        <small className=" d-block text-end" style={{ fontSize: "0.7rem" }}>
-                          {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </small>
-                      </Col>
-                    </Row>
-                  ) : (
-                    // Receiver message (left side)
-                    <Row key={msg.messageid} className="p-1 m-0">
-                      <Col xs={6} md={4} className="rounded-end rounded-top button-custom-color d-inline-block pt-1 pb-1"
-                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}>
-                        <p className="mb-0 ">{msg.message}</p>
-                        <small className="d-block text-start " style={{ fontSize: "0.7rem" }}>
-                          {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </small>
-                      </Col>
-                    </Row>
-                  );
-                })}
-
-                <div ref={messagesEndRef} />
-
-          </Row>
-
-          */}
 
           {/* The new Message box*/}
           <Row
@@ -482,7 +432,6 @@ export default function UserChatService() {
 
             <div ref={messagesEndRef} />
           </Row>
-
 
           </Container>
               
