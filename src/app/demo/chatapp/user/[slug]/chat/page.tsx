@@ -466,6 +466,31 @@ export default function UserChatService() {
 
  
         </Container>
+            
+        {/* Added for button */}
+          <Container>
+            <Row className="rounded background-color-body mt-3 p-2 text-center">
+              <Col>
+                <Button
+                  type="submit"
+                  className="button-custom-color me-3 m-1"
+                  //onClick={}
+                >
+                  Logout
+                </Button>
+
+                <Button
+                  type="submit"
+                  className="button-custom-color m-1"
+                  //onClick={handleSend}
+                >
+                  Endchat
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+
+        {/*------------*/}
         <SpaceBlock></SpaceBlock>
 
       </CustomBody>
