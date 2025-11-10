@@ -206,7 +206,7 @@ async function handleLogout(setLogoutMessage : any , router : any) {
     const userName = sessionStorage.getItem("sender");
 
     if (!chatID || !sessionID || !userName) {
-      setLogoutMessage("Missing session information. Please try again.");
+      setLogoutMessage("Missing session information logout failed. Please try again.");
       setTimeout(() => setLogoutMessage(""), 3000);
       return;
     }
@@ -249,7 +249,7 @@ async function handleLogout(setLogoutMessage : any , router : any) {
   } catch (error) {
     console.error("Logout error:", error);
     //alert("An error occurred while logging out. Please try again.");
-    setLogoutMessage("An error occurred while logging out. Please try again.");
+    setLogoutMessage("An error occurred while logging out failed. Please try again.");
     setTimeout(() => setLogoutMessage(""), 3000);
   }
 
@@ -592,8 +592,8 @@ export default function UserChatService() {
                     <Col>
                       <p
                         className={
-                          logoutMessage.includes("failed")
-                            ? "text-danger"
+                         logoutMessage.toLowerCase().includes("failed")
+                            ? "text-danger bold"
                             : "text-success"
                         }
                       >
