@@ -207,6 +207,7 @@ async function handleLogout(setLogoutMessage : any , router : any) {
 
     if (!chatID || !sessionID || !userName) {
       setLogoutMessage("Missing session information. Please try again.");
+      setTimeout(() => setLogoutMessage(""), 3000);
       return;
     }
 
@@ -243,11 +244,13 @@ async function handleLogout(setLogoutMessage : any , router : any) {
       const message = data.message || "Logout failed due to unknown error.";
       //alert(`Logout failed: ${message}`);
       setLogoutMessage(`Logout failed: ${message}`);
+      setTimeout(() => setLogoutMessage(""), 3000);
     }
   } catch (error) {
     console.error("Logout error:", error);
     //alert("An error occurred while logging out. Please try again.");
     setLogoutMessage("An error occurred while logging out. Please try again.");
+    setTimeout(() => setLogoutMessage(""), 3000);
   }
 
 
@@ -277,6 +280,14 @@ export default function UserChatService() {
 
   // ---- at top of component ----
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
+
+
+  // the smooth animation
+  const smoothTransition = {
+    duration: 0.5,
+    ease: easeInOut,
+  };
+
 
   // ---------------------------
   // Scroll to bottom on new message
@@ -568,15 +579,31 @@ export default function UserChatService() {
               </Col>
             </Row>
 
+            <AnimatePresence>
               {logoutMessage && (
-              <Row className="text-center mt-3">
-                <Col>
-                  <p className={logoutMessage.includes("failed") ? "text-danger" : "text-success"}>
-                    {logoutMessage}
-                  </p>
-                </Col>
-              </Row>
-            )}
+                <motion.div
+                  key="logoutMessage"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row className="text-center mt-3">
+                    <Col>
+                      <p
+                        className={
+                          logoutMessage.includes("failed")
+                            ? "text-danger"
+                            : "text-success"
+                        }
+                      >
+                        {logoutMessage}
+                      </p>
+                    </Col>
+                  </Row>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
 
           </Container>
