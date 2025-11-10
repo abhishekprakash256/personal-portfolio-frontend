@@ -178,6 +178,81 @@ function useChatWebSocket(
 
 
 
+async function handleLogout(setLogoutMessage : any , router : any) {
+  // The function to logout the user
+  // hit the link chat-service/v1/users/logut a post request
+  /*
+  ChatID string `json:"ChatID"`
+	SessionID string `json:"SessionID"`
+	UserName string `json:"UserName"`
+  */
+
+  /*
+	Status string `json:"status"`
+	Code   int    `json:"code"`
+	Message string `json:"message"`
+  */
+  // if get succesfull json clear the session values 
+  // redirect the user to homepage 
+
+  // if get the error json 
+  // show the error message logout has failed
+
+
+  try {
+    // Read required session values
+    const chatID = sessionStorage.getItem("chatID");
+    const sessionID = sessionStorage.getItem("sessionID");
+    const userName = sessionStorage.getItem("sender");
+
+    if (!chatID || !sessionID || !userName) {
+      setLogoutMessage("Missing session information. Please try again.");
+      return;
+    }
+
+    // Prepare logout request body
+    const body = {
+      ChatID: chatID,
+      SessionID: sessionID,
+      UserName: userName,
+    };
+
+    // Make POST request to logout endpoint
+    const response = await fetch("https://api.meabhi.me/chat-service/v1/users/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    // Parse response JSON
+    const data = await response.json();
+
+    if (response.ok && data.status?.toLowerCase() === "success") {
+      // Logout successful — clear session
+      sessionStorage.removeItem("sender");
+      sessionStorage.removeItem("receiver");
+      sessionStorage.removeItem("chatID");
+      sessionStorage.removeItem("sessionID");
+
+      setLogoutMessage("Logout Successful!");
+
+      //alert("Logout successful!");
+      setTimeout(() => (router.push(`/`)), 2000);
+    } else {
+      // Logout failed — show error message
+      const message = data.message || "Logout failed due to unknown error.";
+      //alert(`Logout failed: ${message}`);
+      setLogoutMessage(`Logout failed: ${message}`);
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+    //alert("An error occurred while logging out. Please try again.");
+    setLogoutMessage("An error occurred while logging out. Please try again.");
+  }
+
+
+}
+
 
 // The function for the main message parsing
 
@@ -197,6 +272,8 @@ export default function UserChatService() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages);
+
+  const [logoutMessage, setLogoutMessage] = useState("");
 
   // ---- at top of component ----
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -474,7 +551,8 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color me-3 m-1"
-                  //onClick={}
+                  onClick={() => handleLogout(setLogoutMessage , router)} // pass setter
+                  
                 >
                   Logout
                 </Button>
@@ -482,12 +560,25 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color m-1"
-                  //onClick={handleSend}
+                  //onClick={() => handleLogout(setLogoutMessage)} // pass setter
                 >
                   Endchat
                 </Button>
+
               </Col>
             </Row>
+
+              {logoutMessage && (
+              <Row className="text-center mt-3">
+                <Col>
+                  <p className={logoutMessage.includes("failed") ? "text-danger" : "text-success"}>
+                    {logoutMessage}
+                  </p>
+                </Col>
+              </Row>
+            )}
+
+
           </Container>
 
         {/*------------*/}
