@@ -122,8 +122,8 @@
 
 .message-input-box-color {
    background-color: var(--footer-background-color);
+   color: var(--text-color);
 }
-
 
 .message-bubble-color-reciever {
   background-color: var(--message-bubble-color-recv);

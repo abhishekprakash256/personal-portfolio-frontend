@@ -525,7 +525,7 @@ export default function UserChatService() {
               );
             })}
 
-            <div ref={messagesEndRef} />
+            <div ref={messageContainerRef} />
           </Row>
 
           </Container>
