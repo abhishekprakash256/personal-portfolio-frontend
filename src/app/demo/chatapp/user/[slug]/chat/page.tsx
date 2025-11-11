@@ -278,6 +278,8 @@ export default function UserChatService() {
 
   const [logoutMessage, setLogoutMessage] = useState("");
 
+  const [messageLength, setMessageLengthError] = useState("");
+
   // ---- at top of component ----
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -405,6 +407,17 @@ export default function UserChatService() {
       const tempID = lastMessageID && lastMessageID > 0
         ? lastMessageID + 1
         : -(Date.now() % 1000000);
+
+      // The input length is set to 4096
+      if (input.length > 4096) {
+
+        console.log("Message too long! Please keep under 4096 characters.");
+        setMessageLengthError("Failed to send. Message too long! Please keep under 4096 characters.");
+        setTimeout(() => setMessageLengthError(""), 3000);
+        
+        return;
+      }
+
 
       const msg: Message = {
         messageid: tempID,
@@ -599,6 +612,34 @@ export default function UserChatService() {
                       >
                         {logoutMessage}
                       </p>
+                    </Col>
+                  </Row>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              
+              {messageLength && (
+                <motion.div
+                  key="messageLength"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row className="text-center mt-3">
+                    <Col>
+                      <p
+                        className={
+                         messageLength.toLowerCase().includes("failed")
+                            ? "text-danger bold"
+                            : "text-success"
+                        }
+                      >
+                        {messageLength}
+                      </p>
+
                     </Col>
                   </Row>
                 </motion.div>
