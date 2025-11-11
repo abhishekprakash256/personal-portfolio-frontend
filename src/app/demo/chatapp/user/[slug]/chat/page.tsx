@@ -109,13 +109,15 @@ function useChatWebSocket(
   chatID: string,
   sender: string,
   sessionID: string,
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>> ,
+  setReconnect : any
 ) {
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+
     if (!chatID || !sender || !sessionID) return;
 
     const connect = () => {
@@ -160,6 +162,8 @@ function useChatWebSocket(
         console.warn("WebSocket closed:", e.reason);
         heartbeatInterval.current && clearInterval(heartbeatInterval.current);
         reconnectTimeout.current = setTimeout(connect, 3000);
+
+        setReconnect("Failed to connect, try reconnect") ; // set the reconnect message
       };
     };
 
@@ -266,15 +270,15 @@ export default function UserChatService() {
 
   const { sender, receiver, chatID , sessionID , loaded} = useChatSession();
 
+  const [reconnectMessage, setReconnect] = useState("");   // the reconnect message
+
   const [messages, setMessages] = useState<Message[]>([]);
 
   const [lastMessageID, setLastMessageID] = useState<number | null>(null);  // handled by the websocket
 
   const [input, setInput] = useState("");
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages);
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect);  // passed set reconnect
 
   const [logoutMessage, setLogoutMessage] = useState("");
 
@@ -412,7 +416,7 @@ export default function UserChatService() {
     // Then run every 10 seconds
     const interval = setInterval(() => {
       fetchMessages();
-      console.log("Message refresh done"); 
+      console.log("Message refresh done");   // print even if failed 
     }, 10000); // 10 seconds
 
     // Cleanup on unmount or dependency change
@@ -663,6 +667,35 @@ export default function UserChatService() {
                         }
                       >
                         {messageLength}
+                      </p>
+
+                    </Col>
+                  </Row>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+        
+          <AnimatePresence>
+
+              {reconnectMessage && (
+                <motion.div
+                  key="reconnectMessage"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row className="text-center mt-3">
+                    <Col>
+                      <p
+                        className={
+                         reconnectMessage.toLowerCase().includes("failed")
+                            ? "text-danger bold"
+                            : "text-success"
+                        }
+                      >
+                        {reconnectMessage}
                       </p>
 
                     </Col>
