@@ -298,12 +298,18 @@ export default function UserChatService() {
     const container = messageContainerRef.current;
     if (!container) return;
 
-    // Scroll only inside the message container
-    container.scrollTo({
-      top: container.scrollHeight,
-      behavior: "smooth",
-    });
-    }, [messages]);
+    // Check if user is near the bottom before auto-scrolling
+    const isNearBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (isNearBottom) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
 
 
   // Run login check **after session data is loaded**
@@ -389,6 +395,7 @@ export default function UserChatService() {
     // Then run every 10 seconds
     const interval = setInterval(() => {
       fetchMessages();
+      console.log("Message refresh done...."); 
     }, 10000); // 10 seconds
 
     // Cleanup on unmount or dependency change
