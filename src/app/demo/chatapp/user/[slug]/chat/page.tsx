@@ -310,7 +310,7 @@ export default function UserChatService() {
     if (firstLoadRef.current) {
       container.scrollTo({
         top: container.scrollHeight,
-        behavior: "smooth", // instant, no animation
+        behavior: "auto", // instant, no animation
       });
       firstLoadRef.current = false;
       return;
