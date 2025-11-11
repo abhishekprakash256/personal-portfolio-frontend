@@ -284,6 +284,8 @@ export default function UserChatService() {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
 
+
+
   // the smooth animation
   const smoothTransition = {
     duration: 0.5,
@@ -291,17 +293,30 @@ export default function UserChatService() {
   };
 
 
+
   // ---------------------------
   // Scroll to bottom on new message
   // ---------------------------
+  const firstLoadRef = useRef(true);
+
   useEffect(() => {
     const container = messageContainerRef.current;
     if (!container) return;
 
-    // Check if user is near the bottom before auto-scrolling
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 100;
 
+    // On first load, scroll instantly to bottom
+    if (firstLoadRef.current) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth", // instant, no animation
+      });
+      firstLoadRef.current = false;
+      return;
+    }
+
+    // On new messages, only auto-scroll if user is near bottom
     if (isNearBottom) {
       container.scrollTo({
         top: container.scrollHeight,
@@ -309,6 +324,8 @@ export default function UserChatService() {
       });
     }
   }, [messages]);
+
+
 
 
 
@@ -489,6 +506,7 @@ export default function UserChatService() {
               flexDirection: "row",   // must be column for vertical layout
             }}
             >
+              
 
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
