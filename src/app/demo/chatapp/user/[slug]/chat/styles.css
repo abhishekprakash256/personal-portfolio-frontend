@@ -120,6 +120,11 @@
 }
 
 
+.message-box-color-reciever {
+  background-color: var(--message-bubble-color-recv);
+  color: var(--background-color);
+}
+
 .input-text {
   color: var(--text-color);
 }

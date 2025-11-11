@@ -510,7 +510,7 @@ export default function UserChatService() {
                   <Col
                     xs={6}
                     md={4}
-                    className="rounded-end rounded-top button-custom-color d-inline-block pt-1 pb-1"
+                    className="rounded-end rounded-top message-box-color-reciever d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
                   >
                     <p className="mb-0 text-start">{msg.message}</p>
