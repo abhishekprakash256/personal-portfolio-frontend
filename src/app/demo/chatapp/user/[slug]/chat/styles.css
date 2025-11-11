@@ -115,13 +115,17 @@
   }
 
 
-.message-box-color-sender {
+.message-bubble-color-sender {
    background-color: var(--footer-background-color);
    color: var(--text-color);
 }
 
+.message-input-box-color {
+   background-color: var(--footer-background-color);
+}
 
-.message-box-color-reciever {
+
+.message-bubble-color-reciever {
   background-color: var(--message-bubble-color-recv);
   color: var(--background-color);
 }

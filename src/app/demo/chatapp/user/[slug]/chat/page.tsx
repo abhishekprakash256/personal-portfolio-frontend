@@ -493,7 +493,7 @@ export default function UserChatService() {
                   <Col
                     xs={4}
                     md={4}
-                    className="rounded-start rounded-top message-box-color-sender d-inline-block pt-1 pb-1"
+                    className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
                   >
                     <p className="mb-0 text-end">{msg.message}</p>
@@ -510,11 +510,11 @@ export default function UserChatService() {
                   <Col
                     xs={6}
                     md={4}
-                    className="rounded-end rounded-top message-box-color-reciever d-inline-block pt-1 pb-1"
+                    className="rounded-end rounded-top message-bubble-color-reciever d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
                   >
                     <p className="mb-0 text-start">{msg.message}</p>
-                    <small className="d-block text-start" style={{ fontSize: "0.7rem" ,  opacity: 0.6 }}>
+                    <small className="d-block text-start" style={{ fontSize: "0.7rem" ,opacity: 0.6 }}>
                       {new Date(msg.time).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -549,7 +549,7 @@ export default function UserChatService() {
             }
             }}
 
-            className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-box-color input-text"
+            className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-input-box-color input-text"
             style={{ width: "auto" }}
           />
                   
