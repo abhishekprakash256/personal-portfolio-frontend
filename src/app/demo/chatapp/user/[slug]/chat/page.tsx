@@ -395,7 +395,7 @@ export default function UserChatService() {
     // Then run every 10 seconds
     const interval = setInterval(() => {
       fetchMessages();
-      console.log("Message refresh done...."); 
+      console.log("Message refresh done"); 
     }, 10000); // 10 seconds
 
     // Cleanup on unmount or dependency change
