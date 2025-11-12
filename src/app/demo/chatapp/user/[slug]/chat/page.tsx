@@ -128,6 +128,8 @@ function useChatWebSocket(
       );
 
       wsRef.current.onopen = () => {
+
+        setReconnect("") ; // set the reconnect message as connection is done
         console.log("WebSocket connected");
 
         heartbeatInterval.current = setInterval(() => {
@@ -154,6 +156,8 @@ function useChatWebSocket(
       };
 
       wsRef.current.onerror = (err) => {
+
+        //setReconnect("Failed to connect, try reconnect") ; // set the reconnect message
         console.error("WebSocket error:", err);
         wsRef.current?.close();
       };
