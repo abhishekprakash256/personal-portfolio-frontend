@@ -334,9 +334,6 @@ export default function UserChatService() {
   }, [messages]);
 
 
-
-
-
   // Run login check **after session data is loaded**
   useEffect(() => {
   // Wait for session load
@@ -345,7 +342,9 @@ export default function UserChatService() {
   //console.log("Sender:", sender, "ChatID:", chatID); // testing
   // If session is invalid → redirect
   if (!sender || !chatID || !sessionID) {
-  router.push("/");
+
+  router.push("/");  // change here for the login link 
+  //router.push(`/demo/chatapp/user/${chatID}/login`);  // change here for the login link 
   return ;
   
   }
@@ -369,11 +368,14 @@ export default function UserChatService() {
       }
     } catch (error) {
       console.error("Login check error:", error);
+      router.push(`/demo/chatapp/user/${chatID}/login`);
     }
   };
 
     loginCheck();
   }, [loaded, sender, chatID, router]);
+
+  
 
   // ---------------------------
   // Fetch previous messages
