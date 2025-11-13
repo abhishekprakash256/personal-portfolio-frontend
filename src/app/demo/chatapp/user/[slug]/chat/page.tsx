@@ -341,10 +341,18 @@ export default function UserChatService() {
 
   //console.log("Sender:", sender, "ChatID:", chatID); // testing
   // If session is invalid → redirect
-  if (!sender || !chatID || !sessionID) {
+  if (!chatID || !sessionID ) {
 
   router.push("/");  // change here for the login link 
   //router.push(`/demo/chatapp/user/${chatID}/login`);  // change here for the login link 
+  return ;
+  
+  }
+
+  if (!sender || !receiver ) {
+
+  //router.push("/");  // change here for the login link 
+  router.push(`/demo/chatapp/user/${chatID}/login`);  // change here for the login link 
   return ;
   
   }
