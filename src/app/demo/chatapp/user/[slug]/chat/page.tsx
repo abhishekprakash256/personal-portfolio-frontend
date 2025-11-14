@@ -186,7 +186,7 @@ function useChatWebSocket(
 
 
 
-async function handleLogout(setLogoutMessage : any , router : any) {
+async function handleLogout(setLogoutMessage : any , router : any , setReconnect : any) {
   // The function to logout the user
   // hit the link chat-service/v1/users/logut a post request
   /*
@@ -244,6 +244,7 @@ async function handleLogout(setLogoutMessage : any , router : any) {
       sessionStorage.removeItem("sessionID");
 
       setLogoutMessage("Logout Successful!");
+      setReconnect("")
 
       //alert("Logout successful!");
       setTimeout(() => (router.push(`/`)), 2000);
@@ -252,12 +253,14 @@ async function handleLogout(setLogoutMessage : any , router : any) {
       const message = data.message || "Logout failed due to unknown error.";
       //alert(`Logout failed: ${message}`);
       setLogoutMessage(`Logout failed: ${message}`);
+      setReconnect("")
       setTimeout(() => setLogoutMessage(""), 3000);
     }
   } catch (error) {
     console.error("Logout error:", error);
     //alert("An error occurred while logging out. Please try again.");
     setLogoutMessage("An error occurred while logging out failed. Please try again.");
+    setReconnect("")
     setTimeout(() => setLogoutMessage(""), 3000);
   }
 
@@ -314,7 +317,7 @@ export default function UserChatService() {
     if (!container) return;
 
     const isNearBottom =
-      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+      container.scrollHeight - container.scrollTop - container.clientHeight < 150;
 
     // On first load, scroll instantly to bottom
     if (firstLoadRef.current) {
@@ -448,7 +451,7 @@ export default function UserChatService() {
 
     }, [chatID, sender]);
 
-
+    {/*
     //fetch more message when clicked , edit the function
    const fetchMoreMessages = async () => {
       try {
@@ -483,7 +486,8 @@ export default function UserChatService() {
         console.error("Error fetching chat:", err);
       }
     };
-
+    
+    */}
 
 
     // -------------------------
@@ -571,12 +575,15 @@ export default function UserChatService() {
               flexDirection: "row",   // must be column for vertical layout
             }}
             >
+
+              {/*
               <Row>
               <Col>
               <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
               </Col>
               </Row>
-
+                
+              */}
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
@@ -669,7 +676,7 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color me-3 m-1"
-                  onClick={() => handleLogout(setLogoutMessage , router)} // pass setter
+                  onClick={() => handleLogout(setLogoutMessage , router , setReconnect)} // pass setter
                   
                 >
                   Logout
