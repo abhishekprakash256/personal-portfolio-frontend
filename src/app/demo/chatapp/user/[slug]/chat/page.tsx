@@ -280,6 +280,8 @@ export default function UserChatService() {
 
   const [lastMessageID, setLastMessageID] = useState<number | null>(null);  // handled by the websocket
 
+  const [minMessageID, setMinMessageID] = useState<number | null>(null);  // set the min messageid
+
   const [input, setInput] = useState("");
 
   const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect);  // passed set reconnect
@@ -415,7 +417,9 @@ export default function UserChatService() {
         
         if (data.messages?.length) {
           const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
+          const minID = Math.min(...data.messages.map((m: any) => m.messageid || 0));
           setLastMessageID(maxID);
+          setMinMessageID(minID);
         }
 
         } catch (err) {
@@ -426,6 +430,8 @@ export default function UserChatService() {
 
     // Run the fetch message in 
     fetchMessages();
+
+    
     
     // Then run every 10 seconds
     const interval = setInterval(() => {
@@ -439,7 +445,44 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
 
-    // ---------------------------
+        //fetch more message when clicked , edit the function
+    const fetchMoreMessages = async () => {
+      
+      try {
+
+          // https://api.meabhi.me/chat-service/v1/users/chat/messages
+          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              UserName: sender,
+              hash: chatID,
+              messageid : minMessageID,
+            }),
+          });
+
+          if (!res.ok) {
+            console.error("Failed to fetch messages:", res.status);
+            return;
+          }
+
+          const data = await res.json();
+          setMessages(data.messages || []);
+        
+        if (data.messages?.length) {
+          const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
+          setLastMessageID(maxID);
+        }
+
+        } catch (err) {
+          console.error("Error fetching chat:", err);
+        }
+      
+
+    };
+
+
+    // -------------------------
     // Send new message
     // ---------------------------
     const handleSend = () => {
@@ -525,8 +568,8 @@ export default function UserChatService() {
             }}
             >
               <Row>
-                <Col>
-              <Button type="submit" className="button-custom-color m-1 ">Load Messages</Button>
+              <Col>
+              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load Messages</Button>
               </Col>
               </Row>
 
@@ -631,7 +674,7 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color m-1"
-                  //onClick={() => handleLogout(setLogoutMessage)} // pass setter
+                  //onClick={() => handleLogout(setEndChat)} // pass setter
                 >
                   Endchat
                 </Button>
