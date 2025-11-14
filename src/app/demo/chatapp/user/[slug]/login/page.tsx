@@ -23,7 +23,7 @@ type LoginResponse = {
 
 // ---------- Validation ----------
 function validateUser(sender: string): { valid: boolean; error?: string; username?: string } {
-  const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;
+  const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;        
   const username = sender.trim().toLowerCase();
 
   if (username.length === 0) {
