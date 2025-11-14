@@ -394,7 +394,7 @@ export default function UserChatService() {
       
     if (!chatID || !sender) return;
 
-    const fetchMessages = async () => {
+       const fetchMessages = async () => {
         try {
 
           // https://api.meabhi.me/chat-service/v1/users/chat/messages
@@ -414,6 +414,9 @@ export default function UserChatService() {
 
           const data = await res.json();
           setMessages(data.messages || []);
+
+          //const incoming = data.messages || [];
+          //setMessages(prev => [...prev, ...incoming]);
         
         if (data.messages?.length) {
           const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
@@ -426,6 +429,7 @@ export default function UserChatService() {
           console.error("Error fetching chat:", err);
         }
       };
+
     
 
     // Run the fetch message in 
@@ -445,41 +449,41 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
 
-        //fetch more message when clicked , edit the function
-    const fetchMoreMessages = async () => {
-      
+    //fetch more message when clicked , edit the function
+   const fetchMoreMessages = async () => {
       try {
+        const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            UserName: sender,
+            hash: chatID,
+            messageid: minMessageID,  // last oldest message id
+          }),
+        });
 
-          // https://api.meabhi.me/chat-service/v1/users/chat/messages
-          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              UserName: sender,
-              hash: chatID,
-              messageid : minMessageID,
-            }),
-          });
-
-          if (!res.ok) {
-            console.error("Failed to fetch messages:", res.status);
-            return;
-          }
-
-          const data = await res.json();
-          setMessages(data.messages || []);
-        
-        if (data.messages?.length) {
-          const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
-          setLastMessageID(maxID);
+        if (!res.ok) {
+          console.error("Failed to fetch messages:", res.status);
+          return;
         }
 
-        } catch (err) {
-          console.error("Error fetching chat:", err);
-        }
-      
+        const data = await res.json();
+        const newMessages = data.messages || [];
 
+        if (newMessages.length === 0) return;
+
+        // PREPEND older messages at the top
+        setMessages(prev => [...newMessages, ...prev]);
+
+        // Update minMessageID for next "Load More"
+        const newMinID = Math.min(...newMessages.map((m: { messageid: any; }) => m.messageid));
+        setMinMessageID(newMinID);
+
+      } catch (err) {
+        console.error("Error fetching chat:", err);
+      }
     };
+
 
 
     // -------------------------
@@ -569,7 +573,7 @@ export default function UserChatService() {
             >
               <Row>
               <Col>
-              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load Messages</Button>
+              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
               </Col>
               </Row>
 
