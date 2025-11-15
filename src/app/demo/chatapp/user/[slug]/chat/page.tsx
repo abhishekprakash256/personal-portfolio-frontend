@@ -492,7 +492,6 @@ export default function UserChatService() {
     */}
 
 
-    */}
 
     // -------------------------
     // Send new message
@@ -588,7 +587,7 @@ export default function UserChatService() {
                 
               */}
 
-              */}
+              
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
