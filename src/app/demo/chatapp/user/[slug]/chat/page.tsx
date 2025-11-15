@@ -252,10 +252,12 @@ async function handleEndChat(setEndChatMessage : any  , router : any ,setReconne
       sessionStorage.removeItem("sessionID");
 
       setEndChatMessage("End Chat Successful!");
-      setEndChatMessage("") 
+      setReconnect("")  //overwrite set reconnect
 
       //alert("Logout successful!");
       setTimeout(() => (router.push(`/`)), 1000);
+
+
     } else {
 
       // Logout failed — show error message
@@ -784,7 +786,7 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color m-1"
-                  onClick={() => handleEndChat(router , setEndChatMessage , setReconnect)} // pass setter
+                  onClick={() => handleEndChat( setEndChatMessage , router , setReconnect)} // pass setter
                 >
                   Endchat
                 </Button>
