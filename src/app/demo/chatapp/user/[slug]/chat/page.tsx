@@ -255,7 +255,7 @@ async function handleEndChat(setEndChatMessage : any  , router : any ,setReconne
       setEndChatMessage("") 
 
       //alert("Logout successful!");
-      setTimeout(() => (router.push(`/`)), 2000);
+      setTimeout(() => (router.push(`/`)), 1000);
     } else {
 
       // Logout failed — show error message
