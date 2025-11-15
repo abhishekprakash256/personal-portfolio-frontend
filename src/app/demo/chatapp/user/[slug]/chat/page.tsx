@@ -184,6 +184,101 @@ function useChatWebSocket(
 }
 
 
+async function handleEndChat(setEndChatMessage : any  , router : any ,setReconnect : any) {
+  // the function to end the chat for the users 
+  // hit the link /chat-service/v1/users/chat/end
+
+  /*
+  type EndChatRequest struct {
+    ChatID   string `json:"Hash"`
+    UserName string `json:"UserName"`
+  }
+  */
+
+  /*
+  type SuccessResponse struct {
+	Status  string `json:"status"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+  // ErrorResponse defines a standard error payload.
+  type ErrorResponse struct {
+    Status  string `json:"status"`
+    Code    int    `json:"code"`
+    Message string `json:"message"`
+  }
+  */
+
+  // if get succesfull json clear the session values 
+  // redirect the user to homepage 
+
+  // if get the error json 
+  // show the error message logout has failed
+
+ try {
+    // Read required session values
+    const chatID = sessionStorage.getItem("chatID");
+    const sessionID = sessionStorage.getItem("sessionID");
+    const userName = sessionStorage.getItem("sender");
+
+    if (!chatID || !sessionID || !userName) {
+      setEndChatMessage("Missing session information End Chat failed. Please try again.");
+      setTimeout(() => setEndChatMessage(""), 3000);
+      return;
+    }
+
+    // Prepare end chat request body
+    const body = {
+      Hash: chatID,  // using the Hash instead of the ChatID
+      UserName: userName,
+    };
+
+    // Make POST request to end chat endpoint
+    const response = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/end", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    // Parse response JSON
+    const data = await response.json();
+
+    if (response.ok && data.status?.toLowerCase() === "success") {
+      // Logout successful — clear session
+      sessionStorage.removeItem("sender");
+      sessionStorage.removeItem("receiver");
+      sessionStorage.removeItem("chatID");
+      sessionStorage.removeItem("sessionID");
+
+      setEndChatMessage("End Chat Successful!");
+      setReconnect("")  //overwrite set reconnect
+
+      //alert("Logout successful!");
+      setTimeout(() => (router.push(`/`)), 1000);
+
+
+    } else {
+
+      // Logout failed — show error message
+      const message = data.message || "Chat End failed due to unknown error.";
+      //alert(`Logout failed: ${message}`);
+      setEndChatMessage(`End Chat failed: ${message}`);
+      setReconnect("")
+      setTimeout(() => setEndChatMessage(""), 3000);
+
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+    //alert("An error occurred while logging out. Please try again.");
+    setEndChatMessage("An error occurred while end chat out failed. Please try again.");
+    setReconnect("")
+    setTimeout(() => setEndChatMessage(""), 3000);
+  }
+ 
+}
+
+
 
 
 async function handleLogout(setLogoutMessage : any , router : any , setReconnect : any) {
@@ -292,6 +387,8 @@ export default function UserChatService() {
   const [logoutMessage, setLogoutMessage] = useState("");
 
   const [messageLength, setMessageLengthError] = useState("");
+
+  const [endchatMessage , setEndChatMessage] = useState("");  // set the endchat message
 
   // ---- at top of component ----
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -452,6 +549,8 @@ export default function UserChatService() {
     }, [chatID, sender]);
 
     {/*
+
+    {/*
     //fetch more message when clicked , edit the function
    const fetchMoreMessages = async () => {
       try {
@@ -488,6 +587,7 @@ export default function UserChatService() {
     };
     
     */}
+
 
 
     // -------------------------
@@ -575,7 +675,6 @@ export default function UserChatService() {
               flexDirection: "row",   // must be column for vertical layout
             }}
             >
-
               {/*
               <Row>
               <Col>
@@ -584,6 +683,8 @@ export default function UserChatService() {
               </Row>
                 
               */}
+
+              
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
@@ -685,7 +786,7 @@ export default function UserChatService() {
                 <Button
                   type="submit"
                   className="button-custom-color m-1"
-                  //onClick={() => handleLogout(setEndChat)} // pass setter
+                  onClick={() => handleEndChat( setEndChatMessage , router , setReconnect)} // pass setter
                 >
                   Endchat
                 </Button>
@@ -768,6 +869,34 @@ export default function UserChatService() {
                         }
                       >
                         {reconnectMessage}
+                      </p>
+
+                    </Col>
+                  </Row>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+          <AnimatePresence>
+
+              {endchatMessage && (
+                <motion.div
+                  key="endchatMessage"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row className="text-center mt-3">
+                    <Col>
+                      <p
+                        className={
+                         endchatMessage.toLowerCase().includes("failed")
+                            ? "text-danger bold"
+                            : "text-success"
+                        }
+                      >
+                        {endchatMessage}
                       </p>
 
                     </Col>
