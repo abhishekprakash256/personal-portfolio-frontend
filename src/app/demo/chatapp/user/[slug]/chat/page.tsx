@@ -700,7 +700,7 @@ const fetchMoreMessages = async () => {
             style={{
               minHeight: "200px",        // minimum height
               maxHeight: "600px",        // maximum height
-              overflowY: "auto",         // enable vertical scrolling
+              overflowY: "auto",         // enable vertical scrolling.  
               display: "flex",
               flexDirection: "row",   // must be column for vertical layout
             }}
