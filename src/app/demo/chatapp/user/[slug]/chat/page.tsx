@@ -738,6 +738,8 @@ const fetchMoreMessages = async () => {
               const isSender = msg.sender === sender;
 
               return isSender ? (
+
+                
                 <Row key={msg.messageid} className="p-1 m-0 mt-1">
                   <Col></Col>
                   <Col></Col>
