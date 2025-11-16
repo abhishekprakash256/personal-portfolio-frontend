@@ -39,7 +39,7 @@ return to the login page
 
 
 gegnerate the UUID for the session 
-when the connection wll happen always check the value first then make the value and put it
+when the connection wll happen always check the value first then make the value and put it 
 
 
 
