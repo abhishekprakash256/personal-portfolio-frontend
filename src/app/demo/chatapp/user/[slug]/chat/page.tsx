@@ -390,6 +390,9 @@ export default function UserChatService() {
 
   const [endchatMessage , setEndChatMessage] = useState("");  // set the endchat message
 
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);  // set the state of the hasmore button
+
+
   // ---- at top of component ----
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -563,8 +566,8 @@ export default function UserChatService() {
 
     
 
-    //fetch more message when clicked , edit the function
-   const fetchMoreMessages = async () => {
+//fetch more message when clicked , edit the function
+const fetchMoreMessages = async () => {
   try {
     const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
       method: "POST",
@@ -584,7 +587,10 @@ export default function UserChatService() {
     const data = await res.json();
     const newMessages = data.messages || [];
 
-    if (!newMessages.length) return;
+    if (newMessages.length === 0) {
+        setHasMoreMessages(false);
+        return;
+      }
 
     setMessages(prev => {
       const map = new Map(prev.map(m => [m.messageid, m]));
@@ -700,8 +706,8 @@ export default function UserChatService() {
             }}
             >
 
-              
-            
+            <AnimatePresence>
+            {hasMoreMessages && (
               <Row>
               <Col>
               <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
@@ -709,7 +715,9 @@ export default function UserChatService() {
               </Col>
               </Row>
                 
-            
+              )}
+
+              </AnimatePresence> 
 
               
             {messages.map((msg) => {
