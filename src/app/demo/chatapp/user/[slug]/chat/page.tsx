@@ -708,16 +708,30 @@ const fetchMoreMessages = async () => {
 
             <AnimatePresence>
             {hasMoreMessages && (
-              <Row>
-              <Col>
-              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
-               {/*<Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button> */}
-              </Col>
-              </Row>
-                
-              )}
+              <>
+                <motion.div
+                  key="loadMoreButton"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row>
+                    <Col>
+                      <Button
+                        type="submit"
+                        className="button-custom-color m-1"
+                        onClick={fetchMoreMessages}
+                      >
+                        Load More
+                      </Button>
+                    </Col>
+                  </Row>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
 
-              </AnimatePresence> 
 
               
             {messages.map((msg) => {
