@@ -59,7 +59,7 @@ commands --
 rm -rf .next
 
 rm -rf node_modules
-rm package-lock.json  # or yarn.lock or pnpm-lock.yaml depending on what you use
+rm package-lock.json  # or yarn.lock or pnpm-lock.yaml depending on what you use. 
 npm install
 
 

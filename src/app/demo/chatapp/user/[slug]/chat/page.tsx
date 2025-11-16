@@ -390,8 +390,11 @@ export default function UserChatService() {
 
   const [endchatMessage , setEndChatMessage] = useState("");  // set the endchat message
 
-  // ---- at top of component ----
-  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);  // set the state of the hasmore button
+
+  const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
+
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
 
 
 
@@ -490,103 +493,130 @@ export default function UserChatService() {
   // ---------------------------
   // Fetch previous messages
   // ---------------------------
-  useEffect(() => {
+ useEffect(() => {
+
+  if (!chatID || !sender) return;
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          UserName: sender,
+          hash: chatID,
+        }),
+      });
+
+      if (!res.ok) {
+        console.error("Failed to fetch messages:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      const incoming = data.messages || [];
+
+      setMessages(prev => {
+        // Build lookup so no duplicates are ever added
+        const map = new Map(prev.map(m => [m.messageid, m]));
+
+        for (const msg of incoming) {
+          map.set(msg.messageid, msg); // if exists = updated, if new = added
+        }
+
+        const sorted = Array.from(map.values()).sort(
+          //(a, b) => a.messageid - b.messageid
+          (a, b) => (a.messageid ?? Infinity) - (b.messageid ?? Infinity)
+
+        );
+
+        return sorted;
+      });
+
       
-    if (!chatID || !sender) return;
+      if (incoming.length ) {
+        //const maxID = Math.max(...incoming.map(m => m.messageid));
+        const maxID = Math.max(...incoming.map((m: { messageid: number }) => m.messageid));
 
-       const fetchMessages = async () => {
-        try {
-
-          // https://api.meabhi.me/chat-service/v1/users/chat/messages
-          const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              UserName: sender,
-              hash: chatID,
-            }),
-          });
-
-          if (!res.ok) {
-            console.error("Failed to fetch messages:", res.status);
-            return;
-          }
-
-          const data = await res.json();
-          setMessages(data.messages || []);
-
-          //const incoming = data.messages || [];
-          //setMessages(prev => [...prev, ...incoming]);
-        
-        if (data.messages?.length) {
-          const maxID = Math.max(...data.messages.map((m: any) => m.messageid || 0));
-          const minID = Math.min(...data.messages.map((m: any) => m.messageid || 0));
-          setLastMessageID(maxID);
-          setMinMessageID(minID);
-        }
-
-        } catch (err) {
-          console.error("Error fetching chat:", err);
-        }
-      };
-
-    
-
-    // Run the fetch message in 
-    fetchMessages();
-
-    
-    
-    // Then run every 10 seconds
-    const interval = setInterval(() => {
-      fetchMessages();
-      console.log("Message refresh done");   // print even if failed 
-    }, 10000); // 10 seconds
-
-    // Cleanup on unmount or dependency change
-    return () => clearInterval(interval);
-
-    }, [chatID, sender]);
-
-    {/*
-
-    {/*
-    //fetch more message when clicked , edit the function
-   const fetchMoreMessages = async () => {
-      try {
-        const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            UserName: sender,
-            hash: chatID,
-            messageid: minMessageID,  // last oldest message id
-          }),
-        });
-
-        if (!res.ok) {
-          console.error("Failed to fetch messages:", res.status);
-          return;
-        }
-
-        const data = await res.json();
-        const newMessages = data.messages || [];
-
-        if (newMessages.length === 0) return;
-
-        // PREPEND older messages at the top
-        setMessages(prev => [...newMessages, ...prev]);
-
-        // Update minMessageID for next "Load More"
-        const newMinID = Math.min(...newMessages.map((m: { messageid: any; }) => m.messageid));
-        setMinMessageID(newMinID);
+        //const minID = Math.min(...incoming.map(m => m.messageid));
+        const minID = Math.min(...incoming.map((m: { messageid: number }) => m.messageid));
+        setLastMessageID(maxID);
+        setMinMessageID(minID);
+      }
 
       } catch (err) {
         console.error("Error fetching chat:", err);
       }
     };
+
+  // Initial load
+  fetchMessages();
+
+  // Sync every 10 seconds
+
+    const interval = setInterval(() => {
+      fetchMessages();
+      console.log("Message refresh done");   // print even if failed 
+    }, 10000); // 10 seconds
+
+
+  return () => clearInterval(interval);
+
+}, [chatID, sender]);
+
     
-    */}
+
+//fetch more message when clicked , edit the function
+const fetchMoreMessages = async () => {
+  try {
+    const res = await fetch("https://api.meabhi.me/chat-service/v1/users/chat/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        UserName: sender,
+        hash: chatID,
+        messageid: minMessageID,  // fetch older than this
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("Failed to fetch messages:", res.status);
+      return;
+    }
+
+    const data = await res.json();
+    const newMessages = data.messages || [];
+
+    if (newMessages.length === 0) {
+        setHasMoreMessages(false);
+        return;
+      }
+
+    setMessages(prev => {
+      const map = new Map(prev.map(m => [m.messageid, m]));
+
+      for (const msg of newMessages) {
+        map.set(msg.messageid, msg);
+      }
+
+      const sorted = Array.from(map.values()).sort(
+        //(a, b) => a.messageid - b.messageid
+        (a, b) => (a.messageid ?? Infinity) - (b.messageid ?? Infinity)
+      );
+
+      return sorted;
+    });
+
+    //const newMinID = Math.min(...newMessages.map(m  => m.messageid ));
+    const newMinID = Math.min(...newMessages.map((m: { messageid: number }) => m.messageid));
+    setMinMessageID(newMinID);
+
+  } catch (err) {
+    console.error("Error fetching chat:", err);
+  }
+};
+
+    
 
 
 
@@ -670,25 +700,46 @@ export default function UserChatService() {
             style={{
               minHeight: "200px",        // minimum height
               maxHeight: "600px",        // maximum height
-              overflowY: "auto",         // enable vertical scrolling
+              overflowY: "auto",         // enable vertical scrolling.  
               display: "flex",
               flexDirection: "row",   // must be column for vertical layout
             }}
             >
-              {/*
-              <Row>
-              <Col>
-              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
-              </Col>
-              </Row>
-                
-              */}
+
+            <AnimatePresence>
+            {hasMoreMessages && (
+              <>
+                <motion.div
+                  key="loadMoreButton"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={smoothTransition}
+                >
+                  <Row>
+                    <Col>
+                      <Button
+                        type="submit"
+                        className="button-custom-color m-1"
+                        onClick={fetchMoreMessages}
+                      >
+                        Load More
+                      </Button>
+                    </Col>
+                  </Row>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
 
               
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
               return isSender ? (
+
+                
                 <Row key={msg.messageid} className="p-1 m-0 mt-1">
                   <Col></Col>
                   <Col></Col>
