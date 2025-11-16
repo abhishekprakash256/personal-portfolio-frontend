@@ -675,14 +675,17 @@ export default function UserChatService() {
               flexDirection: "row",   // must be column for vertical layout
             }}
             >
-              {/*
+
+              
+            
               <Row>
               <Col>
-              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
+              <Button type="submit" className="button-custom-color m-1 "  >Load More</Button>
+               {/*<Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button> */}
               </Col>
               </Row>
                 
-              */}
+            
 
               
             {messages.map((msg) => {
