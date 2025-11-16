@@ -548,9 +548,8 @@ export default function UserChatService() {
 
     }, [chatID, sender]);
 
-    {/*
+    
 
-    {/*
     //fetch more message when clicked , edit the function
    const fetchMoreMessages = async () => {
       try {
@@ -586,7 +585,7 @@ export default function UserChatService() {
       }
     };
     
-    */}
+    
 
 
 
@@ -680,7 +679,7 @@ export default function UserChatService() {
             
               <Row>
               <Col>
-              <Button type="submit" className="button-custom-color m-1 "  >Load More</Button>
+              <Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button>
                {/*<Button type="submit" className="button-custom-color m-1 " onClick={fetchMoreMessages} >Load More</Button> */}
               </Col>
               </Row>
