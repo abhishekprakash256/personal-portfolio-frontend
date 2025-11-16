@@ -392,9 +392,9 @@ export default function UserChatService() {
 
   const [hasMoreMessages, setHasMoreMessages] = useState(true);  // set the state of the hasmore button
 
+  const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
 
-  // ---- at top of component ----
-  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
 
 
 
