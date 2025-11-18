@@ -26,7 +26,8 @@ const resume_link : string = "/files/resume.pdf";
 // This is an async function inside the component file, which is fine in the app directory
 async function getPaginationData(slug: string): Promise<CardData[]> {
 
-  const res = await fetch(`https://api.meabhi.me/blog-service/v1/section/${slug}`, {
+  // add the limit for the article fetch
+  const res = await fetch(`https://api.meabhi.me/blog-service/v1/section/${slug}?limit=12`, {
 
     //https://127.0.0.1:5001/blog/section/${slug}
     cache: "no-store",
