@@ -395,7 +395,8 @@ export default function UserChatService() {
   const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
 
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
-
+  
+  const firstLoadRef = useRef(true);
 
 
 
@@ -410,7 +411,7 @@ export default function UserChatService() {
   // Scroll to bottom on new message
   // scroll to the top of the page check 
   // ---------------------------
-  const firstLoadRef = useRef(true);
+ 
 
   useEffect(() => {
     const container = messageContainerRef.current;
