@@ -39,7 +39,7 @@ return to the login page
 
 
 gegnerate the UUID for the session 
-when the connection wll happen always check the value first then make the value and put it
+when the connection wll happen always check the value first then make the value and put it 
 
 
 
@@ -395,7 +395,8 @@ export default function UserChatService() {
   const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
 
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
-
+  
+  const firstLoadRef = useRef(true);
 
 
 
@@ -406,16 +407,22 @@ export default function UserChatService() {
   };
 
 
-
   // ---------------------------
   // Scroll to bottom on new message
+  // scroll to the top of the page check 
   // ---------------------------
-  const firstLoadRef = useRef(true);
+ 
 
   useEffect(() => {
     const container = messageContainerRef.current;
     if (!container) return;
 
+    //check the user near top
+    const isNearTop = container.scrollTop < 20;
+    console.log("In the if condn",showLoadMore);  /// testing purpose
+    setShowLoadMore(isNearTop);
+
+    // Check if user is near bottom
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
 
@@ -431,6 +438,7 @@ export default function UserChatService() {
 
     // On new messages, only auto-scroll if user is near bottom
     if (isNearBottom) {
+
       container.scrollTo({
         top: container.scrollHeight,
         behavior: "smooth",
@@ -707,7 +715,7 @@ const fetchMoreMessages = async () => {
             >
 
             <AnimatePresence>
-            {hasMoreMessages && (
+            {hasMoreMessages && showLoadMore && (
               <>
                 <motion.div
                   key="loadMoreButton"
