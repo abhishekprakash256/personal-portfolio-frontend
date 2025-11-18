@@ -406,9 +406,9 @@ export default function UserChatService() {
   };
 
 
-
   // ---------------------------
   // Scroll to bottom on new message
+  // scroll to the top of the page check 
   // ---------------------------
   const firstLoadRef = useRef(true);
 
@@ -418,6 +418,19 @@ export default function UserChatService() {
 
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
+
+    //set the near top
+    const isNearTop = container.scrollTop < 50;
+    console.log("In the if condn",showLoadMore);  /// testing purpose
+    setShowLoadMore(isNearTop);
+
+    // set the setmore false
+    if (!isNearTop) {
+
+      setShowLoadMore(false);
+      console.log("In the if not condn",showLoadMore);  // for the testing purpose
+      
+    }
 
     // On first load, scroll instantly to bottom
     if (firstLoadRef.current) {
@@ -707,7 +720,7 @@ const fetchMoreMessages = async () => {
             >
 
             <AnimatePresence>
-            {hasMoreMessages && (
+            {hasMoreMessages && showLoadMore && (
               <>
                 <motion.div
                   key="loadMoreButton"
