@@ -420,6 +420,7 @@ export default function UserChatService() {
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
 
     //set the near top
+   
     const isNearTop = container.scrollTop < 50;
     console.log("In the if condn",showLoadMore);  /// testing purpose
     setShowLoadMore(isNearTop);
@@ -431,6 +432,7 @@ export default function UserChatService() {
       console.log("In the if not condn",showLoadMore);  // for the testing purpose
       
     }
+    
 
     // On first load, scroll instantly to bottom
     if (firstLoadRef.current) {
