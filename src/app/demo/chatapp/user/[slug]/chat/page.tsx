@@ -705,20 +705,34 @@ const fetchMoreMessages = async () => {
           
         */}
 
+
         <Container>
-        <Row className="rounded background-color-body mt-3 p-2">
-         
+        <Row className="rounded background-color-body mt-3 p-2 position-relative">
+
+          {/* Centered Heading (not affected by circle) */}
           <Col className="text-center">
-          <h1 className="bio-font font-color-class heading-responsive-font m-0">
-            {`Welcome ${
-            sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
-          }`}
-          </h1>
+            <h1 className="bio-font font-color-class heading-responsive-font m-0">
+              {`Welcome ${
+                sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
+              }`}
+            </h1>
           </Col>
-           
-          
+
+          {/* Absolutely Positioned Circle – DOES NOT PUSH ANYTHING */}
+          <div
+            className="status-circle mt-0 p-0"
+            style={{
+              position: "absolute",
+              right: "15px",
+              top: "50%",
+              transform: "translateY(-50%)",
+            }}
+            title="Online"
+          ></div>
+
         </Row>
-        </Container>
+      </Container>
+
         
         <Container>
 
