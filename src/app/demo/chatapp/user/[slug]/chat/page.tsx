@@ -694,11 +694,32 @@ const fetchMoreMessages = async () => {
 
       <NavBar />
       <CustomBody>
+
+        {/*
         <HeadingBar
           title={`Welcome ${
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
+         
         /> 
+          
+        */}
+
+        <Container>
+        <Row className="rounded background-color-body mt-3 p-2">
+         
+          <Col className="text-center">
+          <h1 className="bio-font font-color-class heading-responsive-font m-0">
+            {`Welcome ${
+            sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
+          }`}
+          </h1>
+          </Col>
+           
+          
+        </Row>
+        </Container>
+        
         <Container>
 
           {/* The new Message box*/}
