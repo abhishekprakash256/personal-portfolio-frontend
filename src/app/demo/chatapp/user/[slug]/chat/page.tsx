@@ -705,7 +705,7 @@ const fetchMoreMessages = async () => {
           
         */}
 
-
+          
         <Container>
         <Row className="rounded background-color-body mt-3 p-2 position-relative">
 
@@ -725,6 +725,7 @@ const fetchMoreMessages = async () => {
               position: "absolute",
               right: "15px",
               top: "50%",
+              backgroundColor: reconnectMessage ? "red" : "green",   // CONDITIONAL COLOR
               transform: "translateY(-50%)",
             }}
             title="Online"
