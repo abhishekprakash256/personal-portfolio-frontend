@@ -421,12 +421,17 @@ export default function UserChatService() {
 
     //check the user near top
     const isNearTop = container.scrollTop < 20;
-    console.log("In the if condn",showLoadMore);  /// testing purpose
+    //console.log("In the if condn",showLoadMore);  /// testing purpose
     setShowLoadMore(isNearTop);
 
     // Check if user is near bottom
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
+
+    // set not near bottom
+    setShowNewMessage(!isNearBottom);
+
+    //console.log("set the more message ",showNewMessage); // testing the print
 
     // On first load, scroll instantly to bottom
     if (firstLoadRef.current) {
@@ -438,15 +443,8 @@ export default function UserChatService() {
       return;
     }
 
-    if (!isNearBottom) {
-        // Show new message button if user NOT at bottom
-        setShowNewMessage(isNearBottom);
-    }
-
     // On new messages, only auto-scroll if user is near bottom
     if (isNearBottom) {
-
-
 
       container.scrollTo({
         top: container.scrollHeight,
