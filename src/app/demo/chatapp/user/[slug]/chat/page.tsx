@@ -694,11 +694,47 @@ const fetchMoreMessages = async () => {
 
       <NavBar />
       <CustomBody>
+
+        {/*
         <HeadingBar
           title={`Welcome ${
             sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
           }`}
+         
         /> 
+          
+        */}
+
+          
+        <Container>
+        <Row className="rounded background-color-body mt-3 p-2 position-relative">
+
+          {/* Centered Heading (not affected by circle) */}
+          <Col className="text-center">
+            <h1 className="bio-font font-color-class heading-responsive-font m-0">
+              {`Welcome ${
+                sender ? sender.charAt(0).toUpperCase() + sender.slice(1) : "User"
+              }`}
+            </h1>
+          </Col>
+
+          {/* Absolutely Positioned Circle – DOES NOT PUSH ANYTHING */}
+          <div
+            className="status-circle mt-0 p-0"
+            style={{
+              position: "absolute",
+              right: "15px",
+              top: "50%",
+              backgroundColor: reconnectMessage ? "red" : "green",   // CONDITIONAL COLOR   
+              transform: "translateY(-50%)",
+            }}
+            title="Online"
+          ></div>
+
+        </Row>
+      </Container>
+
+        
         <Container>
 
           {/* The new Message box*/}
@@ -748,7 +784,7 @@ const fetchMoreMessages = async () => {
               return isSender ? (
 
                 
-                <Row key={msg.messageid} className="p-1 m-0 mt-1">
+                <Row key={msg.messageid} className="p-1 m-0">
                   <Col></Col>
                   <Col></Col>
                   <Col
@@ -767,7 +803,7 @@ const fetchMoreMessages = async () => {
                   </Col>
                 </Row>
               ) : (
-                <Row key={msg.messageid} className="p-1 m-0 mt-1">
+                <Row key={msg.messageid} className="p-1 m-0">
                   <Col
                     xs={6}
                     md={4}

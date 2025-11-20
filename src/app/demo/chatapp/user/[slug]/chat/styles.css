@@ -115,6 +115,25 @@
   }
 
 
+.status-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  
+  flex-shrink: 0;             /* Prevent stretching */
+  animation: pulse 1.5s infinite;
+  
+}
+
+
+
+@keyframes pulse {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+
 .message-bubble-color-sender {
    background-color: var(--footer-background-color);
    color: var(--text-color);
