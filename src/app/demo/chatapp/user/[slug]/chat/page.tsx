@@ -197,9 +197,9 @@ async function handleEndChat(setEndChatMessage : any  , router : any ,setReconne
 
   /*
   type SuccessResponse struct {
-	Status  string `json:"status"`
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+  Status  string `json:"status"`
+  Code    int    `json:"code"`
+  Message string `json:"message"`
 }
 
   // ErrorResponse defines a standard error payload.
@@ -286,14 +286,14 @@ async function handleLogout(setLogoutMessage : any , router : any , setReconnect
   // hit the link chat-service/v1/users/logut a post request
   /*
   ChatID string `json:"ChatID"`
-	SessionID string `json:"SessionID"`
-	UserName string `json:"UserName"`
+  SessionID string `json:"SessionID"`
+  UserName string `json:"UserName"`
   */
 
   /*
-	Status string `json:"status"`
-	Code   int    `json:"code"`
-	Message string `json:"message"`
+  Status string `json:"status"`
+  Code   int    `json:"code"`
+  Message string `json:"message"`
   */
   // if get succesfull json clear the session values 
   // redirect the user to homepage 
@@ -741,7 +741,7 @@ const fetchMoreMessages = async () => {
         </Row>
       </Container>
 
-        <Container>
+        <Container style={{ position: "relative" }}>
 
           {/* The new Message box*/}
           <Row
@@ -830,33 +830,30 @@ const fetchMoreMessages = async () => {
               );
             })}
 
-            <div ref={messageContainerRef} />
+            </Row>
+            
 
-          {/* --- FLOATING NEW MESSAGE BUTTON --- */}
+        {/* Add the New Message Button for test  */}
           {showNewMessage && (
-            <div
-              style={{
-                position: "absolute",   // stays inside container
-                bottom: "10px",         // at bottom of window
-                left: "50%",            // centered
-                transform: "translateX(-50%)",
-                zIndex: 9999,
-                pointerEvents: "auto",  // click works
-              }}
-            >
-              <Button className="button-custom-color m-1">New Message</Button>
-            </div>
-          )}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: 0,
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  pointerEvents: "auto",
+                  zIndex: 1000,
+                }}
+              >
+                <Button className="button-custom-color">New Message</Button>
+              </div>
+            )}
+            
 
-
-
-
-        
-        </Row>
-          
-        
           </Container>
-              
+             
           <Container>
 
           <Row className="rounded background-color-body mt-3 p-2 text-center ">
