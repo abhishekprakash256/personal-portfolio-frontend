@@ -394,6 +394,8 @@ export default function UserChatService() {
 
   const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
 
+  const [showNewMessage, setShowNewMessage] = useState(false); // the loadmore button
+
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
   
   const firstLoadRef = useRef(true);
@@ -436,8 +438,15 @@ export default function UserChatService() {
       return;
     }
 
+    if (!isNearBottom) {
+        // Show new message button if user NOT at bottom
+        setShowNewMessage(isNearBottom);
+    }
+
     // On new messages, only auto-scroll if user is near bottom
     if (isNearBottom) {
+
+
 
       container.scrollTo({
         top: container.scrollHeight,
@@ -747,6 +756,7 @@ const fetchMoreMessages = async () => {
               overflowY: "auto",         // enable vertical scrolling.  
               display: "flex",
               flexDirection: "row",   // must be column for vertical layout
+             // position: "relative",
             }}
             >
 
@@ -823,8 +833,22 @@ const fetchMoreMessages = async () => {
             })}
 
             <div ref={messageContainerRef} />
-          </Row>
 
+          {/* Adding the New Message Button*/}
+          
+          {showNewMessage && (
+          <Row>
+            <Col>
+            <Button className="button-custom-color m-1 " >
+              New Message
+            </Button>
+            </Col>
+          </Row>
+            )}
+        
+        </Row>
+          
+        
           </Container>
               
           <Container>
