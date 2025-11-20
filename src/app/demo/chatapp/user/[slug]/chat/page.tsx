@@ -725,7 +725,7 @@ const fetchMoreMessages = async () => {
               position: "absolute",
               right: "15px",
               top: "50%",
-              backgroundColor: reconnectMessage ? "red" : "green",   // CONDITIONAL COLOR
+              backgroundColor: reconnectMessage ? "red" : "green",   // CONDITIONAL COLOR   
               transform: "translateY(-50%)",
             }}
             title="Online"
