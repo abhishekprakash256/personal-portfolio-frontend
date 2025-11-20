@@ -754,9 +754,26 @@ const fetchMoreMessages = async () => {
               overflowY: "auto",         // enable vertical scrolling.  
               display: "flex",
               flexDirection: "row",   // must be column for vertical layout
-             // position: "relative",
+              position: "relative",   // this for position relative for more message 
             }}
             >
+
+          {/* --- FLOATING NEW MESSAGE BUTTON --- */}
+            {showNewMessage && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "10px",                     // shows at TOP
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  zIndex: 9999,                    // stays on top
+                }}
+              >
+                <Button className="button-custom-color m-1" >
+                  New Message
+                </Button>
+              </div>
+            )}
 
             <AnimatePresence>
             {hasMoreMessages && showLoadMore && (
@@ -832,17 +849,7 @@ const fetchMoreMessages = async () => {
 
             <div ref={messageContainerRef} />
 
-          {/* Adding the New Message Button*/}
-          
-          {showNewMessage && (
-          <Row>
-            <Col>
-            <Button className="button-custom-color m-1 " >
-              New Message
-            </Button>
-            </Col>
-          </Row>
-            )}
+
         
         </Row>
           
