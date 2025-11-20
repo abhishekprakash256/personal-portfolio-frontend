@@ -783,7 +783,7 @@ const fetchMoreMessages = async () => {
               return isSender ? (
 
                 
-                <Row key={msg.messageid} className="p-1 m-0 mt-1">
+                <Row key={msg.messageid} className="p-1 m-0">
                   <Col></Col>
                   <Col></Col>
                   <Col
@@ -802,7 +802,7 @@ const fetchMoreMessages = async () => {
                   </Col>
                 </Row>
               ) : (
-                <Row key={msg.messageid} className="p-1 m-0 mt-1">
+                <Row key={msg.messageid} className="p-1 m-0">
                   <Col
                     xs={6}
                     md={4}
