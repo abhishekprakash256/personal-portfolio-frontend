@@ -741,7 +741,6 @@ const fetchMoreMessages = async () => {
         </Row>
       </Container>
 
-        
         <Container>
 
           {/* The new Message box*/}
@@ -758,22 +757,6 @@ const fetchMoreMessages = async () => {
             }}
             >
 
-          {/* --- FLOATING NEW MESSAGE BUTTON --- */}
-            {showNewMessage && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "10px",                     // shows at TOP
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  zIndex: 9999,                    // stays on top
-                }}
-              >
-                <Button className="button-custom-color m-1" >
-                  New Message
-                </Button>
-              </div>
-            )}
 
             <AnimatePresence>
             {hasMoreMessages && showLoadMore && (
@@ -848,6 +831,24 @@ const fetchMoreMessages = async () => {
             })}
 
             <div ref={messageContainerRef} />
+
+          {/* --- FLOATING NEW MESSAGE BUTTON --- */}
+          {showNewMessage && (
+            <div
+              style={{
+                position: "absolute",   // stays inside container
+                bottom: "10px",         // at bottom of window
+                left: "50%",            // centered
+                transform: "translateX(-50%)",
+                zIndex: 9999,
+                pointerEvents: "auto",  // click works
+              }}
+            >
+              <Button className="button-custom-color m-1">New Message</Button>
+            </div>
+          )}
+
+
 
 
         
