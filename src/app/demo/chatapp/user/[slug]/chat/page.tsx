@@ -466,7 +466,7 @@ export default function UserChatService() {
   }, [messages]);
 
 
-  
+
   // the scroll message container to new message
   const scrollToBottom = () => {
   const container = messageContainerRef.current;
@@ -856,29 +856,33 @@ const fetchMoreMessages = async () => {
 
           </Row>
             
-
-          {/* Add the New Message Button for test  , the messages not working for indicator*/}
-          {newRecievedMessage && showNewMessage && (
-         
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "10px",
-                  left: 0,
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  pointerEvents: "auto",
-                  zIndex: 1000,
-                }}
-              >
-                <Button  className="new-message-button shadow" onClick={scrollToBottom} >New Message</Button> 
-                
-                {/*<Button className="button-custom-color">New Message</Button> */}
-              </div>
-            
-            )}
-            
+          
+            <AnimatePresence>
+                {newRecievedMessage && showNewMessage && (
+                  <motion.div
+                    key="newMessageButton"
+                    initial={{ opacity: 0, y: 20 }}     // starts lower
+                    animate={{ opacity: 1, y: 0 }}      // moves into place
+                    exit={{ opacity: 0, y: 20 }}        // exit animation
+                    transition={smoothTransition}
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      left: 0,
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      zIndex: 1000,
+                      pointerEvents: "auto",
+                    }}
+                  >
+                    <Button className="new-message-button shadow" onClick={scrollToBottom}>
+                      New Message
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+                          
 
           </Container>
              
