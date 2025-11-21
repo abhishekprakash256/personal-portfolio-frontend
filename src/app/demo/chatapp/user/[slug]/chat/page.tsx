@@ -832,8 +832,8 @@ const fetchMoreMessages = async () => {
             </Row>
             
 
-        {/* Add the New Message Button for test  */}
-          {showNewMessage && (
+        {/* Add the New Message Button for test  , the messages not working for indicator*/}
+          {messages && showNewMessage && (
          
               <div
                 style={{
