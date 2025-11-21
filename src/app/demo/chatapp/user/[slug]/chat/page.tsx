@@ -890,8 +890,8 @@ const fetchMoreMessages = async () => {
 
           <Row className="rounded background-color-body mt-3 p-2 text-center ">
 
-          <Col xs={8} md={10}>
-            
+          <Col>
+          <div>
           <TextareaAutosize
             minRows={1}
             maxRows={6}
@@ -907,10 +907,16 @@ const fetchMoreMessages = async () => {
 
             className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-input-box-color input-text"
             style={{ width: "auto" }}
+          
+
+          
           />
+  
+        </div>
                   
           </Col>
-
+          
+          {/*
           <Col>
 
             <Button type="submit" className="button-custom-color m-1 " onClick={handleSend} >
@@ -918,6 +924,7 @@ const fetchMoreMessages = async () => {
               </Button>
 
           </Col>
+          */}
 
         </Row>
 
