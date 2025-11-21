@@ -783,9 +783,6 @@ const fetchMoreMessages = async () => {
             )}
           </AnimatePresence>
 
-
-
-
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
@@ -832,7 +829,7 @@ const fetchMoreMessages = async () => {
             </Row>
             
 
-        {/* Add the New Message Button for test  , the messages not working for indicator*/}
+          {/* Add the New Message Button for test  , the messages not working for indicator*/}
           {messages && showNewMessage && (
          
               <div
