@@ -110,7 +110,8 @@ function useChatWebSocket(
   sender: string,
   sessionID: string,
   setMessages: React.Dispatch<React.SetStateAction<Message[]>> ,
-  setReconnect : any
+  setReconnect : any ,
+  setNewRecievedMessage : any 
 ) {
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
@@ -147,6 +148,8 @@ function useChatWebSocket(
           if (data.type === "pong") return; // ignore heartbeat
 
           console.log("Incoming message:", data);  // Testing the incoming message 
+
+          setNewRecievedMessage(true) ; // set the new recieved message
 
           setMessages((prev) => [...prev, data]);
           
@@ -382,7 +385,9 @@ export default function UserChatService() {
 
   const [input, setInput] = useState("");
 
-  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect);  // passed set reconnect
+  const [newRecievedMessage , setNewRecievedMessage] = useState(false);  // set the new message
+
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage);  // passed set reconnect
 
   const [logoutMessage, setLogoutMessage] = useState("");
 
@@ -398,7 +403,9 @@ export default function UserChatService() {
 
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
   
-  const firstLoadRef = useRef(true);
+  const firstLoadRef = useRef(true);  // set the first load
+
+
 
 
 
@@ -430,6 +437,11 @@ export default function UserChatService() {
 
     // set not near bottom
     setShowNewMessage(!isNearBottom);
+
+    // make the show new message false
+    if (isNearBottom) {
+      setNewRecievedMessage(false);   // hide "New Message" indicator
+    }
 
     //console.log("set the more message ",showNewMessage); // testing the print
 
@@ -826,11 +838,11 @@ const fetchMoreMessages = async () => {
               );
             })}
 
-            </Row>
+          </Row>
             
 
           {/* Add the New Message Button for test  , the messages not working for indicator*/}
-          {messages && showNewMessage && (
+          {newRecievedMessage && showNewMessage && (
          
               <div
                 style={{
