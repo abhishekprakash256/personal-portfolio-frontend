@@ -466,6 +466,21 @@ export default function UserChatService() {
   }, [messages]);
 
 
+  
+  // the scroll message container to new message
+  const scrollToBottom = () => {
+  const container = messageContainerRef.current;
+  if (container) {
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",   // smooth scrolling
+    });
+  }
+    setNewRecievedMessage(false);  // hide new message indicator
+    };
+
+
+
   // Run login check **after session data is loaded**
   useEffect(() => {
   // Wait for session load
@@ -488,6 +503,7 @@ export default function UserChatService() {
   return ;
   
   }
+
 
   // Call API to verify login
   const loginCheck = async () => {
@@ -856,7 +872,7 @@ const fetchMoreMessages = async () => {
                   zIndex: 1000,
                 }}
               >
-                <Button  className="new-message-button shadow" >New Message</Button> 
+                <Button  className="new-message-button shadow" onClick={scrollToBottom} >New Message</Button> 
                 
                 {/*<Button className="button-custom-color">New Message</Button> */}
               </div>
