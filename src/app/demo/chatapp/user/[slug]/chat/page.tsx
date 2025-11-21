@@ -110,7 +110,8 @@ function useChatWebSocket(
   sender: string,
   sessionID: string,
   setMessages: React.Dispatch<React.SetStateAction<Message[]>> ,
-  setReconnect : any
+  setReconnect : any ,
+  setNewRecievedMessage : any 
 ) {
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
@@ -147,6 +148,8 @@ function useChatWebSocket(
           if (data.type === "pong") return; // ignore heartbeat
 
           console.log("Incoming message:", data);  // Testing the incoming message 
+
+          setNewRecievedMessage(true) ; // set the new recieved message
 
           setMessages((prev) => [...prev, data]);
           
@@ -197,9 +200,9 @@ async function handleEndChat(setEndChatMessage : any  , router : any ,setReconne
 
   /*
   type SuccessResponse struct {
-	Status  string `json:"status"`
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+  Status  string `json:"status"`
+  Code    int    `json:"code"`
+  Message string `json:"message"`
 }
 
   // ErrorResponse defines a standard error payload.
@@ -286,14 +289,14 @@ async function handleLogout(setLogoutMessage : any , router : any , setReconnect
   // hit the link chat-service/v1/users/logut a post request
   /*
   ChatID string `json:"ChatID"`
-	SessionID string `json:"SessionID"`
-	UserName string `json:"UserName"`
+  SessionID string `json:"SessionID"`
+  UserName string `json:"UserName"`
   */
 
   /*
-	Status string `json:"status"`
-	Code   int    `json:"code"`
-	Message string `json:"message"`
+  Status string `json:"status"`
+  Code   int    `json:"code"`
+  Message string `json:"message"`
   */
   // if get succesfull json clear the session values 
   // redirect the user to homepage 
@@ -382,7 +385,9 @@ export default function UserChatService() {
 
   const [input, setInput] = useState("");
 
-  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect);  // passed set reconnect
+  const [newRecievedMessage , setNewRecievedMessage] = useState(false);  // set the new message
+
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage);  // passed set reconnect
 
   const [logoutMessage, setLogoutMessage] = useState("");
 
@@ -394,9 +399,13 @@ export default function UserChatService() {
 
   const [showLoadMore, setShowLoadMore] = useState(false); // the loadmore button
 
+  const [showNewMessage, setShowNewMessage] = useState(false); // the loadmore button
+
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
   
-  const firstLoadRef = useRef(true);
+  const firstLoadRef = useRef(true);  // set the first load
+
+
 
 
 
@@ -419,12 +428,22 @@ export default function UserChatService() {
 
     //check the user near top
     const isNearTop = container.scrollTop < 20;
-    console.log("In the if condn",showLoadMore);  /// testing purpose
+    //console.log("In the if condn",showLoadMore);  /// testing purpose
     setShowLoadMore(isNearTop);
 
     // Check if user is near bottom
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
+
+    // set not near bottom
+    setShowNewMessage(!isNearBottom);
+
+    // make the show new message false
+    if (isNearBottom) {
+      setNewRecievedMessage(false);   // hide "New Message" indicator
+    }
+
+    //console.log("set the more message ",showNewMessage); // testing the print
 
     // On first load, scroll instantly to bottom
     if (firstLoadRef.current) {
@@ -445,6 +464,21 @@ export default function UserChatService() {
       });
     }
   }, [messages]);
+
+
+
+  // the scroll message container to new message
+  const scrollToBottom = () => {
+  const container = messageContainerRef.current;
+  if (container) {
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",   // smooth scrolling
+    });
+  }
+    setNewRecievedMessage(false);  // hide new message indicator
+    };
+
 
 
   // Run login check **after session data is loaded**
@@ -469,6 +503,7 @@ export default function UserChatService() {
   return ;
   
   }
+
 
   // Call API to verify login
   const loginCheck = async () => {
@@ -734,8 +769,7 @@ const fetchMoreMessages = async () => {
         </Row>
       </Container>
 
-        
-        <Container>
+        <Container style={{ position: "relative" }}>
 
           {/* The new Message box*/}
           <Row
@@ -747,6 +781,7 @@ const fetchMoreMessages = async () => {
               overflowY: "auto",         // enable vertical scrolling.  
               display: "flex",
               flexDirection: "row",   // must be column for vertical layout
+              position: "relative",   // this for position relative for more message 
             }}
             >
 
@@ -764,7 +799,7 @@ const fetchMoreMessages = async () => {
                     <Col>
                       <Button
                         type="submit"
-                        className="button-custom-color m-1"
+                        className="new-message-button shadow m-1"
                         onClick={fetchMoreMessages}
                       >
                         Load More
@@ -776,14 +811,11 @@ const fetchMoreMessages = async () => {
             )}
           </AnimatePresence>
 
-
-              
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
               return isSender ? (
 
-                
                 <Row key={msg.messageid} className="p-1 m-0">
                   <Col></Col>
                   <Col></Col>
@@ -822,11 +854,38 @@ const fetchMoreMessages = async () => {
               );
             })}
 
-            <div ref={messageContainerRef} />
           </Row>
+            
+          
+            <AnimatePresence>
+                {newRecievedMessage && showNewMessage && (
+                  <motion.div
+                    key="newMessageButton"
+                    initial={{ opacity: 0, y: 20 }}     // starts lower
+                    animate={{ opacity: 1, y: 0 }}      // moves into place
+                    exit={{ opacity: 0, y: 20 }}        // exit animation
+                    transition={smoothTransition}
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      left: 0,
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      zIndex: 1000,
+                      pointerEvents: "auto",
+                    }}
+                  >
+                    <Button className="new-message-button shadow" onClick={scrollToBottom}>
+                      New Message
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+                          
 
           </Container>
-              
+             
           <Container>
 
           <Row className="rounded background-color-body mt-3 p-2 text-center ">
