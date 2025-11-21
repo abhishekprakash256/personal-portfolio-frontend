@@ -10,6 +10,7 @@
     --button-hover: #0D87B0;
 
 
+    --chat-shadow: 0px 4px 10px rgba(0,0,0,0.2);
 
     --background-color: var(--primary-light-color);
 
@@ -69,6 +70,8 @@
     --primary-blue: #146C94;
     --light-blue: #19A7CE;  
 
+  
+    --chat-shadow: 0px 4px 10px rgba(255,255,255,0.2);
 
     --background-color: var(--primary-dark-color);
 
@@ -127,6 +130,10 @@
   background-color: var(--background-color) !important;  /* your hover */
   color: var(--text-color) !important;
   
+}
+
+.new-message-button.shadow {
+  box-shadow: var(--chat-shadow) !important;
 }
 
 
