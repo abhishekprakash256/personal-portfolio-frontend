@@ -115,6 +115,21 @@
   }
 
 
+.new-message-button {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 0px
+}
+
+
+
+.new-message-button:hover {
+  background-color: var(--background-color) !important;  /* your hover */
+  color: var(--text-color) !important;
+  
+}
+
+
 .status-circle {
   width: 16px;
   height: 16px;

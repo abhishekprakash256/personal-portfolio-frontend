@@ -757,7 +757,6 @@ const fetchMoreMessages = async () => {
             }}
             >
 
-
             <AnimatePresence>
             {hasMoreMessages && showLoadMore && (
               <>
@@ -772,7 +771,7 @@ const fetchMoreMessages = async () => {
                     <Col>
                       <Button
                         type="submit"
-                        className="button-custom-color m-1"
+                        className="new-message-button shadow m-1"
                         onClick={fetchMoreMessages}
                       >
                         Load More
@@ -785,13 +784,13 @@ const fetchMoreMessages = async () => {
           </AnimatePresence>
 
 
-              
+
+
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
               return isSender ? (
 
-                
                 <Row key={msg.messageid} className="p-1 m-0">
                   <Col></Col>
                   <Col></Col>
@@ -835,6 +834,7 @@ const fetchMoreMessages = async () => {
 
         {/* Add the New Message Button for test  */}
           {showNewMessage && (
+         
               <div
                 style={{
                   position: "absolute",
@@ -847,8 +847,11 @@ const fetchMoreMessages = async () => {
                   zIndex: 1000,
                 }}
               >
-                <Button className="button-custom-color">New Message</Button>
+                <Button  className="new-message-button shadow" >New Message</Button> 
+                
+                {/*<Button className="button-custom-color">New Message</Button> */}
               </div>
+            
             )}
             
 
