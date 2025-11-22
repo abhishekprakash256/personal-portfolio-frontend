@@ -912,7 +912,7 @@ const fetchMoreMessages = async () => {
                       }
                     }}
                     placeholder="Enter the message"
-                    className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-input-box-color input-text"
+                    className="custom-border custom-placeholder w-100 p-2 mt-1 mb-1 rounded message-input-box-color input-text"
                     style={{
                       flex: 1,   // TAKE SPACEEEEE
                       resize: "none",
@@ -922,7 +922,7 @@ const fetchMoreMessages = async () => {
                   {/* SEND BUTTON */}
                   <Button
                     type="submit"
-                    className="button-custom-color ms-2"
+                    className="button-custom-color ms-2 mb-1"
                     onClick={handleSend}
                     style={{ whiteSpace: "nowrap" }} // stop word-break
                   >
