@@ -886,50 +886,55 @@ const fetchMoreMessages = async () => {
 
           </Container>
              
+
+        {/* message input box */}
+
           <Container>
+            <Row className="rounded background-color-body mt-3 p-2 text-center">
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-end", // textarea grows, button stays aligned
+                    width: "100%",
+                  }}
+                >
+                  {/* TEXTAREA */}
+                  <TextareaAutosize
+                    minRows={1}
+                    maxRows={8}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
+                    placeholder="Enter the message"
+                    className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-input-box-color input-text"
+                    style={{
+                      flex: 1,   // TAKE SPACEEEEE
+                      resize: "none",
+                    }}
+                  />
 
-          <Row className="rounded background-color-body mt-3 p-2 text-center ">
+                  {/* SEND BUTTON */}
+                  <Button
+                    type="submit"
+                    className="button-custom-color ms-2"
+                    onClick={handleSend}
+                    style={{ whiteSpace: "nowrap" }} // stop word-break
+                  >
+                    Send
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Container>
 
-          <Col>
-          <div>
-          <TextareaAutosize
-            minRows={1}
-            maxRows={6}
-            placeholder="Enter the Message"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault(); // prevent newline
-             handleSend();       // send message
-            }
-            }}
 
-            className="custom-border custom-placeholder w-100 p-2 mt-1 rounded message-input-box-color input-text"
-            style={{ width: "auto" }}
-          
 
-          
-          />
-  
-        </div>
-                  
-          </Col>
-          
-          {/*
-          <Col>
-
-            <Button type="submit" className="button-custom-color m-1 " onClick={handleSend} >
-                Send 
-              </Button>
-
-          </Col>
-          */}
-
-        </Row>
-
- 
-        </Container>
             
         {/* Added for button */}
           <Container>
