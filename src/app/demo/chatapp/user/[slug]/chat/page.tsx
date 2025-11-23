@@ -811,6 +811,9 @@ const fetchMoreMessages = async () => {
             )}
           </AnimatePresence>
 
+
+          {/*adding the typing indicator */}
+
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
@@ -824,7 +827,7 @@ const fetchMoreMessages = async () => {
                     md={4}
                     className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
-                  >
+                  > 
                     <p className="mb-0 text-end">{msg.message}</p>
                     <small className="d-block text-end" style={{ fontSize: "0.7rem" ,  opacity: 0.6 }}>
                       {new Date(msg.time).toLocaleTimeString([], {
@@ -853,6 +856,34 @@ const fetchMoreMessages = async () => {
                 </Row>
               );
             })}
+
+            {/*start the typing idinctor */}
+
+              <Row  className="p-1 m-0">
+                  <Col
+                    xs={6}
+                    md={4}
+                    className="rounded-end rounded-top message-bubble-color-reciever d-inline-block"
+                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end"  }}
+                  >
+                    <h1 className="animate bounce mb-2" style={{ marginTop: -8, padding: 0, lineHeight: "1" }}>
+                      <a 
+                        className="text-decoration-none more-color" 
+                        href={""} 
+                        // target="_blank" // Uncomment if you want links to open in a new tab
+                        rel="noopener noreferrer" // Security best practices
+                      >
+                        <span className="dot ">.</span>
+                        <span className="dot ms-1">.</span>
+                        <span className="dot ms-1">.</span>
+                      </a>
+                    </h1>
+                              
+                     
+                  </Col>
+                </Row>
+
+            {/*Test of the typing indictor*/}    
 
           </Row>
             
