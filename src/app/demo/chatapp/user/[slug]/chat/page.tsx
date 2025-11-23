@@ -144,10 +144,10 @@ function useChatWebSocket(
         try {
           const data: Message & { type?: string } = JSON.parse(event.data);
 
-          console.log(data) ; // testing 
+          //console.log(data) ; // testing 
           if (data.type === "pong") return; // ignore heartbeat
 
-          console.log("Incoming message:", data);  // Testing the incoming message 
+          //console.log("Incoming message:", data);  // Testing the incoming message 
 
           setNewRecievedMessage(true) ; // set the new recieved message
 
@@ -600,7 +600,7 @@ export default function UserChatService() {
 
     const interval = setInterval(() => {
       fetchMessages();
-      console.log("Message refresh done");   // print even if failed 
+      //console.log("Message refresh done");   // print even if failed 
     }, 10000); // 10 seconds
 
 
@@ -695,7 +695,7 @@ const fetchMoreMessages = async () => {
         time: new Date().toISOString(),
       };
 
-      console.log(msg) ; //test the sending message ------------------
+      //console.log(msg) ; //test the sending message ------------------
 
       setMessages((prev) => [...prev, msg]);
       tempID > 0 && setLastMessageID(tempID);
