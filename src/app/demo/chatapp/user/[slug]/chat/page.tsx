@@ -405,6 +405,7 @@ export default function UserChatService() {
   
   const firstLoadRef = useRef(true);  // set the first load
 
+  const [typingIndicator , setTypingIdicator] = useState(true);  // the typing indicator, true set for testing
 
 
 
@@ -859,6 +860,9 @@ const fetchMoreMessages = async () => {
 
             {/*start the typing idinctor */}
 
+
+            { typingIndicator && (
+
               <Row  className="p-1 m-0">
                   <Col
                     xs={6}
@@ -882,6 +886,9 @@ const fetchMoreMessages = async () => {
                      
                   </Col>
                 </Row>
+
+            ) }
+
 
             {/*Test of the typing indictor*/}    
 
