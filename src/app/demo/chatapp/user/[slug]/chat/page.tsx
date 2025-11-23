@@ -873,9 +873,9 @@ const fetchMoreMessages = async () => {
                         // target="_blank" // Uncomment if you want links to open in a new tab
                         rel="noopener noreferrer" // Security best practices
                       >
-                        <span className="dot ">.</span>
-                        <span className="dot ms-1">.</span>
-                        <span className="dot ms-1">.</span>
+                        <span className="typing-dot ">.</span>
+                        <span className="typing-dot ms-1">.</span>
+                        <span className="typing-dot ms-1">.</span>
                       </a>
                     </h1>
                               
