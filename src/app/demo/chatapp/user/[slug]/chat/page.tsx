@@ -407,6 +407,9 @@ export default function UserChatService() {
 
   const [typingIndicator , setTypingIdicator] = useState(true);  // the typing indicator, true set for testing
 
+  const [isTyping, setIsTyping] = useState(false);  //set the typing state 
+   
+  let typingTimeout: NodeJS.Timeout | null = null; //set the time out 
 
 
 
@@ -703,6 +706,28 @@ const fetchMoreMessages = async () => {
       setInput("");
     };
 
+  
+    // set the typing indicator for seding the typing message
+    const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);   // update input
+    
+    console.log("Typing started..") ;
+
+    // User started typing
+    setIsTyping(true);
+    //setNewRecievedMessage(false); // Reset if you want
+
+    // Clear previous timeout
+    if (typingTimeout) clearTimeout(typingTimeout);
+
+    // If no typing for 1.5 seconds → typing finished
+    typingTimeout = setTimeout(() => {
+      setIsTyping(false);
+      console.log("Typing stopped");  // test
+    }, 5000); // Adjust delay here
+  };
+
+  
 
   // Optional: show loading state before session is loaded
   if (!loaded) {
@@ -938,24 +963,25 @@ const fetchMoreMessages = async () => {
                   }}
                 >
                   {/* TEXTAREA */}
-                  <TextareaAutosize
-                    minRows={1}
-                    maxRows={8}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                    }}
-                    placeholder="Enter the message"
-                    className="custom-border custom-placeholder w-100 p-2 mt-1 mb-1 rounded message-input-box-color input-text"
-                    style={{
-                      flex: 1,   // TAKE SPACEEEEE
-                      resize: "none",
-                    }}
-                  />
+      <TextareaAutosize
+        minRows={1}
+        maxRows={8}
+        value={input}
+        onChange={handleTyping}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+          }
+        }}
+        placeholder="Enter the message"
+        className="custom-border custom-placeholder w-100 p-2 mt-1 mb-1 rounded message-input-box-color input-text"
+        style={{
+          flex: 1,
+          resize: "none",
+        }}
+      />
+
 
                   {/* SEND BUTTON */}
                   <Button
