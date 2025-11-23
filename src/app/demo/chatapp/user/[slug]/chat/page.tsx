@@ -727,6 +727,23 @@ const fetchMoreMessages = async () => {
     }, 5000); // Adjust delay here
   };
 
+  // send the typing message through websocket
+  useEffect(() => {
+    const payload = JSON.stringify({
+      chatid: chatID,
+      sender,
+      receiver,
+      type: isTyping ? "typing" : "typingStop",
+    });
+
+    console.log("Sending WS message:", payload);  // <-- TEST PRINT
+
+    wsRef.current?.send(payload);
+  }, [isTyping]);
+
+
+
+
   
 
   // Optional: show loading state before session is loaded
