@@ -432,7 +432,11 @@ export default function UserChatService() {
 
   const [isTyping, setIsTyping] = useState(false);  //set the typing state 
 
-   const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage , setTypingIdicatorIncoming);  // passed set reconnect
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage , setTypingIdicatorIncoming);  // passed set reconnect
+
+  // set the typing indicator for seding the typing message
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingStartDelayRef = useRef<NodeJS.Timeout | null>(null);
    
   let typingTimeout: NodeJS.Timeout | null = null; //set the time out 
 
@@ -466,6 +470,7 @@ export default function UserChatService() {
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
 
+
     // set not near bottom
     setShowNewMessage(!isNearBottom);
 
@@ -487,14 +492,14 @@ export default function UserChatService() {
     }
 
     // On new messages, only auto-scroll if user is near bottom
-    if (isNearBottom) {
+    if (isNearBottom || !typingIndicatorIncoming) {
 
       container.scrollTo({
         top: container.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages , typingIndicatorIncoming]);
 
 
 
@@ -734,25 +739,35 @@ const fetchMoreMessages = async () => {
     };
 
   
-    // set the typing indicator for seding the typing message
+ 
     const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);   // update input
-    
-    console.log("Typing started..") ;
+      setInput(e.target.value);
 
-    // User started typing
-    setIsTyping(true);
-    //setNewRecievedMessage(false); // Reset if you want
+      // --- START TYPING (DELAYED) ---
+      if (!isTyping) {
+        // Clear previous start timer
+        if (typingStartDelayRef.current) {
+          clearTimeout(typingStartDelayRef.current);
+        }
 
-    // Clear previous timeout
-    if (typingTimeout) clearTimeout(typingTimeout);
+        // Wait 500ms before marking as typing
+        typingStartDelayRef.current = setTimeout(() => {
+          setIsTyping(true);
+          console.log("Typing started...");
+        }, 500);  // <--- change delay here (500ms)
+      }
 
-    // If no typing for 1.5 seconds → typing finished
-    typingTimeout = setTimeout(() => {
-      setIsTyping(false);
-      console.log("Typing stopped");  // test
-    }, 5000); // Adjust delay here
-  };
+      // --- STOP TYPING AFTER NO INPUT ---
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+        console.log("Typing stopped...");
+      }, 1500);  // <--- stop delay after no input
+    };
+
 
   // send the typing message through websocket
   useEffect(() => {
