@@ -111,7 +111,9 @@ function useChatWebSocket(
   sessionID: string,
   setMessages: React.Dispatch<React.SetStateAction<Message[]>> ,
   setReconnect : any ,
-  setNewRecievedMessage : any 
+  setNewRecievedMessage : any ,
+  setTypingIdicatorIncoming : any ,
+  
 ) {
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
@@ -148,6 +150,29 @@ function useChatWebSocket(
           if (data.type === "pong") return; // ignore heartbeat
 
           //console.log("Incoming message:", data);  // Testing the incoming message 
+
+          if (data.type === "typing") {
+
+            //set the typing indicator as true
+
+            console.log("The typing data is ",data) ; 
+
+            setTypingIdicatorIncoming(true) ;  // set the typing indicator
+
+            return
+
+          }
+
+          if (data.type === "typingStop") {
+
+            // set the typing indicator stop
+
+            console.log("The typing stop data is ",data) ; 
+
+            setTypingIdicatorIncoming(false) ; // set the typing indicator
+
+            return
+          }
 
           setNewRecievedMessage(true) ; // set the new recieved message
 
@@ -387,8 +412,6 @@ export default function UserChatService() {
 
   const [newRecievedMessage , setNewRecievedMessage] = useState(false);  // set the new message
 
-  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage);  // passed set reconnect
-
   const [logoutMessage, setLogoutMessage] = useState("");
 
   const [messageLength, setMessageLengthError] = useState("");
@@ -405,11 +428,15 @@ export default function UserChatService() {
   
   const firstLoadRef = useRef(true);  // set the first load
 
-  const [typingIndicator , setTypingIdicator] = useState(true);  // the typing indicator, true set for testing
+  const [typingIndicatorIncoming , setTypingIdicatorIncoming] = useState(false);  // the typing indicator, true set for testing
 
   const [isTyping, setIsTyping] = useState(false);  //set the typing state 
+
+   const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage , setTypingIdicatorIncoming);  // passed set reconnect
    
   let typingTimeout: NodeJS.Timeout | null = null; //set the time out 
+
+
 
 
 
@@ -903,7 +930,7 @@ const fetchMoreMessages = async () => {
             {/*start the typing idinctor */}
 
 
-            { typingIndicator && (
+            { typingIndicatorIncoming && (
 
               <Row  className="p-1 m-0">
                   <Col
