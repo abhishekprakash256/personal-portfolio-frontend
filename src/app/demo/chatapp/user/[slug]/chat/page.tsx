@@ -155,7 +155,7 @@ function useChatWebSocket(
 
             //set the typing indicator as true
 
-            console.log("The typing data is ",data) ; 
+            //console.log("The typing data is ",data) ;   // test 
 
             setTypingIdicatorIncoming(true) ;  // set the typing indicator
 
@@ -167,7 +167,7 @@ function useChatWebSocket(
 
             // set the typing indicator stop
 
-            console.log("The typing stop data is ",data) ; 
+            // console.log("The typing stop data is ",data) ;   // test
 
             setTypingIdicatorIncoming(false) ; // set the typing indicator
 
@@ -753,7 +753,8 @@ const fetchMoreMessages = async () => {
         // Wait 500ms before marking as typing
         typingStartDelayRef.current = setTimeout(() => {
           setIsTyping(true);
-          console.log("Typing started...");
+          
+          //console.log("Typing started...");  // test
         }, 500);  // <--- change delay here (500ms)
       }
 
@@ -764,7 +765,8 @@ const fetchMoreMessages = async () => {
 
       typingTimeoutRef.current = setTimeout(() => {
         setIsTyping(false);
-        console.log("Typing stopped...");
+        
+        //console.log("Typing stopped..."); // test
       }, 1500);  // <--- stop delay after no input
     };
 
@@ -778,7 +780,7 @@ const fetchMoreMessages = async () => {
       type: isTyping ? "typing" : "typingStop",
     });
 
-    console.log("Sending WS message:", payload);  // <-- TEST PRINT
+    //console.log("Sending WS message:", payload);  // <-- TEST PRINT
 
     wsRef.current?.send(payload);
   }, [isTyping]);
