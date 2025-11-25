@@ -233,3 +233,12 @@
 .more-color {
   color: var(--background-color);
 }
+
+
+.date-separator {
+  font-size: 0.75rem;
+  color : var(--text-color) ; 
+  box-shadow: var(--chat-shadow) !important;
+  display: inline-block;
+  opacity: 0.8;
+}

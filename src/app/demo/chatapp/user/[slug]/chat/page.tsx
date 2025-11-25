@@ -390,6 +390,22 @@ async function handleLogout(setLogoutMessage : any , router : any , setReconnect
 
 }
 
+const formatDateLabel = (dateStr: string) => {
+  const messageDate = new Date(dateStr).setHours(0, 0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0);
+  const yesterday = new Date(Date.now() - 86400000).setHours(0, 0, 0, 0);
+
+  if (messageDate === today) return "Today";
+  if (messageDate === yesterday) return "Yesterday";
+
+  return new Date(dateStr).toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+
 
 // The function for the main message parsing
 
@@ -789,8 +805,6 @@ const fetchMoreMessages = async () => {
 
 
 
-  
-
   // Optional: show loading state before session is loaded
   if (!loaded) {
     return (
@@ -811,6 +825,10 @@ const fetchMoreMessages = async () => {
     )
   }
   
+  let lastDate = ""; // outside map
+
+  let lastMessageDate: string | null = null;
+
 
   return (
     <div>
@@ -898,52 +916,71 @@ const fetchMoreMessages = async () => {
               </>
             )}
           </AnimatePresence>
-
+          
 
           {/*adding the typing indicator */}
+          {/* MESSAGE LIST */}
 
-            {messages.map((msg) => {
-              const isSender = msg.sender === sender;
+          
+          {messages.map((msg) => {
+          const isSender = msg.sender === sender;
 
-              return isSender ? (
+            let showDateLabel = false;
+            const currentMsgDate = new Date(msg.time).toDateString();
+            if (lastMessageDate !== currentMsgDate) {
+              showDateLabel = true;
+              lastMessageDate = currentMsgDate;
+            }
 
-                <Row key={msg.messageid} className="p-1 m-0">
-                  <Col></Col>
-                  <Col></Col>
-                  <Col
-                    xs={4}
-                    md={4}
-                    className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
-                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
-                  > 
-                    <p className="mb-0 text-end">{msg.message}</p>
-                    <small className="d-block text-end" style={{ fontSize: "0.7rem" ,  opacity: 0.6 }}>
-                      {new Date(msg.time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </small>
-                  </Col>
-                </Row>
-              ) : (
-                <Row key={msg.messageid} className="p-1 m-0">
-                  <Col
-                    xs={6}
-                    md={4}
-                    className="rounded-end rounded-top message-bubble-color-reciever d-inline-block pt-1 pb-1"
-                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
-                  >
-                    <p className="mb-0 text-start">{msg.message}</p>
-                    <small className="d-block text-start" style={{ fontSize: "0.7rem" ,opacity: 0.6 }}>
-                      {new Date(msg.time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </small>
-                  </Col>
-                </Row>
-              );
-            })}
+            return (
+              <>   {/* <-- No need for React import! */}
+
+                {showDateLabel && (
+                  <Row className="text-center mt-2 mb-2">
+                    <Col></Col>
+                    <Col className="">
+                      <p className="date-separator ms-4 m-0 rounded p-1 shadow">
+                        {formatDateLabel(msg.time)}
+                      </p>
+                    </Col>
+                     <Col></Col>
+                  </Row>
+                )}
+
+                {/* Sender / Receiver bubbles */}
+                {isSender ? (
+                  <Row className="p-1 m-0">
+                    <Col></Col><Col></Col>
+                    <Col xs={4} md={4}
+                      className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
+                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
+                    >
+                      <p className="mb-0 text-end">{msg.message}</p>
+                      <small className="d-block text-end" style={{ fontSize: "0.7rem", opacity: 0.6 }}>
+                        {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </small>
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row className="p-1 m-0">
+                    <Col xs={6} md={4}
+                      className="rounded-end rounded-top message-bubble-color-reciever d-inline-block pt-1 pb-1"
+                      style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
+                    >
+                      <p className="mb-0 text-start">{msg.message}</p>
+                      <small className="d-block text-start" style={{ fontSize: "0.7rem", opacity: 0.6 }}>
+                        {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </small>
+                    </Col>
+                  </Row>
+                )}
+
+              </>
+            );
+          })}
+
+
+
 
             {/*start the typing idinctor */}
 
