@@ -133,7 +133,7 @@ function useChatWebSocket(
       wsRef.current.onopen = () => {
 
         setReconnect("") ; // set the reconnect message as connection is done
-        console.log("WebSocket connected");
+        console.log("WebSocket connected ... ");
 
         heartbeatInterval.current = setInterval(() => {
           if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -159,7 +159,7 @@ function useChatWebSocket(
 
             setTypingIdicatorIncoming(true) ;  // set the typing indicator
 
-            return
+            return ;
 
           }
 
@@ -171,7 +171,7 @@ function useChatWebSocket(
 
             setTypingIdicatorIncoming(false) ; // set the typing indicator
 
-            return
+            return ;
           }
 
           setNewRecievedMessage(true) ; // set the new recieved message
@@ -492,8 +492,9 @@ export default function UserChatService() {
     }
 
     // On new messages, only auto-scroll if user is near bottom
-    if (isNearBottom || !typingIndicatorIncoming) {
-
+    //if (isNearBottom || !typingIndicatorIncoming) { // causing the issue in auto scroll on fetch
+    
+    if (isNearBottom ) {
       container.scrollTo({
         top: container.scrollHeight,
         behavior: "smooth",
@@ -572,7 +573,7 @@ export default function UserChatService() {
   // ---------------------------
   // Fetch previous messages
   // ---------------------------
- useEffect(() => {
+  useEffect(() => {
 
   if (!chatID || !sender) return;
 
