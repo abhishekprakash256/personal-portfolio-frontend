@@ -49,7 +49,7 @@ run dev
 
 ## Note 
 
-before pushing the code for production server use build
+before pushing the code for production server use build 
 
 for the build sometinme remove the cache of the app and clean build that can cause errors too 
 
@@ -59,7 +59,7 @@ commands --
 rm -rf .next
 
 rm -rf node_modules
-rm package-lock.json  # or yarn.lock or pnpm-lock.yaml depending on what you use
+rm package-lock.json  # or yarn.lock or pnpm-lock.yaml depending on what you use 
 npm install
 
 

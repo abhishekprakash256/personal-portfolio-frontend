@@ -111,7 +111,9 @@ function useChatWebSocket(
   sessionID: string,
   setMessages: React.Dispatch<React.SetStateAction<Message[]>> ,
   setReconnect : any ,
-  setNewRecievedMessage : any 
+  setNewRecievedMessage : any ,
+  setTypingIdicatorIncoming : any ,
+  
 ) {
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
@@ -131,7 +133,7 @@ function useChatWebSocket(
       wsRef.current.onopen = () => {
 
         setReconnect("") ; // set the reconnect message as connection is done
-        console.log("WebSocket connected");
+        console.log("WebSocket connected ... ");
 
         heartbeatInterval.current = setInterval(() => {
           if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -144,10 +146,33 @@ function useChatWebSocket(
         try {
           const data: Message & { type?: string } = JSON.parse(event.data);
 
-          console.log(data) ; // testing 
+          //console.log(data) ; // testing 
           if (data.type === "pong") return; // ignore heartbeat
 
-          console.log("Incoming message:", data);  // Testing the incoming message 
+          //console.log("Incoming message:", data);  // Testing the incoming message 
+
+          if (data.type === "typing") {
+
+            //set the typing indicator as true
+
+            //console.log("The typing data is ",data) ;   // test 
+
+            setTypingIdicatorIncoming(true) ;  // set the typing indicator
+
+            return ;
+
+          }
+
+          if (data.type === "typingStop") {
+
+            // set the typing indicator stop
+
+            // console.log("The typing stop data is ",data) ;   // test
+
+            setTypingIdicatorIncoming(false) ; // set the typing indicator
+
+            return ;
+          }
 
           setNewRecievedMessage(true) ; // set the new recieved message
 
@@ -387,8 +412,6 @@ export default function UserChatService() {
 
   const [newRecievedMessage , setNewRecievedMessage] = useState(false);  // set the new message
 
-  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage);  // passed set reconnect
-
   const [logoutMessage, setLogoutMessage] = useState("");
 
   const [messageLength, setMessageLengthError] = useState("");
@@ -404,6 +427,18 @@ export default function UserChatService() {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);  // the message container 
   
   const firstLoadRef = useRef(true);  // set the first load
+
+  const [typingIndicatorIncoming , setTypingIdicatorIncoming] = useState(false);  // the typing indicator, true set for testing
+
+  const [isTyping, setIsTyping] = useState(false);  //set the typing state 
+
+  const wsRef = useChatWebSocket(chatID, sender, sessionID, setMessages , setReconnect , setNewRecievedMessage , setTypingIdicatorIncoming);  // passed set reconnect
+
+  // set the typing indicator for seding the typing message
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingStartDelayRef = useRef<NodeJS.Timeout | null>(null);
+   
+  let typingTimeout: NodeJS.Timeout | null = null; //set the time out 
 
 
 
@@ -435,6 +470,7 @@ export default function UserChatService() {
     const isNearBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight < 150;
 
+
     // set not near bottom
     setShowNewMessage(!isNearBottom);
 
@@ -456,14 +492,15 @@ export default function UserChatService() {
     }
 
     // On new messages, only auto-scroll if user is near bottom
-    if (isNearBottom) {
-
+    //if (isNearBottom || !typingIndicatorIncoming) { // causing the issue in auto scroll on fetch
+    
+    if (isNearBottom ) {
       container.scrollTo({
         top: container.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages , typingIndicatorIncoming]);
 
 
 
@@ -536,7 +573,7 @@ export default function UserChatService() {
   // ---------------------------
   // Fetch previous messages
   // ---------------------------
- useEffect(() => {
+  useEffect(() => {
 
   if (!chatID || !sender) return;
 
@@ -599,7 +636,7 @@ export default function UserChatService() {
 
     const interval = setInterval(() => {
       fetchMessages();
-      console.log("Message refresh done");   // print even if failed 
+      //console.log("Message refresh done");   // print even if failed 
     }, 10000); // 10 seconds
 
 
@@ -694,7 +731,7 @@ const fetchMoreMessages = async () => {
         time: new Date().toISOString(),
       };
 
-      console.log(msg) ; //test the sending message ------------------
+      //console.log(msg) ; //test the sending message ------------------
 
       setMessages((prev) => [...prev, msg]);
       tempID > 0 && setLastMessageID(tempID);
@@ -702,6 +739,57 @@ const fetchMoreMessages = async () => {
       setInput("");
     };
 
+  
+ 
+    const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setInput(e.target.value);
+
+      // --- START TYPING (DELAYED) ---
+      if (!isTyping) {
+        // Clear previous start timer
+        if (typingStartDelayRef.current) {
+          clearTimeout(typingStartDelayRef.current);
+        }
+
+        // Wait 500ms before marking as typing
+        typingStartDelayRef.current = setTimeout(() => {
+          setIsTyping(true);
+          
+          //console.log("Typing started...");  // test
+        }, 500);  // <--- change delay here (500ms)
+      }
+
+      // --- STOP TYPING AFTER NO INPUT ---
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+        
+        //console.log("Typing stopped..."); // test
+      }, 1500);  // <--- stop delay after no input
+    };
+
+
+  // send the typing message through websocket
+  useEffect(() => {
+    const payload = JSON.stringify({
+      chatid: chatID,
+      sender,
+      receiver,
+      type: isTyping ? "typing" : "typingStop",
+    });
+
+    //console.log("Sending WS message:", payload);  // <-- TEST PRINT
+
+    wsRef.current?.send(payload);
+  }, [isTyping]);
+
+
+
+
+  
 
   // Optional: show loading state before session is loaded
   if (!loaded) {
@@ -811,6 +899,9 @@ const fetchMoreMessages = async () => {
             )}
           </AnimatePresence>
 
+
+          {/*adding the typing indicator */}
+
             {messages.map((msg) => {
               const isSender = msg.sender === sender;
 
@@ -824,7 +915,7 @@ const fetchMoreMessages = async () => {
                     md={4}
                     className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
-                  >
+                  > 
                     <p className="mb-0 text-end">{msg.message}</p>
                     <small className="d-block text-end" style={{ fontSize: "0.7rem" ,  opacity: 0.6 }}>
                       {new Date(msg.time).toLocaleTimeString([], {
@@ -853,6 +944,40 @@ const fetchMoreMessages = async () => {
                 </Row>
               );
             })}
+
+            {/*start the typing idinctor */}
+
+
+            { typingIndicatorIncoming && (
+
+              <Row  className="p-1 m-0">
+                  <Col
+                    xs={6}
+                    md={4}
+                    className="rounded-end rounded-top message-bubble-color-reciever d-inline-block"
+                    style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end"  }}
+                  >
+                    <h1 className="animate bounce mb-2" style={{ marginTop: -8, padding: 0, lineHeight: "1" }}>
+                      <a 
+                        className="text-decoration-none more-color" 
+                        href={""} 
+                        // target="_blank" // Uncomment if you want links to open in a new tab
+                        rel="noopener noreferrer" // Security best practices
+                      >
+                        <span className="typing-dot ">.</span>
+                        <span className="typing-dot ms-1">.</span>
+                        <span className="typing-dot ms-1">.</span>
+                      </a>
+                    </h1>
+                              
+                     
+                  </Col>
+                </Row>
+
+            ) }
+
+
+            {/*Test of the typing indictor*/}    
 
           </Row>
             
@@ -900,24 +1025,25 @@ const fetchMoreMessages = async () => {
                   }}
                 >
                   {/* TEXTAREA */}
-                  <TextareaAutosize
-                    minRows={1}
-                    maxRows={8}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                    }}
-                    placeholder="Enter the message"
-                    className="custom-border custom-placeholder w-100 p-2 mt-1 mb-1 rounded message-input-box-color input-text"
-                    style={{
-                      flex: 1,   // TAKE SPACEEEEE
-                      resize: "none",
-                    }}
-                  />
+      <TextareaAutosize
+        minRows={1}
+        maxRows={8}
+        value={input}
+        onChange={handleTyping}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+          }
+        }}
+        placeholder="Enter the message"
+        className="custom-border custom-placeholder w-100 p-2 mt-1 mb-1 rounded message-input-box-color input-text"
+        style={{
+          flex: 1,
+          resize: "none",
+        }}
+      />
+
 
                   {/* SEND BUTTON */}
                   <Button
