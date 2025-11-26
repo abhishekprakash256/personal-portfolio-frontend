@@ -937,7 +937,7 @@ const fetchMoreMessages = async () => {
             <React.Fragment key={`${msg.messageid}-${msg.sender}-${msg.time}`}>  {/* <-- KEY added here */}
 
               {showDateLabel && (
-                <Row className="text-center mt-2 mb-2">
+                <Row className="text-center mt-3 mb-3">
                   <Col></Col>
                   <Col>
                     <p className="date-separator ms-4 m-0 rounded p-1 shadow">
