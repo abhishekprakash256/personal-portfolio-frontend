@@ -938,13 +938,13 @@ const fetchMoreMessages = async () => {
 
               {showDateLabel && (
                 <Row className="text-center mt-3 mb-3">
-                  <Col></Col>
+                  
                   <Col>
-                    <p className="date-separator ms-4 m-0 rounded p-1 shadow">
+                    <p className="date-separator ms-5 m-0 me-2 rounded p-2 shadow">
                       {formatDateLabel(msg.time)}
                     </p>
                   </Col>
-                  <Col></Col>
+                  
                 </Row>
               )}
 
