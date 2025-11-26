@@ -902,16 +902,18 @@ const fetchMoreMessages = async () => {
                   exit={{ opacity: 0, y: -10 }}
                   transition={smoothTransition}
                 >
-                  <Row>
+                  <Row className="p-0">
+                    
                     <Col>
                       <Button
                         type="submit"
-                        className="new-message-button shadow m-1"
+                        className="new-message-button shadow ms-3"
                         onClick={fetchMoreMessages}
                       >
                         Load More
                       </Button>
                     </Col>
+                    
                   </Row>
                 </motion.div>
               </>
@@ -936,17 +938,21 @@ const fetchMoreMessages = async () => {
           return (
             <React.Fragment key={`${msg.messageid}-${msg.sender}-${msg.time}`}>  {/* <-- KEY added here */}
 
+              
               {showDateLabel && (
-                <Row className="text-center mt-3 mb-3">
+                
+                <Row className="text-center mt-2 mb-2">
                   
                   <Col>
-                    <p className="date-separator ms-5 m-0 me-2 rounded p-2 shadow">
+                    <p className="date-separator ms-5 me-2 rounded p-2 shadow">
                       {formatDateLabel(msg.time)}
                     </p>
                   </Col>
                   
                 </Row>
               )}
+
+            
 
               {isSender ? (
                 <Row className="p-1 m-0">
@@ -1041,7 +1047,7 @@ const fetchMoreMessages = async () => {
                       pointerEvents: "auto",
                     }}
                   >
-                    <Button className="new-message-button shadow" onClick={scrollToBottom}>
+                    <Button className="new-message-button shadow ms-3 ms-sm-3 ms-md-3 ms-lg-1" onClick={scrollToBottom}>
                       New Message
                     </Button>
                   </motion.div>
