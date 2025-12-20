@@ -54,6 +54,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useEffect, useState , useRef  } from "react";
 import { easeInOut,  motion, AnimatePresence } from 'framer-motion';
 import { use } from "react";
+import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -389,6 +390,22 @@ async function handleLogout(setLogoutMessage : any , router : any , setReconnect
 
 
 }
+
+const formatDateLabel = (dateStr: string) => {
+  const messageDate = new Date(dateStr).setHours(0, 0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0);
+  const yesterday = new Date(Date.now() - 86400000).setHours(0, 0, 0, 0);
+
+  if (messageDate === today) return "Today";
+  if (messageDate === yesterday) return "Yesterday";
+
+  return new Date(dateStr).toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
 
 
 // The function for the main message parsing
@@ -789,8 +806,6 @@ const fetchMoreMessages = async () => {
 
 
 
-  
-
   // Optional: show loading state before session is loaded
   if (!loaded) {
     return (
@@ -811,6 +826,10 @@ const fetchMoreMessages = async () => {
     )
   }
   
+  let lastDate = ""; // outside map
+
+  let lastMessageDate: string | null = null;
+
 
   return (
     <div>
@@ -860,7 +879,7 @@ const fetchMoreMessages = async () => {
         <Container style={{ position: "relative" }}>
 
           {/* The new Message box*/}
-          <Row
+          <Row 
             ref={messageContainerRef}
             className="rounded background-color-body mt-3 p-2 text-center"
             style={{
@@ -883,67 +902,94 @@ const fetchMoreMessages = async () => {
                   exit={{ opacity: 0, y: -10 }}
                   transition={smoothTransition}
                 >
-                  <Row>
+                  <Row className="p-0">
+                    
                     <Col>
                       <Button
                         type="submit"
-                        className="new-message-button shadow m-1"
+                        className="new-message-button shadow ms-3"
                         onClick={fetchMoreMessages}
                       >
                         Load More
                       </Button>
                     </Col>
+                    
                   </Row>
                 </motion.div>
               </>
             )}
           </AnimatePresence>
-
+          
 
           {/*adding the typing indicator */}
+          {/* MESSAGE LIST */}
 
-            {messages.map((msg) => {
-              const isSender = msg.sender === sender;
+          
+          {messages.map((msg) => {
+          const isSender = msg.sender === sender;
 
-              return isSender ? (
+          let showDateLabel = false;
+          const currentMsgDate = new Date(msg.time).toDateString();
+          if (lastMessageDate !== currentMsgDate) {
+            showDateLabel = true;
+            lastMessageDate = currentMsgDate;
+          }
 
-                <Row key={msg.messageid} className="p-1 m-0">
-                  <Col></Col>
-                  <Col></Col>
+          return (
+            <React.Fragment key={`${msg.messageid}-${msg.sender}-${msg.time}`}>  {/* <-- KEY added here */}
+
+              
+              {showDateLabel && (
+                
+                <Row className="text-center mt-2 mb-2">
+                  
+                  <Col>
+                    <p className="date-separator ms-5 me-2 rounded p-2 shadow">
+                      {formatDateLabel(msg.time)}
+                    </p>
+                  </Col>
+                  
+                </Row>
+              )}
+
+            
+
+              {isSender ? (
+                <Row className="p-1 m-0">
+                  <Col></Col><Col></Col>
                   <Col
                     xs={4}
                     md={4}
                     className="rounded-start rounded-top message-bubble-color-sender text-color d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
-                  > 
+                  >
                     <p className="mb-0 text-end">{msg.message}</p>
-                    <small className="d-block text-end" style={{ fontSize: "0.7rem" ,  opacity: 0.6 }}>
-                      {new Date(msg.time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                    <small className="d-block text-end" style={{ fontSize: "0.7rem", opacity: 0.6 }}>
+                      {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </small>
                   </Col>
                 </Row>
               ) : (
-                <Row key={msg.messageid} className="p-1 m-0">
-                  <Col
-                    xs={6}
-                    md={4}
+                <Row className="p-1 m-0">
+                  <Col xs={6} md={4}
                     className="rounded-end rounded-top message-bubble-color-reciever d-inline-block pt-1 pb-1"
                     style={{ width: "auto", maxWidth: "75%", alignSelf: "flex-end" }}
                   >
                     <p className="mb-0 text-start">{msg.message}</p>
-                    <small className="d-block text-start" style={{ fontSize: "0.7rem" ,opacity: 0.6 }}>
-                      {new Date(msg.time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                    <small className="d-block text-start" style={{ fontSize: "0.7rem", opacity: 0.6 }}>
+                      {new Date(msg.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </small>
                   </Col>
                 </Row>
-              );
-            })}
+              )}
+
+            </React.Fragment>
+          );
+        })}
+
+
+
+
 
             {/*start the typing idinctor */}
 
@@ -1001,7 +1047,7 @@ const fetchMoreMessages = async () => {
                       pointerEvents: "auto",
                     }}
                   >
-                    <Button className="new-message-button shadow" onClick={scrollToBottom}>
+                    <Button className="new-message-button shadow ms-3 ms-sm-3 ms-md-3 ms-lg-1" onClick={scrollToBottom}>
                       New Message
                     </Button>
                   </motion.div>
