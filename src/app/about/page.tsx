@@ -14,7 +14,7 @@ import Link from "next/link";
 
 
 
-// all the data is hard coded for static pages  
+// all the data is hard coded for static pages     
     
 const more_link : string = "www.google.com";
 const profile_pic : string = "./images/profile-pic/profile-pic.jpg";
