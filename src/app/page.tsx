@@ -20,12 +20,12 @@ const socialLinks = [
   "https://leetcode.com/abhishekprakash256/",
   "https://gitlab.com/abhishekprakash256",
   "https://www.kaggle.com/abhishek256",
-  "https://medium.com/@yourprofile",  
+  "https://medium.com/@yourprofile",    
 ];
 
 const description : string = "I am Abhishek Prakash (Abhi), a professional with over two years of industry experience and a master's degree in computer science from <a href='https://www.fsu.edu' target='_blank' style='color: #CEB888; text-decoration: none;' onmouseover='this.style.color = \"#782F40\"' onmouseout='this.style.color=\"#CEB888\"'>Florida State University</a>. My expertise lies in various programming languages, with a strong emphasis on Python. I specialize in machine learning, automation, software development, and the design and deployment of cloud infrastructure as code. I am proficient in popular machine learning and deep learning frameworks such as PyTorch, TensorFlow, scikit-learn, and pandas. My comprehensive background in computer science, including an in-depth understanding of data structures and algorithms, underpins my professional journey. Throughout my career, I have been actively involved in a wide range of software projects, from developing small-scale tools to orchestrating large-scale production systems. My experience extends to website development, including front-end, back-end, and database integration, ensuring the robustness and efficiency of solutions through unit testing, data visualization, and data engineering.In addition to my core skills, I have specialized in Machine Learning Operations (MLOps), managing CI/CD pipelines and Docker images to ensure the seamless integration and deployment of machine learning models. I am adept at using automation tools like Ansible and Terraform, streamlining and automating MLOps processes to enhance the overall efficiency and reliability of machine learning workflows.";
 const profile_pic : string = "./images/profile-pic/profile-pic.jpg";
-const resume_link : string = "/files/resume.pdf";
+const resume_link : string = "/files/resume.pdf";  
 
 
 
@@ -43,11 +43,25 @@ const Paignation_data = [
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
     card_url: "/blog/section/project/article/federated-learning",
   },
+
+  {
+    card_title: "Chat App",
+    card_para: "Real-time communication systems are deceptively complex. What starts as a simple “send and receive messages” problem quickly expands into challenges around scalability, data consistency, authentication, latency, and fault tolerance. In this article, we will walk through how I designed and built a production-ready, real-time chat application, covering architectural decisions, backend and frontend design, and the technology stack used.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/chat-app",
+  },
   {
     card_title: "Patching Unpatching",
     card_para: "Patching and Unpatching are a set of tools that are used for image processing. The patching tool is used to cut small square sections of the input image known as patches. The unpatching tool takes those patches and combines them back together to make the final image.",
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/patching-unpatching/patching.png",  /* the image file is in the public folder */
     card_url: "/blog/section/project/article/patching-unpatching",
+  },
+
+  {
+    card_title: "Smart Search",
+    card_para: "Built a smart search system that retrieves and ranks data based on user search queries, incorporating vector-based matching, spelling correction, and optimized query execution to deliver fast and relevant results. The system is powered by Typesense for high-performance indexing, storage, and retrieval, achieving millisecond-level query latency. Designed and implemented a fully featured backend with complete API support, enabling seamless data ingestion, search, and response delivery in structured JSON format.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/tech/typesense/search-icon.jpg",  /* the image file is in the public folder */
+    card_url: "/blog/section/tech/article/smart-search",
   },
 
   {
@@ -62,12 +76,7 @@ const Paignation_data = [
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/neural-transfer/image_1.png", /* the image file is in the public folder */
     card_url: "/blog/section/project/article/neural-transfer",
   },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
-  },
+
   {
     card_title: "Card Title 1",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
@@ -97,30 +106,6 @@ const Paignation_data = [
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
     img_src: "./images/federated-learning-flow.png", /* the image file is in the public folder */
     card_url: "https://example.com/card2",
-  },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
-  },
-  {
-    card_title: "Card Title 1",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card1", 
-  },
-  {
-    card_title: "Card Title 2",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/federated-learning-flow.png", /* the image file is in the public folder */
-    card_url: "https://example.com/card2",
-  },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
   }
 
 ];
