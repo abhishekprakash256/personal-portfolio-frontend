@@ -43,11 +43,25 @@ const Paignation_data = [
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/federated-learning/federated-learning-flow.png", /* the image file is in the public folder */
     card_url: "/blog/section/project/article/federated-learning",
   },
+
+  {
+    card_title: "Chat App",
+    card_para: "Real-time communication systems are deceptively complex. What starts as a simple “send and receive messages” problem quickly expands into challenges around scalability, data consistency, authentication, latency, and fault tolerance. In this article, we will walk through how I designed and built a production-ready, real-time chat application, covering architectural decisions, backend and frontend design, and the technology stack used.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/chat-app",
+  },
   {
     card_title: "Patching Unpatching",
     card_para: "Patching and Unpatching are a set of tools that are used for image processing. The patching tool is used to cut small square sections of the input image known as patches. The unpatching tool takes those patches and combines them back together to make the final image.",
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/patching-unpatching/patching.png",  /* the image file is in the public folder */
     card_url: "/blog/section/project/article/patching-unpatching",
+  },
+
+  {
+    card_title: "Smart Search",
+    card_para: "Built a smart search system that retrieves and ranks data based on user search queries, incorporating vector-based matching, spelling correction, and optimized query execution to deliver fast and relevant results. The system is powered by Typesense for high-performance indexing, storage, and retrieval, achieving millisecond-level query latency. Designed and implemented a fully featured backend with complete API support, enabling seamless data ingestion, search, and response delivery in structured JSON format.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/tech/typesense/search-icon.jpg",  /* the image file is in the public folder */
+    card_url: "/blog/section/tech/article/smart-search",
   },
 
   {
@@ -62,12 +76,7 @@ const Paignation_data = [
     img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/neural-transfer/image_1.png", /* the image file is in the public folder */
     card_url: "/blog/section/project/article/neural-transfer",
   },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
-  },
+
   {
     card_title: "Card Title 1",
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
@@ -97,30 +106,6 @@ const Paignation_data = [
     card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
     img_src: "./images/federated-learning-flow.png", /* the image file is in the public folder */
     card_url: "https://example.com/card2",
-  },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
-  },
-  {
-    card_title: "Card Title 1",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card1", 
-  },
-  {
-    card_title: "Card Title 2",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/federated-learning-flow.png", /* the image file is in the public folder */
-    card_url: "https://example.com/card2",
-  },
-  {
-    card_title: "Card Title 3",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems.",
-    img_src: "./images/image_1.png",  /* the image file is in the public folder */
-    card_url: "https://example.com/card3",
   }
 
 ];
