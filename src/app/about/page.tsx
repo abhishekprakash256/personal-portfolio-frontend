@@ -51,10 +51,10 @@ const socialLinks = [
 
 const tech_data = [
   {
-    card_title: "Card Title 1",
-    card_para: "System design is a multidisciplinary field that encompasses various aspects of designing distributed systems. ",
-    img_src: "./images/cards.jpg",  /* the image file is in the public folder */
-    card_url: "https://example.com/card1", 
+    card_title: "Smart Search",
+    card_para: "Built a smart search system that retrieves and ranks data based on user search queries, incorporating vector-based matching, spelling correction, and optimized query execution to deliver fast and relevant results. The system is powered by Typesense for high-performance indexing, storage, and retrieval, achieving millisecond-level query latency. Designed and implemented a fully featured backend with complete API support, enabling seamless data ingestion, search, and response delivery in structured JSON format.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/tech/typesense/search-icon.jpg",  /* the image file is in the public folder */
+    card_url: "/blog/section/tech/article/smart-search",
   },
   {
     card_title: "Card Title 2",
@@ -85,10 +85,10 @@ const project_data = [
   },
 
   {
-    card_title: "Academic Website",
-    card_para: "Static Academic website made to showcase the profile and works, made using HTML, CSS, Media Query (for the responsive optimization for mobile, tablet and different size devices). The website is consist of 8 pages that shows the different aspects from main page to contact page. Google Maps API is used to display the map. CSS flex boxes are also used for more size responsive optmizatrions",
-    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/academic-website/main_page.png",  /* the image file is in the public folder */
-    card_url: "/blog/section/project/article/academic-website", 
+    card_title: "Chat App",
+    card_para: "Real-time communication systems are deceptively complex. What starts as a simple “send and receive messages” problem quickly expands into challenges around scalability, data consistency, authentication, latency, and fault tolerance. In this article, we will walk through how I designed and built a production-ready, real-time chat application, covering architectural decisions, backend and frontend design, and the technology stack used.",
+    img_src: "https://api.meabhi.me/static-media-server/v1/static/blog/section/project/chat-app/chat-app-icon.png",  /* the image file is in the public folder */
+    card_url: "/blog/section/project/article/chat-app",
   }
 ];
 
